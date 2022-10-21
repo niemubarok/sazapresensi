@@ -1,0 +1,108 @@
+import BaseSeeder from "@ioc:Adonis/Lucid/Seeder";
+import StudentActivity from "App/Models/StudentActivity";
+
+export default class extends BaseSeeder {
+  public async run() {
+    await StudentActivity.updateOrCreateMany("id", [
+      {
+        id: 1,
+        name: "Jamaah Subuh",
+        day: "daily",
+        // except: "-",
+        start: "04:30:00",
+        end: "05:00:00",
+        order: 1,
+      },
+      {
+        id: 2,
+        name: "Pengajian Subuh",
+        day: "daily",
+        // except: "-",
+        start: "05:30:00",
+        end: "07:00:00",
+        order: 2,
+      },
+      {
+        id: 3,
+        name: "Sekolah Pagi",
+        day: "daily",
+        // except: "-",
+        start: "07:40:00",
+        end: "12:10:00",
+        order: 3,
+      },
+      {
+        id: 4,
+        name: "Jamaah Zuhur",
+        day: "daily",
+        // except: "jum'at",
+        start: "12:20:00",
+        end: "12:59:00",
+        order: 4,
+      },
+      {
+        id: 5,
+        name: "Jamaah Jum'at",
+        day: "jum'at",
+        // except: "-",
+        start: "12:20:00",
+        end: "12:59:00",
+        order: 4,
+      },
+      {
+        id: 6,
+        name: "Sekolah Siang",
+        day: "daily",
+        // except: "-",
+        start: "13:00:00",
+        end: "14:20:00",
+        order: 5,
+      },
+      {
+        id: 7,
+        name: "Jamaah Ashar",
+        day: "daily",
+        // except: "-",
+        start: "15:16:30",
+        end: "16:00:00",
+        order: 6,
+      },
+      {
+        id: 8,
+        name: "Jamaah Maghrib",
+        day: "daily",
+        // except: "-",
+        start: "17:30",
+        end: "19:20:00",
+        order: 7,
+      },
+      {
+        id: 9,
+        name: "Muhadhoroh",
+        day: "daily",
+        // except: "-",
+        start: "19:40:00",
+        end: "21:30:00",
+        order: 8,
+      },
+      {
+        id: 10,
+        name: "Muwajahah",
+        day: "daily",
+        // except: "-",
+        start: "19:40",
+        end: "21:30:00",
+        order: 8,
+      },
+      {
+        id: 11,
+        name: "Tidur",
+        day: "daily",
+        // except: "-",
+        start: "22:00:00",
+        end: "22:20:00",
+        order: 10,
+      },
+    ]);
+  }
+}

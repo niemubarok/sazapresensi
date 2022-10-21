@@ -1,0 +1,12 @@
+{
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": true,
+  "files.exclude": {
+    ".editorconfig": true,
+    ".lock": true,
+    ".npmrc": true,
+    ".quasar": true,
+    ".vscode": true,
+    "node_modules": true
+  }
+}

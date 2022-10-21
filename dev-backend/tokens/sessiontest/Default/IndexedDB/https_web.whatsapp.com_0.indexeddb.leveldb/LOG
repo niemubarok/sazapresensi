@@ -1,0 +1,35 @@
+2022/10/06-21:35:15.624 40bc Reusing MANIFEST D:\HUSNI\PROJECT\sazapresensi\dev-backend\tokens\sessiontest\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2022/10/06-21:35:15.624 40bc Recovering log #47
+2022/10/06-21:35:15.632 40bc Reusing old log D:\HUSNI\PROJECT\sazapresensi\dev-backend\tokens\sessiontest\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000047.log 
+2022/10/06-21:36:26.347 3be4 Compacting 1@1 + 1@2 files
+2022/10/06-21:36:26.377 3be4 Generated table #52@1: 26916 keys, 1838027 bytes
+2022/10/06-21:36:26.377 3be4 Compacted 1@1 + 1@2 files => 1838027 bytes
+2022/10/06-21:36:26.378 3be4 compacted to: files[ 0 1 1 0 0 0 0 ]
+2022/10/06-21:36:26.378 3be4 Delete type=2 #36
+2022/10/06-21:36:26.378 3be4 Delete type=2 #49
+2022/10/06-22:02:43.265 5a2c Level-0 table #54: started
+2022/10/06-22:02:43.280 5a2c Level-0 table #54: 1108862 bytes OK
+2022/10/06-22:02:43.281 5a2c Delete type=0 #47
+2022/10/06-22:04:04.984 4684 Compacting 1@0 + 1@1 files
+2022/10/06-22:04:05.007 4684 Generated table #55@0: 36848 keys, 853968 bytes
+2022/10/06-22:04:05.007 4684 Compacted 1@0 + 1@1 files => 853968 bytes
+2022/10/06-22:04:05.008 4684 compacted to: files[ 0 1 1 0 0 0 0 ]
+2022/10/06-22:04:05.008 4684 Delete type=2 #50
+2022/10/06-22:04:05.008 4684 Delete type=2 #54
+2022/10/06-22:05:28.122 4684 Compacting 1@1 + 1@2 files
+2022/10/06-22:05:28.157 4684 Generated table #56@1: 36971 keys, 2234149 bytes
+2022/10/06-22:05:28.162 4684 Generated table #57@1: 11120 keys, 223490 bytes
+2022/10/06-22:05:28.162 4684 Compacted 1@1 + 1@2 files => 2457639 bytes
+2022/10/06-22:05:28.163 4684 compacted to: files[ 0 0 2 0 0 0 0 ]
+2022/10/06-22:05:28.163 4684 Delete type=2 #52
+2022/10/06-22:05:28.163 4684 Delete type=2 #55
+2022/10/07-02:58:27.335 4684 Level-0 table #59: started
+2022/10/07-02:58:27.351 4684 Level-0 table #59: 1157309 bytes OK
+2022/10/07-02:58:27.352 4684 Delete type=0 #53
+2022/10/07-03:01:43.619 66e8 Compacting 1@1 + 1@2 files
+2022/10/07-03:01:43.657 66e8 Generated table #60@1: 38056 keys, 2241329 bytes
+2022/10/07-03:01:43.660 66e8 Generated table #61@1: 4623 keys, 207777 bytes
+2022/10/07-03:01:43.660 66e8 Compacted 1@1 + 1@2 files => 2449106 bytes
+2022/10/07-03:01:43.661 66e8 compacted to: files[ 0 0 3 0 0 0 0 ]
+2022/10/07-03:01:43.661 66e8 Delete type=2 #56
+2022/10/07-03:01:43.661 66e8 Delete type=2 #59

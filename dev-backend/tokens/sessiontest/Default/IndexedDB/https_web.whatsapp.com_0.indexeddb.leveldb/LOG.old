@@ -1,0 +1,13 @@
+2022/10/06-21:33:20.926 3d34 Reusing MANIFEST D:\HUSNI\PROJECT\sazapresensi\dev-backend\tokens\sessiontest\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2022/10/06-21:33:20.927 3d34 Recovering log #43
+2022/10/06-21:33:20.964 3d34 Reusing old log D:\HUSNI\PROJECT\sazapresensi\dev-backend\tokens\sessiontest\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000043.log 
+2022/10/06-21:33:32.521 2f20 Level-0 table #48: started
+2022/10/06-21:33:32.537 2f20 Level-0 table #48: 1104565 bytes OK
+2022/10/06-21:33:32.538 2f20 Delete type=0 #43
+2022/10/06-21:33:32.811 2f20 Compacting 1@0 + 1@1 files
+2022/10/06-21:33:32.865 2f20 Generated table #49@0: 80870 keys, 2279537 bytes
+2022/10/06-21:33:32.873 2f20 Generated table #50@0: 14296 keys, 292344 bytes
+2022/10/06-21:33:32.873 2f20 Compacted 1@0 + 1@1 files => 2571881 bytes
+2022/10/06-21:33:32.874 2f20 compacted to: files[ 0 2 1 0 0 0 0 ]
+2022/10/06-21:33:32.874 2f20 Delete type=2 #45
+2022/10/06-21:33:32.874 2f20 Delete type=2 #48

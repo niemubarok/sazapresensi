@@ -1,0 +1,32 @@
+import { defineStore } from "pinia";
+
+export const useScheduleStore = defineStore("schedules", {
+  state: () => ({
+    schedules: [
+      {
+        id: 1,
+        subject_id: "mtk07",
+        nip: "0009107838",
+        clock_id: 1,
+        class_id: "klsvii",
+        day: "Mon",
+        academic_year_id: "20222023",
+      },
+      {
+        id: 2,
+        subject_id: "hds08",
+        nip: "0009107839",
+        clock_id: 2,
+        class_id: "klsvii",
+        day: "Mon",
+        academic_year_id: "20222023",
+      },
+    ],
+  }),
+  getters: {
+    getScheduleById: (state) => {
+      return (id) => state.schedules.find((val) => val.id == id);
+    },
+  },
+  actions: {},
+});
