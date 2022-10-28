@@ -32,19 +32,17 @@
           v-on:keyup.enter="submitAttendance"
         />
 
-        <div>
+        <!-- <div>
           <q-skeleton
             class="q-mx-xs vertical-middle"
             style="width: 190px; height: 100px; margin-top: -20px"
             bordered
             type="rect"
           >
-            <!-- <q-card class="bg-yellow-2 rounded-borders q-py-xs"> -->
             <p class="text-yellow-4 q-mt-md">Belum ada Guru yang Absen</p>
-            <!-- </q-card> -->
           </q-skeleton>
-        </div>
-        <q-separator color="grey-8" class="q-mt-md" />
+        </div> -->
+        <!-- <q-separator color="grey-8" class="q-mt-md" /> -->
 
         <div class="q-pt-md q-ml-md float-left">
           <q-chip size="xs" color="dark" text-color="white">

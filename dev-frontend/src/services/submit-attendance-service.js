@@ -47,7 +47,7 @@ export const submit = async (input) => {
     activity_id: activityId,
     date: getTime().date,
     in: getTime().time,
-    status: "late",
+    status: "ontime",
   });
 
   //cek apakah dia student
@@ -69,10 +69,11 @@ export const submit = async (input) => {
         classes: "q-px-xl",
       });
     } else {
+      const senderId = ref(localStorage.getItem("client"));
       successAudio.play();
       attendee.value.name = student?.name;
       attendee.value.activity = activity()?.name;
-      sendMessage(`0${student?.phone_1}`, message);
+      sendMessage(`0${student?.phone_1}`, message, senderId.value);
 
       useAttendances.addAttendance(attendee.value);
       const dialog = Dialog.create({
