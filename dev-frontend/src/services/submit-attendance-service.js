@@ -41,19 +41,32 @@ export const submit = async (input) => {
     getTime().time
   }* \nuntuk kegiatan *${ls.get("activityName")}*`;
 
+  const status = ref("");
+  const toleransi = ls
+    .get("settings")
+    .data.find((setting) => setting.name == "toleransi").value;
+
+  const isLate = getTime().time > getTime(activity()?.start) + toleransi;
+
+  // const setStatus = () => {``
+  //   if (getTime(activity()?.start) > toleransi) {
+  //   }
+  // };
+
   const attendee = ref({
     student_nis: input,
     class_id: locationId,
     activity_id: activityId,
     date: getTime().date,
     in: getTime().time,
-    status: "ontime",
+    status: status.value,
   });
 
   //cek apakah dia student
   if (student) {
     //cek apakah lokasi dia absen sudah benar
-
+    console.log(isLate);
+    console.log(toleransi);
     if (isRightClass == false) {
       Notify.create({
         message: "Kelas salah",
@@ -69,10 +82,12 @@ export const submit = async (input) => {
         classes: "q-px-xl",
       });
     } else {
-      const senderId = ref(localStorage.getItem("client"));
       successAudio.play();
+
       attendee.value.name = student?.name;
       attendee.value.activity = activity()?.name;
+
+      const senderId = ref(ls.get("sender"));
       sendMessage(`0${student?.phone_1}`, message, senderId.value);
 
       useAttendances.addAttendance(attendee.value);
@@ -86,6 +101,7 @@ export const submit = async (input) => {
           // status: attendee.value.status,
         },
       });
+
       dialog.update();
       setTimeout(() => {
         dialog.hide();

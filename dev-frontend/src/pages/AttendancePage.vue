@@ -119,6 +119,7 @@ import {
 import { useAttendancesStore } from "src/stores/attendances-store";
 
 import ls from "localstorage-slim";
+import { useSettingStore } from "src/stores/setting-store";
 
 ls.config.encrypt = true;
 
@@ -134,6 +135,7 @@ const date = getTime().date;
 const now = ref("");
 
 const useStudentActivities = useStudentActivitiesStore();
+
 const studentActivityByDay = () =>
   useStudentActivities.getActivitiesByDayFromDB(getDayName(getTime().date));
 const activity = ref(null);
@@ -211,6 +213,8 @@ const submitAttendance = () => {
 onMounted(async () => {
   // console.log(ls.get("location"));
   await studentActivityByDay();
+  useSettingStore().getSettingsFromDB();
+
   activity.value = useStudentActivities.getActivitiesTodayByTime(
     getTime().time
   );
@@ -220,9 +224,13 @@ onMounted(async () => {
     onClickSettings();
   }
   // scheduleChecker();
+  // console.log(activity.value.start);
+  // console.log(getTime(activity.value.start));
   checkScheduleOnMounted();
   studentAttendances.getAttendancesFromDB();
 });
+
+console.log();
 </script>
 
 <style scoped>

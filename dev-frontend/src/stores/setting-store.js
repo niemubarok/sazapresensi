@@ -1,5 +1,6 @@
 import axios from "axios";
 import { defineStore } from "pinia";
+import ls from "localstorage-slim";
 
 export const useSettingStore = defineStore("setting", {
   state: () => ({
@@ -13,6 +14,7 @@ export const useSettingStore = defineStore("setting", {
   actions: {
     getSettingsFromDB() {
       axios.get(process.env.API + "settings/all").then((res) => {
+        ls.set("settings", res.data);
         this.all = res.data;
       });
     },

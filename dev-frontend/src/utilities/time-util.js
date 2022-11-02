@@ -4,16 +4,24 @@ export const zeroPad = (n) => {
   return (n < 10 ? "0" : "") + n;
 };
 
-export const getDayName = (date)=>{
-  const initDate= new Date(date)
-  const day = initDate.getDay()
-  const dayName = ["Senin","Selasa","Rabu", "Kamis","Jum'at","Sabtu","Minggu"]
-  return dayName[day-1]
-}
+export const getDayName = (date) => {
+  const initDate = new Date(date);
+  const day = initDate.getDay();
+  const dayName = [
+    "Senin",
+    "Selasa",
+    "Rabu",
+    "Kamis",
+    "Jum'at",
+    "Sabtu",
+    "Minggu",
+  ];
+  return dayName[day - 1];
+};
 
-export const getTime = () => {
+export const getTime = (t) => {
   const currentDate = new Date();
-  const today = currentDate.getDay()
+  const today = currentDate.getDay();
   const date = currentDate;
   const hours = zeroPad(currentDate.getHours());
   const minutes = zeroPad(currentDate.getMinutes());

@@ -16,7 +16,7 @@ export default class SettingsController {
 
   public async store({}: HttpContextContract) {}
 
-  public async show({}: HttpContextContract) {}
+  public async getSetting({}: HttpContextContract) {}
 
   public async edit({}: HttpContextContract) {}
 

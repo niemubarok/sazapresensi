@@ -49,6 +49,7 @@
 <script setup>
 import { onMounted, ref } from "@vue/runtime-core";
 import { sendMessage } from "app/src/services/whatsapp-service";
+import ls from "localstorage-slim";
 
 import io from "socket.io-client";
 
@@ -70,7 +71,7 @@ const onClickAdd = () => {
     description: description.value,
   });
 
-  localStorage.setItem("client", clientId.value);
+  ls.set("sender", clientId.value);
 };
 
 socket.on("init", (data) => {

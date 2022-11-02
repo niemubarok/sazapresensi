@@ -101,7 +101,10 @@
       <template v-slot:no-data>
         <div class="full-width row flex-center text-grey q-gutter-sm">
           <q-card class="my-card">
-            <img src="https://cdn.quasar.dev/img/mountains.jpg" />
+            <img
+              src="https://cdn.quasar.dev/img/mountains.jpg"
+              style="height: 300px"
+            />
             <q-card-section>
               <div class="text-h6">Belum ada Santri absen</div>
             </q-card-section>
