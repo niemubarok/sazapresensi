@@ -111,11 +111,7 @@ import AttendanceTable from "src/components/AttendanceTable.vue";
 
 //stores
 import { useStudentActivitiesStore } from "src/stores/student-activities-store";
-import {
-  getTime,
-  getDayName,
-  timeToMillisecond,
-} from "src/utilities/time-util";
+import { getTime, getDayName } from "src/utilities/time-util";
 import { useAttendancesStore } from "src/stores/attendances-store";
 
 import ls from "localstorage-slim";

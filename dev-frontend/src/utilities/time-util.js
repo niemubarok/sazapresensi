@@ -19,7 +19,7 @@ export const getDayName = (date) => {
   return dayName[day - 1];
 };
 
-export const getTime = (t) => {
+export const getTime = () => {
   const currentDate = new Date();
   const today = currentDate.getDay();
   const date = currentDate;
@@ -46,15 +46,21 @@ export const setTime = (h, m, s) => {
   };
 };
 
-export const compareTime = (init, now, comparasion) => {
-  if (comparasion == "equal") {
-    return init == now;
-  } else if (comparasion == "lt") {
-    return init < now;
-  } else if (comparasion == "gt") {
-    return init > now;
-  } else {
-    return false;
+export const compareTime = (time1, time2, comparison) => {
+  const [hour1, minute1, second1] = time1.split(":");
+  const [hour2, minute2, second2] = time2.split(":");
+
+  const date1 = new Date(2022, 0, 1, +hour1, +minute1, +second1).getTime();
+  const date2 = new Date(2022, 0, 1, +hour2, +minute2, +second2).getTime();
+
+  // console.log(time1, time2);
+  // console.log(date1 > date2);
+  if (comparison == "equal") {
+    return date1 == date2;
+  } else if (comparison == "lt") {
+    return date1 < date2;
+  } else if (comparison == "gt") {
+    return date1 > date2;
   }
   // return getTime().hours > setTime(now).hours;
   // return getTime().hours ;
@@ -72,4 +78,17 @@ export const timeToMillisecond = (t) => {
       Number(t.split(":")[2]) * 1000
     );
   }
+};
+
+export const addMinutes = (t, m) => {
+  const time = new Date(
+    new Date("1970/01/01 " + t).getTime() + m * 60000
+  ).toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  });
+
+  return time;
 };

@@ -7,7 +7,7 @@ import AttendanceDialog from "src/components/AttendanceDialog.vue";
 import { useStudentStore } from "src/stores/student-store";
 import { Notify, Dialog } from "quasar";
 import { ref } from "vue";
-import { getTime } from "src/utilities/time-util.js";
+import { getTime, addMinutes, compareTime } from "src/utilities/time-util.js";
 import { useStudentActivitiesStore } from "src/stores/student-activities-store";
 
 import { sendMessage } from "./whatsapp-service";
@@ -41,17 +41,24 @@ export const submit = async (input) => {
     getTime().time
   }* \nuntuk kegiatan *${ls.get("activityName")}*`;
 
-  const status = ref("");
   const toleransi = ls
     .get("settings")
     .data.find((setting) => setting.name == "toleransi").value;
 
-  const isLate = getTime().time > getTime(activity()?.start) + toleransi;
+  const status = ref("");
+  // const addMin = addMinutes(activity()?.start, toleransi);
 
-  // const setStatus = () => {``
-  //   if (getTime(activity()?.start) > toleransi) {
-  //   }
-  // };
+  const setStatus = () => {
+    const isLate = getTime().time > addMinutes(activity()?.start, toleransi);
+
+    if (isLate) {
+      status.value = "late";
+    } else {
+      status.value = "ontime";
+    }
+  };
+
+  setStatus();
 
   const attendee = ref({
     student_nis: input,
@@ -65,8 +72,7 @@ export const submit = async (input) => {
   //cek apakah dia student
   if (student) {
     //cek apakah lokasi dia absen sudah benar
-    console.log(isLate);
-    console.log(toleransi);
+
     if (isRightClass == false) {
       Notify.create({
         message: "Kelas salah",
@@ -87,8 +93,10 @@ export const submit = async (input) => {
       attendee.value.name = student?.name;
       attendee.value.activity = activity()?.name;
 
+      console.log(attendee.value.status);
+
       const senderId = ref(ls.get("sender"));
-      sendMessage(`0${student?.phone_1}`, message, senderId.value);
+      // sendMessage(`0${student?.phone_1}`, message, senderId.value);
 
       useAttendances.addAttendance(attendee.value);
       const dialog = Dialog.create({
