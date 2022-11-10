@@ -35,7 +35,7 @@ export const submit = async (input) => {
 
   const activity = () =>
     useStudentAtivities.getActivitiesTodayByTime(getTime().time);
-  const activityId = ls.get("activityId");
+  const activityId = ref(ls.get("activityId"));
 
   const message = `Santri atas nama *${student?.name}* absen masuk pkl. *${
     getTime().time
@@ -63,12 +63,13 @@ export const submit = async (input) => {
   const attendee = ref({
     student_nis: input,
     class_id: locationId,
-    activity_id: activityId,
+    activity_id: activityId.value,
     date: getTime().date,
     in: getTime().time,
     status: status.value,
   });
 
+  console.log(activityId.value);
   //cek apakah dia student
   if (student) {
     //cek apakah lokasi dia absen sudah benar
@@ -80,7 +81,7 @@ export const submit = async (input) => {
         position: "center",
         classes: "q-px-xl",
       });
-    } else if (activityId == "null") {
+    } else if (activityId.value == null) {
       Notify.create({
         message: "Belum waktunya absen",
         type: "negative",
@@ -93,7 +94,7 @@ export const submit = async (input) => {
       attendee.value.name = student?.name;
       attendee.value.activity = activity()?.name;
 
-      console.log(attendee.value.status);
+      // console.log(attendee.value.status);
 
       const senderId = ref(ls.get("sender"));
       // sendMessage(`0${student?.phone_1}`, message, senderId.value);

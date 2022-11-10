@@ -16,7 +16,7 @@ export const useStudentStore = defineStore("student", {
   },
   actions: {
     async getStudentByNisFromDB(nis) {
-      console.log("student Store");
+      // console.log("student Store");
       await axios
         .post(process.env.API + "student/", {
           nis,

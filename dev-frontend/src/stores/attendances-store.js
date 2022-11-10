@@ -28,16 +28,16 @@ export const useAttendancesStore = defineStore("attendance", {
           data: attendee,
         })
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           if (res.status == 201) {
             this.attendances.unshift(res.data.data);
           } else {
-            console.log(res);
+            // console.log(res);
           }
         });
     },
     getAttendancesFromDB() {
-      console.log("attendance Store");
+      // console.log("attendance Store");
       axios
         .post(process.env.API + "student/attendances", {
           data: {

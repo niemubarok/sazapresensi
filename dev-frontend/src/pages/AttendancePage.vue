@@ -164,6 +164,8 @@ const checkScheduleOnMounted = async () => {
   if (activity.value != undefined) {
     presenceTimeStart();
   } else {
+    ls.remove("activityId")
+    // ls.set("activityId", activity.value?.id);
     presenceTimeEnd();
   }
 };
@@ -207,26 +209,23 @@ const submitAttendance = () => {
 };
 
 onMounted(async () => {
-  // console.log(ls.get("location"));
+  console.log(ls.get("activityId"));
   await studentActivityByDay();
   useSettingStore().getSettingsFromDB();
 
   activity.value = useStudentActivities.getActivitiesTodayByTime(
     getTime().time
-  );
+    );
+
+    checkScheduleOnMounted();
 
   // console.log();
   if (!ls.get("location")) {
     onClickSettings();
   }
-  // scheduleChecker();
-  // console.log(activity.value.start);
-  // console.log(getTime(activity.value.start));
-  checkScheduleOnMounted();
   studentAttendances.getAttendancesFromDB();
 });
 
-console.log();
 </script>
 
 <style scoped>
