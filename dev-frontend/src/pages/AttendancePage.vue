@@ -130,14 +130,14 @@ const today = new Date();
 const date = getTime().date;
 const now = ref("");
 
-const useStudentActivities = useStudentActivitiesStore();
+const studentActivitiesStore = useStudentActivitiesStore();
 
 const studentActivityByDay = () =>
-  useStudentActivities.getActivitiesByDayFromDB(getDayName(getTime().date));
+  studentActivitiesStore.getActivitiesByDayFromDB(getDayName(getTime().date));
 const activity = ref(null);
 
 const activityName = ref("");
-const studentAttendances = useAttendancesStore();
+const studentAttendancesStore = useAttendancesStore();
 
 onStartTyping(() => {
   if (!input.value.active) {
@@ -152,7 +152,7 @@ const presenceTimeStart = () => {
   ls.set("activityId", activity.value?.id);
 
   ls.set("activityName", activity.value?.name);
-  studentAttendances.filterAttendances(activity.value?.id);
+  studentAttendancesStore.filterAttendances(activity.value?.id);
   isPresenceTime.value = true;
 };
 
@@ -175,21 +175,21 @@ const scheduleChecker = () => {
     window.location.reload();
   }
 
-  if (activity.value?.start == now.value) {
+  if (activity.value?.start >= now.value) {
     presenceTimeStart();
-  } else if (activity.value?.end == now.value) {
+  } else if (activity.value?.end <= now.value) {
     presenceTimeEnd();
   } else {
     ls.get("activityId");
     activityName.value = ls.get("activityName");
-    studentAttendances.filterAttendances(activity.value?.id);
+    studentAttendancesStore.filterAttendances(activity.value?.id);
   }
 };
 
 setInterval(() => {
   now.value = getTime().time;
   // console.log(activity.value);
-  activity.value = useStudentActivities.getActivitiesTodayByTime(
+  activity.value = studentActivitiesStore.getActivitiesTodayByTime(
     getTime().time
   );
   scheduleChecker();
@@ -209,11 +209,10 @@ const submitAttendance = () => {
 };
 
 onMounted(async () => {
-  console.log(ls.get("activityId"));
   await studentActivityByDay();
   useSettingStore().getSettingsFromDB();
 
-  activity.value = useStudentActivities.getActivitiesTodayByTime(
+  activity.value = studentActivitiesStore.getActivitiesTodayByTime(
     getTime().time
     );
 
@@ -223,7 +222,7 @@ onMounted(async () => {
   if (!ls.get("location")) {
     onClickSettings();
   }
-  studentAttendances.getAttendancesFromDB();
+  studentAttendancesStore.getAttendancesFromDB();
 });
 
 </script>

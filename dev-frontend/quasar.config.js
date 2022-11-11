@@ -9,6 +9,7 @@
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js
 
 const { configure } = require("quasar/wrappers");
+const { withCtx } = require("vue");
 
 module.exports = configure(function (/* ctx */) {
   return {
@@ -65,7 +66,11 @@ module.exports = configure(function (/* ctx */) {
       // polyfillModulePreload: true,
       // distDir
 
-      // extendViteConf (viteConf) {},
+      // extendViteConf (viteConf) {
+      //   if(ctx.mode.pwa){
+
+      //   }
+      // },
       // viteVuePluginOptions: {},
 
       // vitePlugins: [
@@ -142,7 +147,10 @@ module.exports = configure(function (/* ctx */) {
       manifestFilename: "manifest.json",
       useCredentialsForManifestTag: false,
       // useFilenameHashes: true,
-      // extendGenerateSWOptions (cfg) {}
+      extendGenerateSWOptions(cfg) {
+        cfg.skipWaiting = false;
+        cfg.clientsClaim = false;
+      },
       // extendInjectManifestOptions (cfg) {},
       // extendManifestJson (json) {}
       // extendPWACustomSWConf (esbuildConf) {}

@@ -24,14 +24,14 @@ export const submit = async (input) => {
 
   await useStudents.getStudentByNisFromDB(input);
   const student = useStudents.getStudentByNis();
-  console.log(student?.phone_1);
-  // const isStudent = student?.nis == input;
+  const isStudent = student?.nis == input;
 
   const studentSchedule = useStudentSchedules.getStudentScheduleByNis(input);
   const schedule = useSchedules.getScheduleById(studentSchedule?.schedule_id);
 
   const locationId = ls.get("location");
-  const isRightClass = schedule?.class_id === locationId.toString();
+  const isRightClass =
+    schedule?.class_id === locationId.toString() || locationId == "general";
 
   const activity = () =>
     useStudentAtivities.getActivitiesTodayByTime(getTime().time);
@@ -71,7 +71,7 @@ export const submit = async (input) => {
 
   console.log(activityId.value);
   //cek apakah dia student
-  if (student) {
+  if (isStudent) {
     //cek apakah lokasi dia absen sudah benar
 
     if (isRightClass == false) {

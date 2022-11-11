@@ -217,8 +217,8 @@ import ls from "localstorage-slim";
 
 // import { fab } from "@quasar/extras/fontawesome-v6";
 const activityId = ref("");
-const useAttendance = useAttendancesStore();
-const attendances = useAttendance.attendances;
+const attendanceStore = useAttendancesStore();
+const attendances = attendanceStore.attendances;
 const filter = ref("");
 const location = ref(ls.get("locationLabel"));
 const date = getTime().date.toLocaleDateString();
@@ -261,7 +261,7 @@ const columns = [
   },
 ];
 
-const tableRows = () => useAttendance.getFilteredAttendance();
+const tableRows = () => attendanceStore.getFilteredAttendance();
 </script>
 
 <style>

@@ -41,7 +41,7 @@
               <q-icon name="place" />
             </template>
           </q-select>
-          <div class="row">
+          <!-- <div class="row">
             <q-chip flat class="bg-transparent text-body">Mode List :</q-chip>
             <q-radio
               v-model="models.listMode"
@@ -57,7 +57,7 @@
               val="table"
               label="Table"
             />
-          </div>
+          </div> -->
         </div>
       </div>
       <q-card-actions align="right">
@@ -71,8 +71,9 @@
 <script setup>
 import { useDialogPluginComponent } from "quasar";
 import SuccessCheckMark from "./SuccessCheckMark.vue";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import ls from "localstorage-slim";
+import { useClassesStore } from "src/stores/classes-store";
 
 ls.config.encrypt = true;
 
@@ -88,41 +89,50 @@ const models = ref({
   listMode: !ls.get("listMode") ? "card" : "table",
 });
 
-// const locationModel = ref();
-const locationOptions = [
-  {
-    label: "Kelas VII",
-    id: "klsvii",
-  },
-  {
-    label: "Kelas VIII",
-    id: "klsviii",
-  },
-  {
-    label: "Kelas IX",
-    id: "klsix",
-  },
-  {
-    label: "Kelas X",
-    id: "klsx",
-  },
-  {
-    label: "Kelas XI",
-    id: "klsxi",
-  },
-  {
-    label: "Kelas XII",
-    id: "klsxii",
-  },
-  {
-    label: "Masjid",
-    id: "masjid",
-  },
-  {
-    label: "Asrama",
-    id: "asrama",
-  },
-];
+const locationOptions = []
+
+const classesStore = useClassesStore()
+
+// const locationOptions = [
+//   {
+//     label: "Kelas VII",
+//     id: "klsvii",
+//   },
+//   {
+//     label: "Kelas VIII",
+//     id: "klsviii",
+//   },
+//   {
+//     label: "Kelas IX",
+//     id: "klsix",
+//   },
+//   {
+//     label: "Kelas X",
+//     id: "klsx",
+//   },
+//   {
+//     label: "Kelas XI",
+//     id: "klsxi",
+//   },
+//   {
+//     label: "Kelas XII",
+//     id: "klsxii",
+//   },
+//   {
+//     label: "General",
+//     id: "general",
+//   },
+//   // {
+//   //   label: "Asrama",
+//   //   id: "asrama",
+//   // },
+// ];
+
+onMounted(async ()=>{
+  await classesStore.getClassesFromDB()
+  locationOptions.value = JSON.parse(JSON.stringify(classesStore.classes))
+  // console.log(JSON.parse(JSON.stringify(classesStore.classes)));
+})
 
 const onSaveSettings = () => {
   // console.log(optionModels.value.location.id);

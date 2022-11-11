@@ -1,28 +1,27 @@
+import axios from "axios";
 import { defineStore } from "pinia";
 
 export const useClassesStore = defineStore("classes", {
   state: () => ({
-    classes: [
-      {
-        class_id: "klsvii",
-        name: "Kelas 7",
-        location: "location_id",
-      },
-      {
-        class_id: "klsviii",
-        name: "Kelas 8",
-        location: "location_id",
-      },
-      {
-        class_id: "klsix",
-        name: "Kelas 9",
-        location: "location_id",
-      },
-    ],
+    classes: [],
   }),
   getters: {
     getClassById: (state) => {
       return (id) => state.classes.find((val) => val.class_id == id);
+    },
+    getAllClass: (state) => {
+      return state.classes;
+    },
+  },
+  actions: {
+    async getClassesFromDB() {
+      await axios
+        .get(process.env.API + "student/classes")
+        .then((res) => {
+          // console.log(res.data.data);
+          this.classes = res.data.data;
+        })
+        .catch((err) => console.log(err));
     },
   },
 });
