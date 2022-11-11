@@ -6,32 +6,36 @@ export default class extends BaseSeeder {
     await Class.updateOrCreateMany("id", [
       {
         id: "klsvii",
-        name: "Kelas VII",
+        label: "Kelas VII",
       },
       {
         id: "klsviii",
-        name: "Kelas VIII",
+        label: "Kelas VIII",
       },
       {
         id: "klsix",
-        name: "Kelas IX",
+        label: "Kelas IX",
       },
       {
         id: "klsx",
-        name: "Kelas X",
+        label: "Kelas X",
       },
       {
         id: "klsxi",
-        name: "Kelas XII",
+        label: "Kelas XI",
       },
       {
-        id: "msjdl",
-        name: "Masjid Putra",
+        id: "klsxii",
+        label: "Kelas XII",
       },
       {
-        id: "msjdp",
-        name: "Masjid Putri",
+        id: "general",
+        label: "General",
       },
+      // {
+      //   id: "asrama",
+      //   label: "Asrama",
+      // },
     ]);
   }
 }

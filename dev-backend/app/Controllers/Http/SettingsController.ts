@@ -12,7 +12,18 @@ export default class SettingsController {
     });
   }
 
-  public async create({}: HttpContextContract) {}
+  public async create({ request, response }: HttpContextContract) {
+    const req = request.body();
+    const name = req.name;
+    const value = req.value;
+
+    const store = await Setting.create({ name: name, value: value });
+    response.status(200).json({
+      status: 201,
+      message: "success",
+      // data: settings,
+    });
+  }
 
   public async store({}: HttpContextContract) {}
 
