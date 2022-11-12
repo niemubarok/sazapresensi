@@ -83,15 +83,14 @@ const props = defineProps({
   out: String,
   status: String,
 });
+const locationOptions = ref([]);
 
 const models = ref({
   location: !ls.get("locationLabel") ? null : ls.get("locationLabel"),
-  listMode: !ls.get("listMode") ? "card" : "table",
+  // listMode: !ls.get("listMode") ? "card" : "table",
 });
 
-const locationOptions = []
-
-const classesStore = useClassesStore()
+const classesStore = useClassesStore();
 
 // const locationOptions = [
 //   {
@@ -128,20 +127,20 @@ const classesStore = useClassesStore()
 //   // },
 // ];
 
-onMounted(async ()=>{
-  await classesStore.getClassesFromDB()
-  locationOptions.value = JSON.parse(JSON.stringify(classesStore.classes))
-  // console.log(JSON.parse(JSON.stringify(classesStore.classes)));
-})
+onMounted(async () => {
+  await classesStore.getClassesFromDB();
+  locationOptions.value = classesStore.getAllClass;
+  console.log(classesStore.getAllClass);
+});
 
 const onSaveSettings = () => {
-  // console.log(optionModels.value.location.id);
   ls.set("location", models.value.location?.id);
   ls.set("locationLabel", models.value.location?.label);
-  ls.set("listMode", models.value.listMode);
+  // ls.set("listMode", models.value.listMode);
   // console.log(window.location);
   window.location.reload();
   dialogRef.value.hide();
+  // console.log(models.value.location);
   // console.log(locationId);
 };
 
