@@ -92,45 +92,9 @@ const models = ref({
 
 const classesStore = useClassesStore();
 
-// const locationOptions = [
-//   {
-//     label: "Kelas VII",
-//     id: "klsvii",
-//   },
-//   {
-//     label: "Kelas VIII",
-//     id: "klsviii",
-//   },
-//   {
-//     label: "Kelas IX",
-//     id: "klsix",
-//   },
-//   {
-//     label: "Kelas X",
-//     id: "klsx",
-//   },
-//   {
-//     label: "Kelas XI",
-//     id: "klsxi",
-//   },
-//   {
-//     label: "Kelas XII",
-//     id: "klsxii",
-//   },
-//   {
-//     label: "General",
-//     id: "general",
-//   },
-//   // {
-//   //   label: "Asrama",
-//   //   id: "asrama",
-//   // },
-// ];
-
 onMounted(async () => {
   await classesStore.getClassesFromDB();
   locationOptions.value = classesStore.getAllClass;
-  console.log(classesStore.getAllClass);
 });
 
 const onSaveSettings = () => {

@@ -32,7 +32,7 @@
           v-on:keyup.enter="submitAttendance"
         />
 
-        <!-- <div>
+        <div>
           <q-skeleton
             class="q-mx-xs vertical-middle"
             style="width: 190px; height: 100px; margin-top: -20px"
@@ -41,7 +41,9 @@
           >
             <p class="text-yellow-4 q-mt-md">Belum ada Guru yang Absen</p>
           </q-skeleton>
-        </div> -->
+
+          <AttandeeCard name="Husni"></AttandeeCard>
+        </div>
         <!-- <q-separator color="grey-8" class="q-mt-md" /> -->
 
         <div class="q-pt-md q-ml-md float-left">
@@ -113,6 +115,7 @@ import AttendanceTable from "src/components/AttendanceTable.vue";
 import { useStudentActivitiesStore } from "src/stores/student-activities-store";
 import { getTime, getDayName } from "src/utilities/time-util";
 import { useAttendancesStore } from "src/stores/attendances-store";
+import { useTeacherStore } from "src/stores/teacher-store";
 
 import ls from "localstorage-slim";
 import { useSettingStore } from "src/stores/setting-store";
@@ -129,6 +132,9 @@ const input = ref(null);
 const today = new Date();
 const date = getTime().date;
 const now = ref("");
+
+const teacherStore = useTeacherStore();
+const teachers = ref([]);
 
 const studentActivitiesStore = useStudentActivitiesStore();
 
@@ -223,6 +229,9 @@ onMounted(async () => {
     onClickSettings();
   }
   studentAttendancesStore.getAttendancesFromDB();
+  teachers.value = await teacherStore.getTeachersFromDB();
+
+  // teacherStore.getTeacherByNip("0009107837");
 });
 </script>
 

@@ -13,14 +13,14 @@ export const useSettingStore = defineStore("setting", {
   },
   actions: {
     getSettingsFromDB() {
-      axios.get(process.env.API + "settings/all").then((res) => {
+      axios.get(process.env.API + "setting/all").then((res) => {
         ls.set("settings", res.data);
         this.all = res.data;
       });
     },
     updateSetting(id) {
       axios
-        .patch(process.env.API + "settings/update", {
+        .patch(process.env.API + "setting/update", {
           id,
         })
         .then((res) => {

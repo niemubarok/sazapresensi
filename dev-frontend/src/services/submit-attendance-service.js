@@ -12,29 +12,31 @@ import { useStudentActivitiesStore } from "src/stores/student-activities-store";
 
 import { sendMessage } from "./whatsapp-service";
 import ls from "localstorage-slim";
+import { useTeacherStore } from "src/stores/teacher-store";
 
-const useStudentAtivities = useStudentActivitiesStore();
-const useStudentSchedules = useStudentScheduleStore();
-const useSchedules = useScheduleStore();
-const useAttendances = useAttendancesStore();
-const useStudents = useStudentStore();
+const teacherStore = useTeacherStore()
+const studentActivitiesStore = useStudentActivitiesStore();
+const studentScheduleStore = useStudentScheduleStore();
+// const useSchedules = useScheduleStore();
+const attendanceStore = useAttendancesStore();
+const studentStore = useStudentStore();
 
 export const submit = async (input) => {
   const successAudio = new Audio("src/assets/audio/success_notification.wav");
 
-  await useStudents.getStudentByNisFromDB(input);
-  const student = useStudents.getStudentByNis();
+  await studentStore.getStudentByNisFromDB(input);
+  const student = studentStore.getStudentByNis();
   const isStudent = student?.nis == input;
 
-  const studentSchedule = useStudentSchedules.getStudentScheduleByNis(input);
-  const schedule = useSchedules.getScheduleById(studentSchedule?.schedule_id);
+  const studentSchedule = studentScheduleStore.getStudentScheduleByNis(input);
+  // const schedule = useSchedules.getScheduleById(studentSchedule?.schedule_id);
 
   const locationId = ls.get("location");
   const isRightClass =
-    schedule?.class_id === locationId.toString() || locationId == "general";
+    studentSchedule?.class_id === locationId.toString() || locationId == "general";
 
   const activity = () =>
-    useStudentAtivities.getActivitiesTodayByTime(getTime().time);
+    studentActivitiesStore.getActivitiesTodayByTime(getTime().time);
   const activityId = ref(ls.get("activityId"));
 
   const message = `Santri atas nama *${student?.name}* absen masuk pkl. *${
@@ -69,7 +71,7 @@ export const submit = async (input) => {
     status: status.value,
   });
 
-  console.log(activityId.value);
+  // console.log(activityId.value);
   //cek apakah dia student
   if (isStudent) {
     //cek apakah lokasi dia absen sudah benar
@@ -99,7 +101,7 @@ export const submit = async (input) => {
       const senderId = ref(ls.get("sender"));
       // sendMessage(`0${student?.phone_1}`, message, senderId.value);
 
-      useAttendances.addAttendance(attendee.value);
+      attendanceStore.addAttendance(attendee.value);
       const dialog = Dialog.create({
         progress: true,
         component: AttendanceDialog,
