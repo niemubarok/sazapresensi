@@ -8,15 +8,16 @@ export const getDayName = (date) => {
   const initDate = new Date(date);
   const day = initDate.getDay();
   const dayName = [
+    "Minggu",
     "Senin",
     "Selasa",
     "Rabu",
     "Kamis",
     "Jum'at",
     "Sabtu",
-    "Minggu",
   ];
-  return dayName[day - 1];
+
+  return day == 0 ? dayName[day]:dayName[day - 1];
 };
 
 export const getTime = () => {

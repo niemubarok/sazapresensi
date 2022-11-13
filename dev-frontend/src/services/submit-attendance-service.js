@@ -1,4 +1,4 @@
-import { useAttendancesStore } from "src/stores/attendances-store";
+import { useStudentAttendancesStore } from "src/stores/student-attendances-store";
 import { useStudentScheduleStore } from "src/stores/studentSchedule-store";
 import { useScheduleStore } from "src/stores/schedule-store";
 // import { useSettingStore } from "src/stores/setting-store";
@@ -18,13 +18,14 @@ const teacherStore = useTeacherStore()
 const studentActivitiesStore = useStudentActivitiesStore();
 const studentScheduleStore = useStudentScheduleStore();
 // const useSchedules = useScheduleStore();
-const attendanceStore = useAttendancesStore();
+const attendanceStore = useStudentAttendancesStore();
 const studentStore = useStudentStore();
 
 export const submit = async (input) => {
   const successAudio = new Audio("src/assets/audio/success_notification.wav");
-
   await studentStore.getStudentByNisFromDB(input);
+  
+  const teacher = await teacherStore.getTeacherByNip(input)
   const student = studentStore.getStudentByNis();
   const isStudent = student?.nis == input;
 
@@ -122,6 +123,7 @@ export const submit = async (input) => {
 
     // }
   } else {
-    console.log("teacher");
+
+    console.log(teacher);
   }
 };

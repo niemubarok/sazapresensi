@@ -36,10 +36,10 @@
 </template>
 
 <script setup>
-import { useAttendancesStore } from "src/stores/attendances-store";
+import { useStudentAttendancesStore } from "src/stores/student-attendances-store";
 import { onMounted, ref } from "vue";
 
-const useAttendance = useAttendancesStore();
+const useAttendance = useStudentAttendancesStore();
 const attendances = useAttendance.attendances;
 
 const columns = [

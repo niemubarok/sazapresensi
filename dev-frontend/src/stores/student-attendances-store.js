@@ -2,7 +2,7 @@ import axios from "axios";
 import { defineStore } from "pinia";
 import { getTime } from "src/utilities/time-util";
 
-export const useAttendancesStore = defineStore("attendance", {
+export const useStudentAttendancesStore = defineStore("studentAttendance", {
   state: () => ({
     number: 0,
     attendances: [],

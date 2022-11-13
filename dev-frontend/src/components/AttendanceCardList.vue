@@ -208,7 +208,7 @@
 </template>
 
 <script setup>
-import { useAttendancesStore } from "src/stores/attendances-store";
+import { useStudentAttendancesStore } from "src/stores/student-attendances-store";
 import { onBeforeMount, onMounted, ref, watch } from "vue";
 import { fasChevronLeft, fasChevronRight } from "@quasar/extras/fontawesome-v6";
 import AttandeeCard from "./AttandeeCard.vue";
@@ -217,7 +217,7 @@ import ls from "localstorage-slim";
 
 // import { fab } from "@quasar/extras/fontawesome-v6";
 const activityId = ref("");
-const attendanceStore = useAttendancesStore();
+const attendanceStore = useStudentAttendancesStore();
 const attendances = attendanceStore.attendances;
 const filter = ref("");
 const location = ref(ls.get("locationLabel"));

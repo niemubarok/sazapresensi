@@ -114,7 +114,7 @@ import AttendanceTable from "src/components/AttendanceTable.vue";
 //stores
 import { useStudentActivitiesStore } from "src/stores/student-activities-store";
 import { getTime, getDayName } from "src/utilities/time-util";
-import { useAttendancesStore } from "src/stores/attendances-store";
+import { useStudentAttendancesStore } from "src/stores/student-attendances-store";
 import { useTeacherStore } from "src/stores/teacher-store";
 
 import ls from "localstorage-slim";
@@ -143,7 +143,7 @@ const studentActivityByDay = () =>
 const activity = ref(null);
 
 const activityName = ref("");
-const studentAttendancesStore = useAttendancesStore();
+const studentAttendancesStore = useStudentAttendancesStore();
 
 onStartTyping(() => {
   if (!input.value.active) {
@@ -215,6 +215,7 @@ const submitAttendance = () => {
 };
 
 onMounted(async () => {
+  console.log(getDayName(getTime().date));
   await studentActivityByDay();
   useSettingStore().getSettingsFromDB();
 

@@ -23,7 +23,7 @@ export const useStudentActivitiesStore = defineStore("StudentActivities", {
   },
   actions: {
     async getActivitiesByDayFromDB(day) {
-      
+      console.log(day);
       await axios
         .post(`${process.env.API}student/activities/day`,{
           day
