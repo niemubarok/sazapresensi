@@ -41,23 +41,30 @@
               <q-icon name="place" />
             </template>
           </q-select>
-          <!-- <div class="row">
-            <q-chip flat class="bg-transparent text-body">Mode List :</q-chip>
+          <div class="row">
+            <!-- <q-chip flat class="bg-transparent text-body">Mode List :</q-chip> -->
             <q-radio
-              v-model="models.listMode"
+              v-model="models.gender"
               checked-icon="task_alt"
               unchecked-icon="panorama_fish_eye"
-              val="card"
-              label="Card"
+              val="L"
+              label="Putra"
             />
             <q-radio
-              v-model="models.listMode"
+              v-model="models.gender"
               checked-icon="task_alt"
               unchecked-icon="panorama_fish_eye"
-              val="table"
-              label="Table"
+              val="P"
+              label="Putri"
             />
-          </div> -->
+            <q-radio
+              v-model="models.gender"
+              checked-icon="task_alt"
+              unchecked-icon="panorama_fish_eye"
+              val="both"
+              label="Putra & Putri"
+            />
+          </div>
         </div>
       </div>
       <q-card-actions align="right">
@@ -75,7 +82,7 @@ import { onMounted, ref } from "vue";
 import ls from "localstorage-slim";
 import { useClassesStore } from "src/stores/classes-store";
 
-ls.config.encrypt = true;
+ls.config.encrypt = false;
 
 const props = defineProps({
   name: String,
@@ -84,9 +91,11 @@ const props = defineProps({
   status: String,
 });
 const locationOptions = ref([]);
+// const isGeneralLocation = ref(false)
 
 const models = ref({
   location: !ls.get("locationLabel") ? null : ls.get("locationLabel"),
+  gender: !ls.get("gender") ? null : ls.get("gender"),
   // listMode: !ls.get("listMode") ? "card" : "table",
 });
 
@@ -98,12 +107,20 @@ onMounted(async () => {
 });
 
 const onSaveSettings = () => {
-  ls.set("location", models.value.location?.id);
-  ls.set("locationLabel", models.value.location?.label);
-  // ls.set("listMode", models.value.listMode);
-  // console.log(window.location);
+  if (models.value.location?.description == "general") {
+    ls.set("isGeneralLocation", true);
+  } else {
+    ls.set("isGeneralLocation", false);
+  }
+
+  if (models.value.location != undefined) {
+    ls.set("location", models.value.location?.id);
+    ls.set("locationLabel", models.value.location?.label);
+  }
+  ls.set("gender", models.value.gender);
+
   window.location.reload();
-  dialogRef.value.hide();
+  // dialogRef.value.hide();
   // console.log(models.value.location);
   // console.log(locationId);
 };
@@ -114,8 +131,7 @@ defineEmits([
   ...useDialogPluginComponent.emits,
 ]);
 
-const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } =
-  useDialogPluginComponent();
+const { dialogRef, onDialogHide } = useDialogPluginComponent();
 </script>
 
 <style scoped>

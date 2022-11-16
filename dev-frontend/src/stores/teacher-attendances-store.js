@@ -10,8 +10,19 @@ export const useTeacherAttendanceStore = defineStore('teacherAttendance', {
   },
 
   actions: {
-    async addTeacherAttendance(attendee){
-      axios.post(process.env.API + "teacher/attendance/store")
-    }
+    async addAttendance(attendee) {
+      await axios
+        .post(process.env.API + "teacher/attendance/create", {
+          data: attendee,
+        })
+        .then((res) => {
+          // console.log(res.data);
+          if (res.status == 201) {
+            this.attendances.unshift(res.data.data);
+          } else {
+            // console.log(res);
+          }
+        });
+    },
   }
 })

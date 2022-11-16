@@ -216,10 +216,8 @@ import { getTime } from "src/utilities/time-util";
 import ls from "localstorage-slim";
 
 // import { fab } from "@quasar/extras/fontawesome-v6";
-const activityId = ref("");
 const attendanceStore = useStudentAttendancesStore();
-const attendances = attendanceStore.attendances;
-const filter = ref("");
+const filter = ref("L");
 const location = ref(ls.get("locationLabel"));
 const date = getTime().date.toLocaleDateString();
 
@@ -261,7 +259,7 @@ const columns = [
   },
 ];
 
-const tableRows = () => attendanceStore.getFilteredAttendance();
+const tableRows = () => attendanceStore.filtered;
 </script>
 
 <style>

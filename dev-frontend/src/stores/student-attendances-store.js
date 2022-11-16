@@ -1,12 +1,15 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 import { getTime } from "src/utilities/time-util";
+import ls from "localstorage-slim";
+import { ref } from "vue";
+import { Notify } from "quasar";
 
 export const useStudentAttendancesStore = defineStore("studentAttendance", {
   state: () => ({
     number: 0,
     attendances: [],
-    filtered: [],
+    filtered: {},
   }),
   getters: {
     getAttendances: (state) => {
@@ -31,9 +34,15 @@ export const useStudentAttendancesStore = defineStore("studentAttendance", {
           // console.log(res.data);
           if (res.status == 201) {
             this.attendances.unshift(res.data.data);
-          } else {
-            // console.log(res);
           }
+        })
+        .catch((err) => {
+          Notify.create({
+            message: "Gagal Menyimpan Absensi Hubungi Admin",
+            type: "negative",
+            position: "center",
+            classes: "q-px-xl",
+          });
         });
     },
     getAttendancesFromDB() {
@@ -47,13 +56,26 @@ export const useStudentAttendancesStore = defineStore("studentAttendance", {
         })
         .then((res) => {
           this.attendances = res.data.data;
+          // console.log(res.data.data);
           // res.data.data.forEach((data) => this.attendances.unshift(data));
         });
     },
-    filterAttendances(activityId) {
-      this.filtered = this.attendances.filter(
-        (val) => val.activity_id == activityId
-      );
+    filterAttendances(activityId, classId, gender) {
+      const isGeneral = ref(ls.get("isGeneralLocation"));
+
+      if (isGeneral.value) {
+        // const gender = ref(ls.get("gender"));
+        this.filtered = this.attendances.filter(
+          (val) =>
+            val.activity_id == activityId && val.students.gender == gender
+        );
+      } else {
+        this.filtered = this.attendances.filter(
+          (val) => val.activity_id == activityId && val.class_id == classId
+        );
+      }
+
+      // console.log(this.filtered);
     },
   },
 });

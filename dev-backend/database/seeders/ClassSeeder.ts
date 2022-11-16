@@ -7,35 +7,43 @@ export default class extends BaseSeeder {
       {
         id: "klsvii",
         label: "Kelas VII",
+        description: "-"
       },
       {
         id: "klsviii",
         label: "Kelas VIII",
+        description: "-"
       },
       {
         id: "klsix",
         label: "Kelas IX",
+        description: "-"
       },
       {
         id: "klsx",
         label: "Kelas X",
+        description: "-"
       },
       {
         id: "klsxi",
         label: "Kelas XI",
+        description: "-"
       },
       {
         id: "klsxii",
         label: "Kelas XII",
+        description: "-"
       },
       {
-        id: "general",
-        label: "General",
+        id: "msjd",
+        label: "Masjid",
+        description: "general"
       },
-      // {
-      //   id: "asrama",
-      //   label: "Asrama",
-      // },
+      {
+        id: "asrm",
+        label: "Asrama",
+        description: "general"
+      },
     ]);
   }
 }

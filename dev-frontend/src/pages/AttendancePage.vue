@@ -82,8 +82,8 @@
       </div>
     </div>
     <div v-if="isPresenceTime" class="column">
-      <AttendanceTable v-if="listMode == 'table'" />
-      <AttendanceCardList v-else />
+      <!-- <AttendanceTable v-if="listMode == 'table'" /> -->
+      <AttendanceCardList />
     </div>
   </div>
   <div class="row q-pa-md fixed-bottom" style="width: 400px">
@@ -119,8 +119,9 @@ import { useTeacherStore } from "src/stores/teacher-store";
 
 import ls from "localstorage-slim";
 import { useSettingStore } from "src/stores/setting-store";
+import { useStudentStore } from "src/stores/student-store";
 
-ls.config.encrypt = true;
+ls.config.encrypt = false;
 
 const $q = useQuasar();
 
@@ -134,7 +135,7 @@ const date = getTime().date;
 const now = ref("");
 
 const teacherStore = useTeacherStore();
-const teachers = ref([]);
+const studentStore = useStudentStore();
 
 const studentActivitiesStore = useStudentActivitiesStore();
 
@@ -158,7 +159,11 @@ const presenceTimeStart = () => {
   ls.set("activityId", activity.value?.id);
 
   ls.set("activityName", activity.value?.name);
-  studentAttendancesStore.filterAttendances(activity.value?.id);
+  studentAttendancesStore.filterAttendances(
+    activity.value?.id,
+    ls.get("location"),
+    ls.get("gender")
+  );
   isPresenceTime.value = true;
 };
 
@@ -188,8 +193,14 @@ const scheduleChecker = () => {
   } else {
     ls.get("activityId");
     activityName.value = ls.get("activityName");
-    studentAttendancesStore.filterAttendances(activity.value?.id);
+    studentAttendancesStore.filterAttendances(
+      activity.value?.id,
+      ls.get("location"),
+      ls.get("gender")
+    );
   }
+
+  // console.log(studentAttendancesStore.getFilteredAttendance());
 };
 
 setInterval(() => {
@@ -215,7 +226,6 @@ const submitAttendance = () => {
 };
 
 onMounted(async () => {
-  console.log(getDayName(getTime().date));
   await studentActivityByDay();
   useSettingStore().getSettingsFromDB();
 
@@ -225,14 +235,15 @@ onMounted(async () => {
 
   checkScheduleOnMounted();
 
-  // console.log();
   if (!ls.get("location")) {
     onClickSettings();
   }
-  studentAttendancesStore.getAttendancesFromDB();
-  teachers.value = await teacherStore.getTeachersFromDB();
 
-  // teacherStore.getTeacherByNip("0009107837");
+  await studentStore.getStudentsByClassFromDB(ls.get("location"));
+  studentAttendancesStore.getAttendancesFromDB();
+  await teacherStore.getTeachersFromDB();
+
+  // console.log(studentStore.getStudentsByClass());
 });
 </script>
 

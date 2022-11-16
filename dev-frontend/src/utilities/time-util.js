@@ -17,7 +17,9 @@ export const getDayName = (date) => {
     "Sabtu",
   ];
 
-  return day == 0 ? dayName[day]:dayName[day - 1];
+  console.log(day);
+
+  return day == 0 ? dayName[0] : dayName[day];
 };
 
 export const getTime = () => {

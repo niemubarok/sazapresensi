@@ -6,4 +6,7 @@ export default class Class extends BaseModel {
 
   @column()
   public label: String;
+
+  @column()
+  public description: String;
 }

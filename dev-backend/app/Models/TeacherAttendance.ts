@@ -1,13 +1,27 @@
-import { DateTime } from 'luxon'
 import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 
 export default class TeacherAttendance extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
-  @column.dateTime({ autoCreate: true })
-  public createdAt: DateTime
+  @column()
+  public teacher_nip: String;
 
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  public updatedAt: DateTime
+  @column()
+  public activity_id: Number;
+
+  @column()
+  public class_id: String;
+
+  @column()
+  public date: Date;
+
+  @column()
+  public in: String;
+
+  @column()
+  public out: String;
+
+  @column()
+  public status: String;
 }

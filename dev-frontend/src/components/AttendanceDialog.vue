@@ -29,6 +29,16 @@
           </p>
         </div>
       </div>
+      <q-card v-if="props.status == 'late'" class="transparent absolute-center">
+        <div>
+          <q-chip
+            icon="warning"
+            color="red"
+            text-color="white"
+            label="Kamu Terlambat"
+          />
+        </div>
+      </q-card>
     </q-card>
   </q-dialog>
 </template>
@@ -53,7 +63,6 @@ defineEmits([
 const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } =
   useDialogPluginComponent();
 </script>
-
 
 <style scoped>
 .glass {
