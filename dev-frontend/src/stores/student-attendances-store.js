@@ -65,12 +65,12 @@ export const useStudentAttendancesStore = defineStore("studentAttendance", {
 
       if (isGeneral.value) {
         // const gender = ref(ls.get("gender"));
-        this.filtered = this.attendances.filter(
-          (val) =>
-            val.activity_id == activityId && val.students.gender == gender
+        return this.attendances.filter(
+          // (val) => console.log(val)
+          (val) => val.activity_id == activityId && val.gender == gender
         );
       } else {
-        this.filtered = this.attendances.filter(
+        return this.attendances.filter(
           (val) => val.activity_id == activityId && val.class_id == classId
         );
       }

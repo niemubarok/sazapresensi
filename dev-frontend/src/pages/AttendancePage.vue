@@ -4,41 +4,18 @@
       <q-chip rounded :label="date" floating="bottom" />
     </div> -->
     <div class="column">
-      <q-card
-        class="bg-dark fixed-top-left text-center q-py-md q-ma-md"
-        style="width: 200px"
-      >
-        <q-img
-          width="150px"
-          class="z-top"
-          alt="Quasar logo"
-          src="~assets/IEC.png"
-        />
+      <q-card class="bg-dark fixed-top-left text-center q-py-md q-ma-md" style="width: 200px">
+        <q-img width="150px" class="z-top" alt="Quasar logo" src="~assets/IEC.png" />
 
         <!-- <q-separator color="grey-8" class="q-mt-md" /> -->
-        <q-linear-progress
-          dark
-          rounded
-          indeterminate
-          color="grey-8"
-          class="q-mt-sm"
-        />
+        <q-linear-progress dark rounded indeterminate color="grey-8" class="q-mt-sm" />
 
-        <input
-          v-model="inputValue"
-          ref="input"
-          type="text"
-          class="bg-dark text-dark no-border no-outline"
-          v-on:keyup.enter="submitAttendance"
-        />
+        <input v-model="inputValue" ref="input" type="text" class="bg-dark text-dark no-border no-outline"
+          v-on:keyup.enter="submitAttendance" />
 
         <div>
-          <q-skeleton
-            class="q-mx-xs vertical-middle"
-            style="width: 190px; height: 100px; margin-top: -20px"
-            bordered
-            type="rect"
-          >
+          <q-skeleton class="q-mx-xs vertical-middle" style="width: 190px; height: 100px; margin-top: -20px" bordered
+            type="rect">
             <p class="text-yellow-4 q-mt-md">Belum ada Guru yang Absen</p>
           </q-skeleton>
 
@@ -60,23 +37,14 @@
         </div>
       </q-card>
       <div class="fixed-bottom-left text-center q-ma-md q-mb-xl">
-        <q-card
-          class="glass"
-          style="width: 200px; height: 100px; margin-top: -130px"
-        >
+        <q-card class="glass" style="width: 200px; height: 100px; margin-top: -130px">
           <q-card-section>
             <Clock />
             <div class="text-body text-white">
               <span> Absen Untuk </span>
             </div>
-            <q-chip v-if="!isPresenceTime" class="bg-red text-body text-white"
-              >Belum Waktunya Absen</q-chip
-            >
-            <q-chip
-              v-else
-              class="text-subtitle2 card-border-radius text-dark"
-              >{{ activityName }}</q-chip
-            >
+            <q-chip v-if="!isPresenceTime" class="bg-red text-body text-white">Belum Waktunya Absen</q-chip>
+            <q-chip v-else class="text-subtitle2 card-border-radius text-dark">{{ activityName }}</q-chip>
           </q-card-section>
         </q-card>
       </div>
@@ -88,12 +56,8 @@
   </div>
   <div class="row q-pa-md fixed-bottom" style="width: 400px">
     <q-btn flat color="grey" icon="settings" @click="onClickSettings()" />
-    <q-btn
-      flat
-      color="grey"
-      @click="$q.fullscreen.toggle()"
-      :icon="$q.fullscreen.isActive ? 'fullscreen_exit' : 'fullscreen'"
-    />
+    <q-btn flat color="grey" @click="$q.fullscreen.toggle()"
+      :icon="$q.fullscreen.isActive ? 'fullscreen_exit' : 'fullscreen'" />
     <!-- :label="$q.fullscreen.isActive ? 'Exit Fullscreen' : 'Go Fullscreen'" -->
   </div>
 </template>
@@ -161,7 +125,7 @@ const presenceTimeStart = () => {
   ls.set("activityName", activity.value?.name);
   studentAttendancesStore.filterAttendances(
     activity.value?.id,
-    ls.get("location"),
+    ls.get("location").id,
     ls.get("gender")
   );
   isPresenceTime.value = true;
@@ -193,11 +157,11 @@ const scheduleChecker = () => {
   } else {
     ls.get("activityId");
     activityName.value = ls.get("activityName");
-    studentAttendancesStore.filterAttendances(
-      activity.value?.id,
-      ls.get("location"),
-      ls.get("gender")
-    );
+    // studentAttendancesStore.filterAttendances(
+    //   activity.value?.id,
+    //   ls.get("location"),
+    //   ls.get("gender")
+    // );
   }
 
   // console.log(studentAttendancesStore.getFilteredAttendance());
@@ -214,9 +178,12 @@ setInterval(() => {
 
 const onClickSettings = () => {
   const settingsDialog = $q.dialog({
-    progress: true,
+    // progress: true,
     component: SettingsDialogue,
-  });
+    noBackdropDismiss: true,
+    persistent: true,
+  })
+
   settingsDialog.update();
 };
 
@@ -235,11 +202,17 @@ onMounted(async () => {
 
   checkScheduleOnMounted();
 
+
+
   if (!ls.get("location")) {
     onClickSettings();
   }
+  // if (ls.get("location") == undefined) {
 
-  await studentStore.getStudentsByClassFromDB(ls.get("location"));
+  //   window.location.reload()
+  // }
+
+  await studentStore.getStudentsByClassFromDB(ls.get("location").id);
   studentAttendancesStore.getAttendancesFromDB();
   await teacherStore.getTeachersFromDB();
 

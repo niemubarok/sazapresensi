@@ -21,9 +21,10 @@ export const submit = async (input) => {
 
   const teacher = await teacherStore.getTeacherByNip(input);
   const student = await studentStore.getStudentByNis(input);
+  console.log(student);
   const isStudent = student?.nis == input;
 
-  const locationId = ref(ls.get("location"));
+  const locationId = ref(ls.get("location").id);
   // const isRightClass =
   //   student?.class_id === locationId.value.toString() ||
   //   locationId.value == "general";

@@ -25,8 +25,8 @@
           </q-select>
           <div class="row">
             <!-- <q-chip flat class="bg-transparent text-body">Mode List :</q-chip> -->
-            <q-radio v-model="genderModel" checked-icon="task_alt" unchecked-icon="panorama_fish_eye" val="L"
-              label="Putra" />
+            <q-radio @click="check" v-model="genderModel" checked-icon="task_alt" unchecked-icon="panorama_fish_eye"
+              val="L" label="Putra" />
             <q-radio v-model="genderModel" checked-icon="task_alt" unchecked-icon="panorama_fish_eye" val="P"
               label="Putri" />
             <q-radio v-model="genderModel" checked-icon="task_alt" unchecked-icon="panorama_fish_eye" val="both"
@@ -69,51 +69,33 @@ defineEmits([
 ]);
 
 const { dialogRef, onDialogHide } = useDialogPluginComponent();
-
-// const models = ref({
-//   location:  ls.get("locationLabel"),
-//   gender:  ls.get("gender"),
-// listMode: !ls.get("listMode") ? "card" : "table",
-// });
-
 const classesStore = useClassesStore();
 
-onBeforeMount(() => {
-
-})
 
 onMounted(async () => {
   await classesStore.getClassesFromDB();
   locationOptions.value = classesStore.getAllClass;
 
-  locationModel.value = ls.get("locationLabel")
+  locationModel.value = ls.get("location")
   genderModel.value = ls.get("gender")
-
-  console.log(dialogRef.value);
 });
-
-onBeforeUnmount(() => {
-  locationModel.value = ls.get("locationLabel")
-  // genderModel.value = ls.get("gender")
-
-})
 
 
 
 const onSaveSettings = () => {
 
-  if (locationModel.value.description == "general") {
+  if (locationModel.value?.description == "general") {
     ls.set("isGeneralLocation", true);
   } else {
     ls.set("isGeneralLocation", false);
   }
 
   // if (models.value.location != undefined) {
-  ls.set("location", locationModel.value.id);
-  ls.set("locationLabel", locationModel.value.label);
+  ls.set("location", locationModel.value);
   ls.set("gender", genderModel.value);
   // }
-  // window.location.reload();
+  dialogRef.value.hide()
+  window.location.reload();
 };
 // onDialogHide(() => console.log("athide"))
 
