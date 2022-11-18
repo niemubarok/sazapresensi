@@ -13,13 +13,29 @@ export default class StudentAttendancesController {
       .where("date", today)
       // .where("activity_id", req.activityId)
       .preload("students");
+
+    let data: any[] = [];
+
+    studentAttendances.forEach((each) => {
+      const attendances = {
+        student_nis: each.student_nis,
+        class_id: each.class_id,
+        activity_id: each.activity_id,
+        date: each.date,
+        in: each.in,
+        status: each.status,
+        name: each.students.name,
+        gender: each.students.gender,
+      };
+
+      data.push(attendances);
+    });
+
     response.status(200).json({
       status: 200,
       message: "success",
-      data: studentAttendances,
+      data: data,
     });
-
-    console.log(studentAttendances);
   }
 
   public async create({ request, response }: HttpContextContract) {
@@ -45,9 +61,8 @@ export default class StudentAttendancesController {
           date: req.date,
           in: req.in,
           status: req.status,
-          students: {
-            name: student.name,
-          },
+          name: student.name,
+          gender: student.gender,
         };
 
         if (store.$isPersisted) {
