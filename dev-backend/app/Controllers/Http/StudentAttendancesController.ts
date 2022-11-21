@@ -42,11 +42,11 @@ export default class StudentAttendancesController {
     const req = request.body().data;
 
     try {
-      const student = await Student.findByOrFail("nis", req.student_nis);
+      const student = await Student.findByOrFail("nis", req.id);
 
       try {
         const store = await StudentAttendance.create({
-          student_nis: req.student_nis,
+          student_nis: req.id,
           class_id: req.class_id,
           activity_id: req.activity_id,
           date: req.date,
@@ -55,7 +55,7 @@ export default class StudentAttendancesController {
         });
 
         const data = {
-          student_nis: req.student_nis,
+          student_nis: req.id,
           class_id: req.class_id,
           activity_id: req.activity_id,
           date: req.date,

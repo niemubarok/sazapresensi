@@ -3,27 +3,29 @@ import { defineStore } from "pinia";
 
 export const useTeacherStore = defineStore("teacher", {
   state: () => ({
-    teachers: []
+    teachers: [],
+    teacher: {},
   }),
   getters: {},
   actions: {
-    async getTeachersFromDB(){
-      let teachers = []
-      await axios.get(process.env.API + "teacher/all").then((res)=>{
+    async getTeachersFromDB() {
+      let teachers = [];
+      await axios.get(process.env.API + "teacher/all").then((res) => {
         teachers = res.data.data;
-      })
+      });
 
-      return teachers
+      return teachers;
     },
-    async getTeacherByNip(nip){
-      let teacher = []
-      await axios.post(process.env.API + "teacher",
-      {
-        nip
-      }).then((res)=>{
-        teacher = res.data.data;
-      })
-      return teacher
-    }
+    async getTeacherByNip(nip) {
+      let teacher = [];
+      await axios
+        .post(process.env.API + "teacher", {
+          nip,
+        })
+        .then((res) => {
+          teacher = res.data.data;
+        });
+      return teacher;
+    },
   },
 });

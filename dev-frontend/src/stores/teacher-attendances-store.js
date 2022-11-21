@@ -1,12 +1,17 @@
-import { defineStore } from 'pinia'
-import axios from 'src/boot/axios'
+import { defineStore } from "pinia";
+import axios from "axios";
+import ls from "localstorage-slim";
 
-export const useTeacherAttendanceStore = defineStore('teacherAttendance', {
+export const useTeacherAttendanceStore = defineStore("teacherAttendance", {
   state: () => ({
-    attendances: []
+    attendances: [],
+    teacherByNip: ls.get("teacher"),
   }),
 
   getters: {
+    getTeacherByNip: (state) => {
+      return () => state.teacherByNip;
+    },
   },
 
   actions: {
@@ -16,7 +21,7 @@ export const useTeacherAttendanceStore = defineStore('teacherAttendance', {
           data: attendee,
         })
         .then((res) => {
-          // console.log(res.data);
+          console.log(res.data);
           if (res.status == 201) {
             this.attendances.unshift(res.data.data);
           } else {
@@ -24,5 +29,11 @@ export const useTeacherAttendanceStore = defineStore('teacherAttendance', {
           }
         });
     },
-  }
-})
+    findTeacherByNip(nip) {
+      this.teacherByNip = this.attendances.find((val) => val.id == nip);
+    },
+    clearTeacherByNip() {
+      this.teacherByNip = null;
+    },
+  },
+});

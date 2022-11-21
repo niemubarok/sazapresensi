@@ -9,8 +9,10 @@ import { useStudentActivitiesStore } from "src/stores/student-activities-store";
 import { sendMessage } from "./whatsapp-service";
 import ls from "localstorage-slim";
 import { useTeacherStore } from "src/stores/teacher-store";
+import { useTeacherAttendanceStore } from "src/stores/teacher-attendances-store";
 
 const teacherStore = useTeacherStore();
+const teacherAttendanceStore = useTeacherAttendanceStore();
 const studentActivitiesStore = useStudentActivitiesStore();
 const studentAttendanceStore = useStudentAttendancesStore();
 const studentStore = useStudentStore();
@@ -21,7 +23,6 @@ export const submit = async (input) => {
 
   const teacher = await teacherStore.getTeacherByNip(input);
   const student = await studentStore.getStudentByNis(input);
-  console.log(student);
   const isStudent = student?.nis == input;
 
   const locationId = ref(ls.get("location").id);
@@ -58,7 +59,7 @@ export const submit = async (input) => {
   setStatus();
 
   const attendee = ref({
-    student_nis: input,
+    id: input,
     class_id: locationId.value,
     activity_id: activityId.value,
     date: getTime().date,
@@ -122,14 +123,18 @@ export const submit = async (input) => {
     successAudio.play();
 
     attendee.value.name = student?.name;
-    attendee.value.activity = activity()?.name;
+    // attendee.value.activity = activity()?.name;
 
     await studentAttendanceStore.addAttendance(attendee.value);
     // console.log(attendee.value.status);
 
     // }
   } else {
-    console.log(teacher);
+    // console.log(teacher?.name);
+    attendee.value.name = teacher?.name;
+    await teacherAttendanceStore.addAttendance(attendee.value);
+    teacherAttendanceStore.findTeacherByNip(input);
+    ls.set("teacher", attendee.value);
   }
 
   const senderId = ref(ls.get("sender"));

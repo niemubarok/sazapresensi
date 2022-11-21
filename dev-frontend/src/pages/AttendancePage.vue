@@ -10,16 +10,16 @@
         <!-- <q-separator color="grey-8" class="q-mt-md" /> -->
         <q-linear-progress dark rounded indeterminate color="grey-8" class="q-mt-sm" />
 
-        <input v-model="inputValue" ref="input" type="text" class="bg-dark text-dark no-border no-outline"
+        <input class="absolute-top bg-dark text-dark no-border no-outline" v-model="inputValue" ref="input" type="text"
           v-on:keyup.enter="submitAttendance" />
 
         <div>
-          <q-skeleton class="q-mx-xs vertical-middle" style="width: 190px; height: 100px; margin-top: -20px" bordered
-            type="rect">
-            <p class="text-yellow-4 q-mt-md">Belum ada Guru yang Absen</p>
+          <q-skeleton v-if="!teacher" class="q-mx-xs vertical-middle"
+            style="width: 190px; height: 75px; margin-top: 10px" bordered type="rect">
+            <p class="text-yellow-4 q-mt-sm">Belum ada Guru yang Absen</p>
           </q-skeleton>
 
-          <AttandeeCard name="Husni"></AttandeeCard>
+          <AttandeeCard v-else :name="teacher?.name" :in="teacher?.in" :status="teacher?.status"></AttandeeCard>
         </div>
         <!-- <q-separator color="grey-8" class="q-mt-md" /> -->
 
@@ -64,9 +64,10 @@
 
 <script setup>
 import { useQuasar } from "quasar";
-import { onBeforeMount, onMounted, ref, watch } from "vue";
+import { onBeforeMount, onMounted, ref, watch, computed } from "vue";
 import { onStartTyping } from "@vueuse/core";
 import { submit } from "src/services/submit-attendance-service";
+
 
 //components
 import Clock from "src/components/Clock.vue";
@@ -84,6 +85,7 @@ import { useTeacherStore } from "src/stores/teacher-store";
 import ls from "localstorage-slim";
 import { useSettingStore } from "src/stores/setting-store";
 import { useStudentStore } from "src/stores/student-store";
+import { useTeacherAttendanceStore } from "src/stores/teacher-attendances-store";
 
 ls.config.encrypt = false;
 
@@ -98,7 +100,9 @@ const today = new Date();
 const date = getTime().date;
 const now = ref("");
 
-const teacherStore = useTeacherStore();
+// const teacherStore = useTeacherStore();
+const teacherAttendanceStore = useTeacherAttendanceStore()
+const teacher = computed(() => teacherAttendanceStore.getTeacherByNip())
 const studentStore = useStudentStore();
 
 const studentActivitiesStore = useStudentActivitiesStore();
@@ -133,6 +137,8 @@ const presenceTimeStart = () => {
 
 const presenceTimeEnd = () => {
   isPresenceTime.value = false;
+  ls.remove("teacher")
+  teacherAttendanceStore.clearTeacherByNip()
 };
 
 const checkScheduleOnMounted = async () => {
@@ -166,6 +172,7 @@ const scheduleChecker = () => {
 
   // console.log(studentAttendancesStore.getFilteredAttendance());
 };
+watch()
 
 setInterval(() => {
   now.value = getTime().time;
@@ -214,7 +221,8 @@ onMounted(async () => {
 
   await studentStore.getStudentsByClassFromDB(ls.get("location").id);
   studentAttendancesStore.getAttendancesFromDB();
-  await teacherStore.getTeachersFromDB();
+
+  // await teacherStore.getTeachersFromDB();
 
   // console.log(studentStore.getStudentsByClass());
 });

@@ -64,9 +64,7 @@ export const useStudentAttendancesStore = defineStore("studentAttendance", {
       const isGeneral = ref(ls.get("isGeneralLocation"));
 
       if (isGeneral.value) {
-        // const gender = ref(ls.get("gender"));
         return this.attendances.filter(
-          // (val) => console.log(val)
           (val) => val.activity_id == activityId && val.gender == gender
         );
       } else {
@@ -74,8 +72,6 @@ export const useStudentAttendancesStore = defineStore("studentAttendance", {
           (val) => val.activity_id == activityId && val.class_id == classId
         );
       }
-
-      // console.log(this.filtered);
     },
   },
 });
