@@ -1,6 +1,6 @@
 <template>
   <div class="window-height">
-    <q-table binary-sort title="DAFTAR HADIR SANTRI" :rows="tableRows()" :columns="columns" row-key="name"
+    <q-table binary-sort title="DAFTAR HADIR SANTRI" :rows="tableRows" :columns="columns" row-key="name"
       :filter="filter" rows-per-page-label="Per halaman " :rows-per-page-options="[40]" grid style="padding-left: 250px"
       title-class="text-weight-bold q-px-xl bg-grey-3  rounded-borders" dense binary-state-sort>
       <template #top-left>
@@ -121,7 +121,7 @@
 
 <script setup>
 import { useStudentAttendancesStore } from "src/stores/student-attendances-store";
-import { onBeforeMount, onMounted, ref, watch } from "vue";
+import { onBeforeMount, onMounted, ref, watch, computed } from "vue";
 import { fasChevronLeft, fasChevronRight } from "@quasar/extras/fontawesome-v6";
 import AttandeeCard from "./AttandeeCard.vue";
 import { getTime } from "src/utilities/time-util";
@@ -132,7 +132,6 @@ const attendanceStore = useStudentAttendancesStore();
 const filter = ref("");
 const location = ref(ls.get("location").label);
 const date = getTime().date.toLocaleDateString();
-console.log(location.value);
 
 const columns = [
   {
@@ -172,12 +171,11 @@ const columns = [
   },
 ];
 
-const tableRows = () => attendanceStore.filterAttendances(
-  // activity.value?.id,
-  ls.get("activityId"),
-  ls.get("location"),
-  ls.get("gender")
-);;
+const tableRows = computed(() => attendanceStore.filterAttendances());
+
+onMounted(() => {
+  console.log(tableRows.value);
+})
 </script>
 
 <style>

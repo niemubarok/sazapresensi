@@ -127,11 +127,7 @@ const presenceTimeStart = () => {
   ls.set("activityId", activity.value?.id);
 
   ls.set("activityName", activity.value?.name);
-  studentAttendancesStore.filterAttendances(
-    activity.value?.id,
-    ls.get("location").id,
-    ls.get("gender")
-  );
+  studentAttendancesStore.filterAttendances();
   isPresenceTime.value = true;
 };
 
@@ -172,7 +168,6 @@ const scheduleChecker = () => {
 
   // console.log(studentAttendancesStore.getFilteredAttendance());
 };
-watch()
 
 setInterval(() => {
   now.value = getTime().time;
@@ -231,7 +226,7 @@ onMounted(async () => {
 <style scoped>
 .glass {
   /* From https://css.glass */
-  background: rgba(0, 14, 24, 0.801);
+  background: rgba(0, 14, 24, 0.86);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(7.1px);

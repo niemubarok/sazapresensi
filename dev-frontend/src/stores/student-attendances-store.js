@@ -60,18 +60,30 @@ export const useStudentAttendancesStore = defineStore("studentAttendance", {
           // res.data.data.forEach((data) => this.attendances.unshift(data));
         });
     },
-    filterAttendances(activityId, classId, gender) {
+    filterAttendances() {
+      const activityId = ref(ls.get("activityId"));
       const isGeneral = ref(ls.get("isGeneralLocation"));
+      const location = ref(ls.get("location"));
+      const gender = ref(ls.get("gender"));
+      // const _gender = gender == "both" ?
+      // console.log(classId);
 
       if (isGeneral.value) {
-        return this.attendances.filter(
-          (val) => val.activity_id == activityId && val.gender == gender
-        );
-      } else {
-        return this.attendances.filter(
-          (val) => val.activity_id == activityId && val.class_id == classId
-        );
+        if (gender.value != "both") {
+          return this.attendances.filter(
+            (val) =>
+              val.activity_id == activityId.value &&
+              val.gender == gender.value &&
+              val.class_id == location.value.id
+          );
+        }
       }
+
+      return this.attendances.filter(
+        (val) =>
+          val.activity_id == activityId.value &&
+          val.class_id == location.value.id
+      );
     },
   },
 });
