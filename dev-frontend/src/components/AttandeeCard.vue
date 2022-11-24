@@ -15,7 +15,7 @@
         <q-item>
           <q-item-section avatar>
             <q-avatar class="rounded-borders" style="margin-left: -10px">
-              <img src="https://cdn.quasar.dev/img/avatar2.jpg" />
+              <img :src="src" />
             </q-avatar>
           </q-item-section>
 
@@ -42,6 +42,7 @@ const props = defineProps({
   in: String,
   out: String,
   status: String,
+  src: String
 });
 </script>
 

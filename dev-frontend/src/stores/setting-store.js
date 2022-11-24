@@ -10,12 +10,15 @@ export const useSettingStore = defineStore("setting", {
     getSettings: (state) => {
       return () => state.all;
     },
+    getSpecificSetting: (state) => {
+      return (name) => state.all?.find((val) => console.log(val));
+    },
   },
   actions: {
-    getSettingsFromDB() {
+    async getSettingsFromDB() {
       axios.get(process.env.API + "setting/all").then((res) => {
-        ls.set("settings", res.data);
-        this.all = res.data;
+        ls.set("settings", res.data.data);
+        this.all = res.data.data;
       });
     },
     updateSetting(id) {

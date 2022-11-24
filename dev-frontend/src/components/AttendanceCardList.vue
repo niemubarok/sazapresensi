@@ -10,6 +10,7 @@
               <q-chip icon="dashboard" color="grey-1" class="rounded-borders transparent" dense><span
                   style="border-left: 3px solid dark" class="q-px-xs text-weight-bolder">DAFTAR KEHADIRAN SANTRI</span>
               </q-chip>
+              {{ baseUrl }}
             </div>
           </q-card>
 
@@ -22,6 +23,7 @@
             </div>
           </div> -->
           <!-- <q-banner dense> -->
+
         </div>
         <!-- </q-banner> -->
       </template>
@@ -74,7 +76,8 @@
       </template>
 
       <template v-slot:item="props">
-        <AttandeeCard :name="props.row.name" :in="props.row.in" :out="props.row.out" :status="props.row.status" />
+        <AttandeeCard :src="'/uploads/photos/students/0012421387.jpg'" :name="props.row.name" :in="props.row.in"
+          :out="props.row.out" :status="props.row.status" />
       </template>
 
       <template v-slot:pagination="scope">
@@ -126,12 +129,17 @@ import { fasChevronLeft, fasChevronRight } from "@quasar/extras/fontawesome-v6";
 import AttandeeCard from "./AttandeeCard.vue";
 import { getTime } from "src/utilities/time-util";
 import ls from "localstorage-slim";
+import { useSettingStore } from "src/stores/setting-store";
 
 // import { fab } from "@quasar/extras/fontawesome-v6";
 const attendanceStore = useStudentAttendancesStore();
 const filter = ref("");
 const location = ref(ls.get("location").label);
 const date = getTime().date.toLocaleDateString();
+const photoUrl = ref("http://localhost:3333/uploads/photos/students/0012421387.jpg")
+const settingStore = useSettingStore()
+const baseUrl = settingStore.getSpecificSetting("baseUrl")
+
 
 const columns = [
   {
@@ -174,7 +182,7 @@ const columns = [
 const tableRows = computed(() => attendanceStore.filterAttendances());
 
 onMounted(() => {
-  console.log(tableRows.value);
+  console.log(baseUrl);
 })
 </script>
 

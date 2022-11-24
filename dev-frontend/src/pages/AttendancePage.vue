@@ -19,7 +19,8 @@
             <p class="text-yellow-4 q-mt-sm">Belum ada Guru yang Absen</p>
           </q-skeleton>
 
-          <AttandeeCard v-else :name="teacher?.name" :in="teacher?.in" :status="teacher?.status"></AttandeeCard>
+          <AttandeeCard v-else src="http://localhost:3333/uploads/photos/students/0012421387.jpg" :name="teacher?.name"
+            :in="teacher?.in" :status="teacher?.status"></AttandeeCard>
         </div>
         <!-- <q-separator color="grey-8" class="q-mt-md" /> -->
 
@@ -196,7 +197,7 @@ const submitAttendance = () => {
 
 onMounted(async () => {
   await studentActivityByDay();
-  useSettingStore().getSettingsFromDB();
+  await useSettingStore().getSettingsFromDB();
 
   activity.value = studentActivitiesStore.getActivitiesTodayByTime(
     getTime().time

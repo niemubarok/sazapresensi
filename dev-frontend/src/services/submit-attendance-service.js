@@ -40,7 +40,9 @@ export const submit = async (input) => {
 
   const getTolerance = ls
     .get("settings")
-    .data.find((setting) => setting.name == "toleransi").value;
+    .find((setting) => setting.name == "toleransi").value;
+
+  console.log(getTolerance);
 
   const tolerance = addMinutes(activity()?.start, getTolerance);
 
