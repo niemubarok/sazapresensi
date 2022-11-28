@@ -11,7 +11,8 @@ export const useSettingStore = defineStore("setting", {
       return () => state.all;
     },
     getSpecificSetting: (state) => {
-      return (name) => state.all?.find((val) => console.log(val));
+      return (name) =>
+        ls.get("settings")?.find((val) => val.name == name).value;
     },
   },
   actions: {
