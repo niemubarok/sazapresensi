@@ -1,10 +1,7 @@
 <template>
   <q-dialog ref="dialogRef" @hide="onDialogHide">
-    <q-card
-      class="q-px-xl q-pt-xl glass"
-      style="fit-content; height: fit-content"
-    >
-      <!-- <AttandeeCard
+    <q-card class="q-px-xl q-pt-xl glass" style="fit-content; height: fit-content">
+      <!-- <AttendeeCard
         :name="props.name"
         :in="props.in"
         :out="props.out"
@@ -14,29 +11,18 @@
       <div class="text-center flex flex-center items-center">
         <SuccessCheckMark class="q-mt-md" style="margin-right: 90px" />
         <div class="q-mt-xl q-pt-xl">
-          <p
-            style="font-size: 20px; margin-bottom: -5px"
-            class="text-weight-bold text-white"
-          >
+          <p style="font-size: 20px; margin-bottom: -5px" class="text-weight-bold text-white">
             {{ props.name }}
           </p>
           <q-separator dark />
-          <p
-            style="font-size: 40px"
-            class="q-pa-md text-weight-bolder text-white"
-          >
+          <p style="font-size: 40px" class="q-pa-md text-weight-bolder text-white">
             Berhasil Absen
           </p>
         </div>
       </div>
       <q-card v-if="props.status == 'late'" class="transparent absolute-center">
         <div>
-          <q-chip
-            icon="warning"
-            color="red"
-            text-color="white"
-            label="Kamu Terlambat"
-          />
+          <q-chip icon="warning" color="red" text-color="white" label="Kamu Terlambat" />
         </div>
       </q-card>
     </q-card>
@@ -44,7 +30,7 @@
 </template>
 
 <script setup>
-import AttandeeCard from "./AttandeeCard.vue";
+import AttendeeCard from "./AttendeeCard.vue";
 import { useDialogPluginComponent } from "quasar";
 import SuccessCheckMark from "./SuccessCheckMark.vue";
 const props = defineProps({

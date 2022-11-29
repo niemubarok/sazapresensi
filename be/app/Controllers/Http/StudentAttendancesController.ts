@@ -1,7 +1,7 @@
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import Student from "App/Models/Student";
 import StudentAttendance from "App/Models/StudentAttendance";
-import Drive from "@ioc:Adonis/Core/Drive"
+import Drive from "@ioc:Adonis/Core/Drive";
 
 export default class StudentAttendancesController {
   public async index({ request, response }: HttpContextContract) {
@@ -15,9 +15,14 @@ export default class StudentAttendancesController {
       // .where("activity_id", req.activityId)
       .preload("students");
 
+    console.log(req);
+
     let data: any[] = [];
 
-    studentAttendances.forEach((each) => {
+    studentAttendances.forEach(async (each) => {
+      const picture = await Drive.getUrl(
+        `/photos/students/${each.student_nis}.jpg`
+      );
       const attendances = {
         student_nis: each.student_nis,
         class_id: each.class_id,
@@ -27,6 +32,7 @@ export default class StudentAttendancesController {
         status: each.status,
         name: each.students.name,
         gender: each.students.gender,
+        picture,
       };
 
       data.push(attendances);
@@ -44,8 +50,7 @@ export default class StudentAttendancesController {
 
     try {
       const student = await Student.findByOrFail("nis", req.id);
-      const picture = Drive.getUrl("/tmp/uploads/photos/students/0012421387.jpg")
-      // console.log(picture);
+      const picture = await Drive.getUrl(`/photos/students/${req.id}.jpg`);
 
       try {
         const store = await StudentAttendance.create({
@@ -66,7 +71,7 @@ export default class StudentAttendancesController {
           status: req.status,
           name: student.name,
           gender: student.gender,
-          picture
+          picture,
         };
 
         if (store.$isPersisted) {
@@ -94,11 +99,11 @@ export default class StudentAttendancesController {
     return request.body();
   }
 
-  public async show({ }: HttpContextContract) { }
+  public async show({}: HttpContextContract) {}
 
-  public async edit({ }: HttpContextContract) { }
+  public async edit({}: HttpContextContract) {}
 
-  public async update({ }: HttpContextContract) { }
+  public async update({}: HttpContextContract) {}
 
-  public async destroy({ }: HttpContextContract) { }
+  public async destroy({}: HttpContextContract) {}
 }

@@ -42,7 +42,7 @@ export default driveConfig({
     */
     local: {
       driver: "local",
-      visibility: "private",
+      visibility: "public",
 
       /*
       |--------------------------------------------------------------------------
@@ -54,6 +54,7 @@ export default driveConfig({
       |
       */
       root: Application.tmpPath("uploads"),
+      // root: Application.,
 
       /*
       |--------------------------------------------------------------------------

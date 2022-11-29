@@ -4,52 +4,26 @@
       <q-chip rounded :label="date" floating="bottom" />
     </div> -->
     <div class="column">
-      <q-card
-        class="bg-dark fixed-top-left text-center q-py-md q-ma-md"
-        style="width: 200px"
-      >
-        <q-img
-          width="150px"
-          class="z-top"
-          alt="Quasar logo"
-          src="~assets/IEC.png"
-        />
+      <q-card class="bg-dark fixed-top-left text-center q-py-md q-ma-md" style="width: 200px">
+        <q-img width="150px" class="z-top" alt="saza logo" src="~assets/brand/IEC.png" />
 
         <!-- <q-separator color="grey-8" class="q-mt-md" /> -->
-        <q-linear-progress
-          dark
-          rounded
-          indeterminate
-          color="grey-8"
-          class="q-mt-sm"
-        />
+        <q-linear-progress dark rounded indeterminate color="grey-8" class="q-mt-sm" />
 
-        <input
-          class="absolute-top bg-dark text-dark no-border no-outline"
-          v-model="inputValue"
-          ref="input"
-          type="text"
-          v-on:keyup.enter="submitAttendance"
-        />
+        <input v-model="inputValue" ref="input" type="text" v-on:keyup.enter="submitAttendance"
+          class="absolute-top bg-dark text-dark no-border no-outline" />
 
         <div>
-          <q-skeleton
-            v-if="!teacher"
-            class="q-mx-xs vertical-middle"
-            style="width: 190px; height: 75px; margin-top: 10px"
-            bordered
-            type="rect"
-          >
+          <div class="flex align-start">
+            <q-chip square label="Guru Pengajar" size="sm" />
+          </div>
+          <q-skeleton v-if="!teacher" class="q-mx-xs vertical-middle"
+            style="width: 190px; height: 75px; margin-top: 10px" bordered type="rect">
             <p class="text-yellow-4 q-mt-sm">Belum ada Guru yang Absen</p>
           </q-skeleton>
 
-          <AttandeeCard
-            v-else
-            src="http://localhost:3333/uploads/photos/students/0012421387.jpg"
-            :name="teacher?.name"
-            :in="teacher?.in"
-            :status="teacher?.status"
-          ></AttandeeCard>
+          <AttendeeCard v-else src="http://localhost:3333/uploads/photos/students/0012421387.jpg" :name="teacher?.name"
+            :in="teacher?.in" :status="teacher?.status"></AttendeeCard>
         </div>
         <!-- <q-separator color="grey-8" class="q-mt-md" /> -->
 
@@ -67,23 +41,14 @@
         </div>
       </q-card>
       <div class="fixed-bottom-left text-center q-ma-md q-mb-xl">
-        <q-card
-          class="glass"
-          style="width: 200px; height: 100px; margin-top: -130px"
-        >
+        <q-card class="glass" style="width: 200px; height: 100px; margin-top: -130px">
           <q-card-section>
             <Clock />
             <div class="text-body text-white">
               <span> Absen Untuk </span>
             </div>
-            <q-chip v-if="!isPresenceTime" class="bg-red text-body text-white"
-              >Belum Waktunya Absen</q-chip
-            >
-            <q-chip
-              v-else
-              class="text-subtitle2 card-border-radius text-dark"
-              >{{ activityName }}</q-chip
-            >
+            <q-chip v-if="!isPresenceTime" class="bg-red text-body text-white">Belum Waktunya Absen</q-chip>
+            <q-chip v-else class="text-subtitle2 card-border-radius text-dark">{{ activityName }}</q-chip>
           </q-card-section>
         </q-card>
       </div>
@@ -95,12 +60,8 @@
   </div>
   <div class="row q-pa-md fixed-bottom" style="width: 400px">
     <q-btn flat color="grey" icon="settings" @click="onClickSettings()" />
-    <q-btn
-      flat
-      color="grey"
-      @click="$q.fullscreen.toggle()"
-      :icon="$q.fullscreen.isActive ? 'fullscreen_exit' : 'fullscreen'"
-    />
+    <q-btn flat color="grey" @click="$q.fullscreen.toggle()"
+      :icon="$q.fullscreen.isActive ? 'fullscreen_exit' : 'fullscreen'" />
     <!-- :label="$q.fullscreen.isActive ? 'Exit Fullscreen' : 'Go Fullscreen'" -->
   </div>
 </template>
@@ -114,7 +75,7 @@ import { submit } from "src/services/submit-attendance-service";
 //components
 import Clock from "src/components/Clock.vue";
 import AttendanceCardList from "src/components/AttendanceCardList.vue";
-import AttandeeCard from "src/components/AttandeeCard.vue";
+import AttendeeCard from "src/components/AttendeeCard.vue";
 import SettingsDialogue from "src/components/SettingsDialogue.vue";
 import AttendanceTable from "src/components/AttendanceTable.vue";
 
