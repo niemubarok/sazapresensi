@@ -1,10 +1,10 @@
 import Route from "@ioc:Adonis/Core/Route";
 
 Route.group(() => {
-  Route.post("/", "TeachersController.show")
-  Route.get("/all", "TeachersController.index")
+  Route.post("/", "TeachersController.show");
+  Route.get("/all", "TeachersController.index");
   Route.post("/attendance/create", "TeacherAttendancesController.create");
-}).prefix("teacher")
+}).prefix("teacher");
 
 Route.group(() => {
   Route.get("/all", "StudentsController.index");
@@ -16,7 +16,6 @@ Route.group(() => {
   Route.post("/activities/day", "StudentActivitiesController.index");
   Route.post("/attendances", "StudentAttendancesController.index");
   Route.post("/attendances/create", "StudentAttendancesController.create");
-
 }).prefix("/student");
 
 Route.group(() => {
@@ -28,4 +27,6 @@ Route.group(() => {
   // Route.get("/send/notif/presensi", "WhatsappsController.index");
 }).prefix("/wa");
 
-
+Route.get("/", () => {
+  return "works";
+});

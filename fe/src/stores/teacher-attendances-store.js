@@ -21,12 +21,12 @@ export const useTeacherAttendanceStore = defineStore("teacherAttendance", {
           data: attendee,
         })
         .then((res) => {
-          console.log(res.data);
-          if (res.status == 201) {
-            this.attendances.unshift(res.data.data);
-          } else {
-            // console.log(res);
-          }
+          // if (res.status == 201) {
+          this.attendances.unshift(res.data.data);
+          ls.set("teacher", res.data.data);
+          // } else {
+          // console.log(res);
+          // }
         });
     },
     findTeacherByNip(nip) {

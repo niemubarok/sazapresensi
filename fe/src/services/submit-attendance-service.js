@@ -132,7 +132,7 @@ export const submit = async (input) => {
     attendee.value.name = teacher?.name;
     await teacherAttendanceStore.addAttendance(attendee.value);
     teacherAttendanceStore.findTeacherByNip(input);
-    ls.set("teacher", attendee.value);
+    // ls.set("teacher", attendee.value);
   }
 
   const senderId = ref(ls.get("sender"));

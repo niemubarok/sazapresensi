@@ -74,7 +74,7 @@
       </template>
 
       <template v-slot:item="props">
-        <AttendeeCard :src="baseUrl + props.row.picture" :name="props.row.name" :in="props.row.in" :out="props.row.out"
+        <AttendeeCard :src="studentAvatar" :name="props.row.name" :in="props.row.in" :out="props.row.out"
           :status="props.row.status" />
       </template>
 
@@ -177,9 +177,17 @@ const columns = [
 
 const tableRows = computed(() => attendanceStore.filterAttendances());
 
-onMounted(() => {
-  console.log(tableRows.value);
-});
+const studentAvatar = computed(() => {
+  let avatarUrl = ''
+  tableRows.value.forEach(row => {
+    avatarUrl = baseUrl + row.avatar
+  })
+  return avatarUrl
+})
+
+// onMounted(() => {
+//   console.log(tableRows.value);
+// });
 </script>
 
 <style>

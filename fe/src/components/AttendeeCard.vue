@@ -15,7 +15,7 @@
         <q-item>
           <q-item-section avatar>
             <q-avatar class="rounded-borders" style="margin-left: -10px">
-              <img :src="src" />
+              <img :src="props.src" />
             </q-avatar>
           </q-item-section>
 

@@ -1,6 +1,6 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+  <q-layout view="lHh Lpr lFf" class="bg-grey-1">
+    <q-header v-if="$route.meta.isSidebar" class="bg-white text-grey-8 q-py-xs" elevated>
       <q-toolbar>
         <q-btn flat dense round @click="leftDrawerOpen = !leftDrawerOpen" icon="menu" aria-label="Menu" />
         <q-btn flat no-caps no-wrap class="q-ml-xs" v-if="$q.screen.gt.xs">
@@ -31,7 +31,7 @@
               <q-list style="min-width: 100px">
                 <messages></messages>
                 <q-card class="text-center no-shadow no-border">
-                  <q-btn label="View All" style="max-width: 120px !important;" flat dense class="text-indigo-8"></q-btn>
+                  <q-btn label="View All" style="max-width: 120px !important;" flat dense class="text-dark"></q-btn>
                 </q-card>
               </q-list>
             </q-menu>
@@ -45,7 +45,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered class="bg-grey-6 text-white">
+    <q-drawer v-if="$route.meta.isSidebar" v-model="leftDrawerOpen" show-if-above bordered class="bg-grey-1 text-dark">
       <ExpansionMenu />
     </q-drawer>
 

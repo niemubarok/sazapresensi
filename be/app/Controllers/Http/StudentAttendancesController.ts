@@ -20,7 +20,7 @@ export default class StudentAttendancesController {
     let data: any[] = [];
 
     studentAttendances.forEach(async (each) => {
-      const picture = await Drive.getUrl(
+      const avatar = await Drive.getUrl(
         `/photos/students/${each.student_nis}.jpg`
       );
       const attendances = {
@@ -32,7 +32,7 @@ export default class StudentAttendancesController {
         status: each.status,
         name: each.students.name,
         gender: each.students.gender,
-        picture,
+        avatar,
       };
 
       data.push(attendances);

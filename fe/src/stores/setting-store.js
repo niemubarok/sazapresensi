@@ -14,6 +14,15 @@ export const useSettingStore = defineStore("setting", {
       return (name) =>
         ls.get("settings")?.find((val) => val.name == name).value;
     },
+    getAvatarUrl: (state) => {
+      return (id) => {
+        ls.get("settings")?.find((val) => val.name == "baseUrl").value;
+      };
+    },
+    getBaseUrl: () => {
+      return () =>
+        ls.get("settings")?.find((val) => val.name == "baseUrl").value;
+    },
   },
   actions: {
     async getSettingsFromDB() {

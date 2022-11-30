@@ -1,3 +1,5 @@
+import Drive from "@ioc:Adonis/Core/Drive";
+import { extname } from "path";
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import Teacher from "App/Models/Teacher";
 import TeacherAttendance from "App/Models/TeacherAttendance";
@@ -10,7 +12,11 @@ export default class TeacherAttendancesController {
 
     try {
       const teacher = await Teacher.findByOrFail("nip", req.id);
-      console.log(teacher);
+
+      const avatar = await Drive.getUrl(`/photos/teachers/${req.id}`);
+      // const file = makeUrl + ".jpg" || makeUrl + ".jpeg";
+      // // const avatar = file
+      // console.log(file);
 
       try {
         const store = await TeacherAttendance.create({
@@ -31,6 +37,7 @@ export default class TeacherAttendancesController {
           in: req.in,
           status: req.status,
           name: teacher.name,
+          avatar,
         };
 
         if (store.$isPersisted) {
@@ -55,10 +62,8 @@ export default class TeacherAttendancesController {
   }
 
   public async store({ request, response }: HttpContextContract) {
-    const req = request.body();
-
+    // const req = request.body();
     // const store = await TeacherAttendance.create({
-
     // })
   }
 

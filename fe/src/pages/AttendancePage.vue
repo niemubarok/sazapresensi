@@ -14,6 +14,7 @@
           class="absolute-top bg-dark text-dark no-border no-outline" />
 
         <div>
+          {{ teacherAvatar }}
           <div class="flex align-start">
             <q-chip square label="Guru Pengajar" size="sm" />
           </div>
@@ -22,8 +23,8 @@
             <p class="text-yellow-4 q-mt-sm">Belum ada Guru yang Absen</p>
           </q-skeleton>
 
-          <AttendeeCard v-else src="http://localhost:3333/uploads/photos/students/0012421387.jpg" :name="teacher?.name"
-            :in="teacher?.in" :status="teacher?.status"></AttendeeCard>
+          <AttendeeCard v-else :src="teacherAvatar" :name="teacher?.name" :in="teacher?.in" :status="teacher?.status">
+          </AttendeeCard>
         </div>
         <!-- <q-separator color="grey-8" class="q-mt-md" /> -->
 
@@ -59,6 +60,7 @@
     </div>
   </div>
   <div class="row q-pa-md fixed-bottom" style="width: 400px">
+    <q-btn to="/" flat color="grey" icon="home" />
     <q-btn flat color="grey" icon="settings" @click="onClickSettings()" />
     <q-btn flat color="grey" @click="$q.fullscreen.toggle()"
       :icon="$q.fullscreen.isActive ? 'fullscreen_exit' : 'fullscreen'" />
@@ -102,10 +104,16 @@ const input = ref(null);
 const today = new Date();
 const date = getTime().date;
 const now = ref("");
+const settingStore = useSettingStore()
+const baseUrl = settingStore.getBaseUrl()
 
 // const teacherStore = useTeacherStore();
 const teacherAttendanceStore = useTeacherAttendanceStore();
 const teacher = computed(() => teacherAttendanceStore.getTeacherByNip());
+const teacherAvatar = computed(() => {
+  return baseUrl + teacher.value?.avatar + ".jpeg"
+})
+
 const studentStore = useStudentStore();
 
 const studentActivitiesStore = useStudentActivitiesStore();
@@ -116,6 +124,7 @@ const activity = ref(null);
 
 const activityName = ref("");
 const studentAttendancesStore = useStudentAttendancesStore();
+
 
 onStartTyping(() => {
   if (!input.value.active) {

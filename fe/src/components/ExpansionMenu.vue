@@ -2,9 +2,9 @@
 
   <q-list>
     <template v-for="navItem in navItems" :key="navItem.text">
-      <q-item v-if="!navItem.child" to="/" active-class="q-item-no-link-highlighting">
+      <q-item v-if="!navItem.child" :to="navItem.to" active-class="q-item-no-link-highlighting">
         <q-item-section avatar>
-          <q-icon name="dashboard" />
+          <q-icon :name="navItem.icon" />
         </q-item-section>
         <q-item-section>
           <q-item-label>{{ navItem.text }}</q-item-label>
@@ -12,7 +12,7 @@
       </q-item>
 
 
-      <q-expansion-item v-else :icon="navItem.icon" :label="navItem.text" dark expand-separator
+      <q-expansion-item v-else :icon="navItem.icon" :label="navItem.text" expand-separator
         :hide-expand-icon="!navItem.child">
         <q-list class="q-pl-lg" v-if="navItem.child">
           <template v-for="child in navItem.child" :key="child.text">
