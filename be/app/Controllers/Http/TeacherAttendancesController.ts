@@ -1,5 +1,4 @@
 import Drive from "@ioc:Adonis/Core/Drive";
-import { extname } from "path";
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import Teacher from "App/Models/Teacher";
 import TeacherAttendance from "App/Models/TeacherAttendance";
@@ -14,9 +13,6 @@ export default class TeacherAttendancesController {
       const teacher = await Teacher.findByOrFail("nip", req.id);
 
       const avatar = await Drive.getUrl(`/photos/teachers/${req.id}`);
-      // const file = makeUrl + ".jpg" || makeUrl + ".jpeg";
-      // // const avatar = file
-      // console.log(file);
 
       try {
         const store = await TeacherAttendance.create({

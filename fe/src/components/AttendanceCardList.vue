@@ -74,8 +74,9 @@
       </template>
 
       <template v-slot:item="props">
-        <AttendeeCard :src="studentAvatar" :name="props.row.name" :in="props.row.in" :out="props.row.out"
-          :status="props.row.status" />
+        {{ `${baseUrl}/uploads/photos/students/${props.row.student_nis}.jpg` }}
+        <AttendeeCard :src="`${baseUrl}/uploads/photos/students/${props.row.student_nis}.jpg`" :name="props.row.name"
+          :in="props.row.in" :out="props.row.out" :status="props.row.status" />
       </template>
 
       <template v-slot:pagination="scope">
@@ -178,9 +179,10 @@ const columns = [
 const tableRows = computed(() => attendanceStore.filterAttendances());
 
 const studentAvatar = computed(() => {
-  let avatarUrl = ''
+  let avatarUrl = []
   tableRows.value.forEach(row => {
-    avatarUrl = baseUrl + row.avatar
+
+    avatarUrl = `${baseUrl}/uploads/photos/students/${row.student_nis}.jpg`
   })
   return avatarUrl
 })

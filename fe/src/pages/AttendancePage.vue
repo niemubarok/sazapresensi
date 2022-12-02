@@ -10,8 +10,8 @@
         <!-- <q-separator color="grey-8" class="q-mt-md" /> -->
         <q-linear-progress dark rounded indeterminate color="grey-8" class="q-mt-sm" />
 
-        <input v-model="inputValue" ref="input" type="text" v-on:keyup.enter="submitAttendance"
-          class="absolute-top bg-dark text-dark no-border no-outline" />
+        <input v-model="inputValue" ref="input" type="text" v-on:keyup.enter="submitAttendance" class="z-top" />
+        <!-- class="absolute-top bg-dark text-dark no-border no-outline"  -->
 
         <div>
           {{ teacherAvatar }}
@@ -152,6 +152,7 @@ const presenceTimeEnd = () => {
 const checkScheduleOnMounted = async () => {
   if (activity.value != undefined) {
     presenceTimeStart();
+    // window.location.reload()
   } else {
     ls.remove("activityId");
     // ls.set("activityId", activity.value?.id);
@@ -166,7 +167,9 @@ const scheduleChecker = () => {
 
   if (activity.value?.start >= now.value) {
     presenceTimeStart();
+    window.location.reload()
   } else if (activity.value?.end <= now.value) {
+    window.location.reload()
     presenceTimeEnd();
   } else {
     ls.get("activityId");

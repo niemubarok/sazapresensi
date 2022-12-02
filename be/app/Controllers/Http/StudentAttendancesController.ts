@@ -8,14 +8,10 @@ export default class StudentAttendancesController {
     const req = request.body().data;
     const today = req.date.slice(0, 10);
 
-    // return today;
-
     const studentAttendances = await StudentAttendance.query()
       .where("date", today)
       // .where("activity_id", req.activityId)
       .preload("students");
-
-    console.log(req);
 
     let data: any[] = [];
 
@@ -50,7 +46,7 @@ export default class StudentAttendancesController {
 
     try {
       const student = await Student.findByOrFail("nis", req.id);
-      const picture = await Drive.getUrl(`/photos/students/${req.id}.jpg`);
+      const avatar = await Drive.getUrl(`/photos/students/${req.id}.jpg`);
 
       try {
         const store = await StudentAttendance.create({
@@ -71,7 +67,7 @@ export default class StudentAttendancesController {
           status: req.status,
           name: student.name,
           gender: student.gender,
-          picture,
+          avatar,
         };
 
         if (store.$isPersisted) {
