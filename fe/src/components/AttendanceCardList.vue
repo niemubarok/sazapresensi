@@ -5,8 +5,8 @@
       title-class="text-weight-bold q-px-xl bg-grey-3  rounded-borders" dense binary-state-sort>
       <template #top-left>
         <div style="margin-bottom: -20px" class="row">
-          <q-card class="bg-grey-1 column q-px-xs" square flat>
-            <div class="bg-grey-1">
+          <q-card class="transparent column q-px-xs" square flat>
+            <div>
               <q-chip icon="dashboard" color="grey-1" class="rounded-borders transparent" dense><span
                   style="border-left: 3px solid dark" class="q-px-xs text-weight-bolder">DAFTAR KEHADIRAN SANTRI</span>
               </q-chip>
@@ -52,12 +52,13 @@
           </div> -->
         <!-- </div> -->
 
-        <div class="row q-px-md">
-          <q-chip outline icon="today" size="sm" :label="date" floating="bottom" class="card-border-radius" />
-          <q-chip icon="place" outline size="sm" class="card-border-radius text-dark">
+        <div class="row q-px-md  flex align-end fixed-top-right">
+          <q-chip outline icon="today" size="md" :label="date" class="card-border-radius text-weight-bolder" />
+          <q-chip icon="place" outline size="md" class="card-border-radius text-dark text-weight-bolder"
+            :label="location">
             <!-- <span> Lokasi: </span> -->
-            <span style="margin-right: -5px" class="q-ml-xs q-px-md card-border-radius bg-dark text-white">
-              {{ location }}</span>
+            <!-- <span class="q-ml-xs q-px-md card-border-radius bg-transparent text-dark text-weight-bold">
+              {{ location }}</span> -->
           </q-chip>
         </div>
       </template>
@@ -74,9 +75,9 @@
       </template>
 
       <template v-slot:item="props">
-        {{ `${baseUrl}/uploads/photos/students/${props.row.student_nis}.jpg` }}
+        <!-- {{ `${baseUrl}/uploads/photos/students/${props.row.student_nis}.jpg` }} -->
         <AttendeeCard :src="`${baseUrl}/uploads/photos/students/${props.row.student_nis}.jpg`" :name="props.row.name"
-          :in="props.row.in" :out="props.row.out" :status="props.row.status" />
+          :in="props.row.in" :status="props.row.status" class="q-mt-sm" />
       </template>
 
       <template v-slot:pagination="scope">
@@ -134,7 +135,7 @@ import { useSettingStore } from "src/stores/setting-store";
 const attendanceStore = useStudentAttendancesStore();
 const filter = ref("");
 const location = ref(ls.get("location")?.label);
-const date = getTime().date.toLocaleDateString();
+const date = `${getTime().day}, ${getTime().date.toLocaleDateString()}`;
 const settingStore = useSettingStore();
 const baseUrl = settingStore.getSpecificSetting("baseUrl");
 
@@ -178,14 +179,6 @@ const columns = [
 
 const tableRows = computed(() => attendanceStore.filterAttendances());
 
-const studentAvatar = computed(() => {
-  let avatarUrl = []
-  tableRows.value.forEach(row => {
-
-    avatarUrl = `${baseUrl}/uploads/photos/students/${row.student_nis}.jpg`
-  })
-  return avatarUrl
-})
 
 // onMounted(() => {
 //   console.log(tableRows.value);

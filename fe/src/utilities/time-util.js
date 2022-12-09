@@ -1,5 +1,3 @@
-import { ref } from "vue";
-
 export const zeroPad = (n) => {
   return (n < 10 ? "0" : "") + n;
 };
@@ -16,9 +14,6 @@ export const getDayName = (date) => {
     "Jum'at",
     "Sabtu",
   ];
-
-  console.log(day);
-
   return day == 0 ? dayName[0] : dayName[day];
 };
 
@@ -26,11 +21,13 @@ export const getTime = () => {
   const currentDate = new Date();
   const today = currentDate.getDay();
   const date = currentDate;
+  const day = getDayName(currentDate);
   const hours = zeroPad(currentDate.getHours());
   const minutes = zeroPad(currentDate.getMinutes());
   const seconds = zeroPad(currentDate.getSeconds());
   return {
     today,
+    day,
     date,
     hours,
     minutes,

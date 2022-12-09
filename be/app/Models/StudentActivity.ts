@@ -1,5 +1,5 @@
-import { BaseModel, column } from "@ioc:Adonis/Lucid/Orm";
- 
+import { BaseModel, column, scope } from "@ioc:Adonis/Lucid/Orm";
+
 export default class StudentActivity extends BaseModel {
   @column({ isPrimary: true })
   public id: Number;
@@ -21,4 +21,13 @@ export default class StudentActivity extends BaseModel {
 
   @column()
   public order: Number;
+
+  public static current = scope((query, day, time) => {
+    // console.log(day);
+
+    query
+      .where("day", "=", day)
+      .where("start", "<=", time)
+      .where("end", ">=", time);
+  });
 }

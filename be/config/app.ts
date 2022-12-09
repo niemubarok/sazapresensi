@@ -1,4 +1,4 @@
-import { Application } from "@ioc:Adonis/Core/Application";
+// import { Application } from "@ioc:Adonis/Core/Application";
 /**
  * Config source: https://git.io/JfefZ
  *

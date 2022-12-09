@@ -1,3 +1,5 @@
+import WS from "src/pages/WS.vue";
+
 const routes = [
   {
     path: "/",
@@ -25,6 +27,10 @@ const routes = [
         },
       },
     ],
+  },
+  {
+    path: "/tes",
+    component: WS,
   },
 
   // Always leave this as last one,

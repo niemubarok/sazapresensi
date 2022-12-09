@@ -52,10 +52,8 @@
               <span> Absen Untuk </span>
             </div>
             <q-chip v-if="!isPresenceTime" class="bg-red text-body text-white">Belum Waktunya Absen</q-chip>
-            <q-chip v-else class="text-subtitle2 card-border-radius text-dark">{{ activity?.name }}</q-chip>
-            <q-chip class="text-subtitle2 card-border-radius text-dark">{{ activity?.name }}</q-chip>
+            <q-chip v-else class="text-subtitle2 card-border-radius text-dark">{{ activityName }}</q-chip>
           </q-card-section>
-
         </q-card>
       </div>
     </div>
@@ -105,6 +103,12 @@ const $q = useQuasar();
 
 const inputValue = ref("");
 const input = ref(null);
+
+// const listMode = ref(ls.get("listMode"));
+
+const today = new Date();
+const date = getTime().date;
+const now = ref("");
 const settingStore = useSettingStore()
 const baseUrl = settingStore.getBaseUrl()
 
@@ -119,7 +123,11 @@ const studentStore = useStudentStore();
 
 const studentActivitiesStore = useStudentActivitiesStore();
 
+const studentActivityByDay = () =>
+  studentActivitiesStore.getActivitiesByDayFromServer();
 const activity = ref(null);
+
+const activityName = ref("");
 const studentAttendancesStore = useStudentAttendancesStore();
 
 
@@ -131,15 +139,15 @@ onStartTyping(() => {
 
 const isPresenceTime = ref(false);
 
-// const presenceTimeStart = () => {
+const presenceTimeStart = () => {
 
-//   // activityName.value = activity.value?.name;
-//   ls.set("activityId", activity.value?.id);
+  activityName.value = activity.value?.name;
+  ls.set("activityId", activity.value?.id);
 
-//   ls.set("activityName", activity.value?.name);
-//   studentAttendancesStore.filterAttendances();
-//   isPresenceTime.value = true;
-// };
+  ls.set("activityName", activity.value?.name);
+  studentAttendancesStore.filterAttendances();
+  isPresenceTime.value = true;
+};
 
 const presenceTimeEnd = () => {
   isPresenceTime.value = false;
@@ -149,40 +157,40 @@ const presenceTimeEnd = () => {
   teacherAttendanceStore.clearTeacherByNip();
 };
 
-// const checkScheduleOnMounted = async () => {
-//   if (activity.value != undefined) {
-//     presenceTimeStart();
-//     // window.location.reload()
-//   } else {
-//     ls.remove("activityId");
-//     // ls.set("activityId", activity.value?.id);
-//     presenceTimeEnd();
-//   }
-// };
+const checkScheduleOnMounted = async () => {
+  if (activity.value != undefined) {
+    presenceTimeStart();
+    // window.location.reload()
+  } else {
+    ls.remove("activityId");
+    // ls.set("activityId", activity.value?.id);
+    presenceTimeEnd();
+  }
+};
 
-// const scheduleChecker = () => {
-//   if (now.value == "00:00:00") {
-//     window.location.reload();
-//   }
+const scheduleChecker = () => {
+  if (now.value == "00:00:00") {
+    window.location.reload();
+  }
 
-//   if (activity.value?.start >= now.value) {
-//     presenceTimeStart();
-//     window.location.reload()
-//   } else if (activity.value?.end <= now.value) {
-//     window.location.reload()
-//     presenceTimeEnd();
-//   } else {
-//     ls.get("activityId");
-//     activityName.value = ls.get("activityName");
-//     // studentAttendancesStore.filterAttendances(
-//     //   activity.value?.id,
-//     //   ls.get("location"),
-//     //   ls.get("gender")
-//     // );
-//   }
+  if (activity.value?.start >= now.value) {
+    presenceTimeStart();
+    window.location.reload()
+  } else if (activity.value?.end <= now.value) {
+    window.location.reload()
+    presenceTimeEnd();
+  } else {
+    ls.get("activityId");
+    activityName.value = ls.get("activityName");
+    // studentAttendancesStore.filterAttendances(
+    //   activity.value?.id,
+    //   ls.get("location"),
+    //   ls.get("gender")
+    // );
+  }
 
-//   // console.log(studentAttendancesStore.getFilteredAttendance());
-// };
+  // console.log(studentAttendancesStore.getFilteredAttendance());
+};
 
 // setInterval(() => {
 //   now.value = getTime().time;
@@ -209,17 +217,19 @@ const submitAttendance = () => {
 };
 
 onMounted(async () => {
-  // await studentActivityByDay();
+  await studentActivityByDay();
   await useSettingStore().getSettingsFromDB();
 
-  // studentActivitiesStore.getActivitiesByDayFromServer();
-  await studentActivitiesStore.currentActivity()
-  activity.value = studentActivitiesStore.getCurrentActivity()
-
-  console.log(activity.value);
-
-
-  // checkScheduleOnMounted();
+  // activity.value = studentActivitiesStore.getActivitiesTodayByTime(
+  //   getTime().time
+  // );
+  studentActivitiesStore.getActivitiesByDayFromServer();
+  socket.on("activity:start", () => {
+    // presenceTimeStart()
+    console.log("activity start");
+    // window.location.reload()
+  })
+  checkScheduleOnMounted();
   // console.log(ls.get("location"));
   if (!ls.get("location")) {
     onClickSettings();
@@ -229,8 +239,8 @@ onMounted(async () => {
   //   window.location.reload()
   // }
 
-  // await studentStore.getStudentsByClassFromDB(ls.get("location")?.id);
-  // studentAttendancesStore.getAttendancesFromDB();
+  await studentStore.getStudentsByClassFromDB(ls.get("location")?.id);
+  studentAttendancesStore.getAttendancesFromDB();
 
   // await teacherStore.getTeachersFromDB();
 

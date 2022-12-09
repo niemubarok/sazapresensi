@@ -1,18 +1,25 @@
-
-export const zeroPad = (n) => {
+export const zeroPad = (n: number) => {
   return (n < 10 ? "0" : "") + n;
 };
 
-export const getDayName = (date)=>{
-  const initDate= new Date(date)
-  const day = initDate.getDay()
-  const dayName = ["Senin","Selasa","Rabu", "Kamis","Jum'at","Sabtu","Minggu"]
-  return dayName[day-1]
-}
+export const getDayName = (date: string | number | Date) => {
+  const initDate = new Date(date);
+  const day = initDate.getDay();
+  const dayName = [
+    "Senin",
+    "Selasa",
+    "Rabu",
+    "Kamis",
+    "Jum'at",
+    "Sabtu",
+    "Minggu",
+  ];
+  return dayName[day - 1];
+};
 
 export const getTime = () => {
   const currentDate = new Date();
-  const today = currentDate.getDay()
+  const today = currentDate.getDay();
   const date = currentDate;
   const hours = zeroPad(currentDate.getHours());
   const minutes = zeroPad(currentDate.getMinutes());
@@ -27,7 +34,11 @@ export const getTime = () => {
   };
 };
 
-export const setTime = (h, m, s) => {
+export const setTime = (
+  h: number,
+  m: number | undefined,
+  s: number | undefined
+) => {
   const currentDate = new Date();
   currentDate.setHours(h, m, s);
 
@@ -37,7 +48,7 @@ export const setTime = (h, m, s) => {
   };
 };
 
-export const compareTime = (init, now, comparasion) => {
+export const compareTime = (init: number, now: number, comparasion: string) => {
   if (comparasion == "equal") {
     return init == now;
   } else if (comparasion == "lt") {

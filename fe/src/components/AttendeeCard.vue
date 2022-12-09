@@ -14,7 +14,8 @@
         " class="q-pr-sm glass shadow-6">
         <q-item>
           <q-item-section avatar>
-            <q-avatar class="rounded-borders" style="margin-left: -10px">
+            <q-avatar round style="margin-left: -10px">
+              <!-- class="rounded-borders" -->
               <img :src="props.src" />
             </q-avatar>
           </q-item-section>
@@ -68,7 +69,7 @@ const props = defineProps({
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.808);
+  background: rgba(255, 255, 255, 0.502);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.34);

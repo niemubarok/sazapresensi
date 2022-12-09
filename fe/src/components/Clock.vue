@@ -1,6 +1,6 @@
 <template>
   <div style="margin-top: -30px">
-    <q-chip icon="schedule">
+    <q-chip icon="schedule" outline class="bg-grey-1">
       <h6 class="text-weight-bolder text-red">
         {{ hours }}<span class="text-grey">:</span>{{ minutes
         }}<span class="text-grey">:</span>{{ seconds }}
@@ -11,7 +11,7 @@
   </div>
 </template>
 
-  <script setup>
+<script setup>
 import { onMounted, onBeforeUnmount, ref } from "vue";
 import { compareTime, getTime, setTime } from "src/utilities/time-util.js";
 
