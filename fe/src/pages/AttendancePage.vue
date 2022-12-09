@@ -51,9 +51,10 @@
             <div class="text-body text-white">
               <span> Absen Untuk </span>
             </div>
-            <q-chip v-if="!isPresenceTime" class="bg-red text-body text-white">Belum Waktunya Absen</q-chip>
+            <q-chip v-if="!studentActivitiesStore.start" class="bg-red text-body text-white">Belum Waktunya
+              Absen</q-chip>
             <q-chip v-else class="text-subtitle2 card-border-radius text-dark">{{ activity?.name }}</q-chip>
-            <q-chip class="text-subtitle2 card-border-radius text-dark">{{ activity?.name }}</q-chip>
+            <!-- <q-chip class="text-subtitle2 card-border-radius text-dark">{{ activity?.name }}</q-chip> -->
           </q-card-section>
 
         </q-card>
@@ -131,15 +132,16 @@ onStartTyping(() => {
 
 const isPresenceTime = ref(false);
 
-// const presenceTimeStart = () => {
+const presenceTimeStart = () => {
 
-//   // activityName.value = activity.value?.name;
-//   ls.set("activityId", activity.value?.id);
+  // activityName.value = activity.value?.name;
+  // ls.set("activityId", activity.value?.id);
 
-//   ls.set("activityName", activity.value?.name);
-//   studentAttendancesStore.filterAttendances();
-//   isPresenceTime.value = true;
-// };
+  // ls.set("activityName", activity.value?.name);
+  // studentAttendancesStore.filterAttendances();
+  isPresenceTime.value = true;
+  // window.location
+};
 
 const presenceTimeEnd = () => {
   isPresenceTime.value = false;
@@ -216,7 +218,10 @@ onMounted(async () => {
   await studentActivitiesStore.currentActivity()
   activity.value = studentActivitiesStore.getCurrentActivity()
 
-  console.log(activity.value);
+  studentActivitiesStore.startActivity().then(() => {
+    console.log("activitystart");
+    presenceTimeEnd()
+  })
 
 
   // checkScheduleOnMounted();

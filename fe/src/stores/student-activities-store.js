@@ -10,6 +10,8 @@ export const useStudentActivitiesStore = defineStore("StudentActivities", {
     all: [],
     today: [],
     activity: {},
+    start: false,
+    end: false,
   }),
   getters: {
     getStudentActivitiesByOrder: (state) => {
@@ -37,6 +39,7 @@ export const useStudentActivitiesStore = defineStore("StudentActivities", {
       socket.on("activity:start", (payload) => {
         console.log(payload);
         this.today = payload;
+        this.start = true;
       });
     },
 

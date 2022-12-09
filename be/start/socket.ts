@@ -15,7 +15,7 @@ Ws.io.on("connection", (socket) => {
     //   console.log(data);
     // });
     //
-    // studentActivitiesService.scheduler();
+    studentActivitiesService.scheduler();
     socket.on("activity:getcurrent", async () => {
       const data = await studentActivitiesService.getCurrentActivity();
       socket.emit("activity:current", data);
