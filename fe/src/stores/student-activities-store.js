@@ -4,6 +4,8 @@ import { defineStore } from "pinia";
 // import { Notify } from "quasar";
 // import { io } from "socket.io-client";
 import { socket } from "src/services/socketio-service";
+import ls from "localstorage-slim";
+ls.config.encrypt = true;
 
 export const useStudentActivitiesStore = defineStore("StudentActivities", {
   state: () => ({
@@ -30,16 +32,18 @@ export const useStudentActivitiesStore = defineStore("StudentActivities", {
   actions: {
     currentActivity() {
       socket.emit("activity:getcurrent");
-      socket.on("activity:current", (payload) => {
-        if (payload?.length) {
-          console.log(payload);
-          this.activity = payload[0];
+      socket.on("activity:current", (activity) => {
+        if (activity?.length) {
+          ls.set("activityId", activity[0]?.id);
+          // console.log(activity);
+          this.activity = activity[0];
           this.isPresenceTime = true;
         }
       });
     },
     async startActivity() {
-      socket.on("activity:start", (payload) => {
+      socket.on("activity:start", (activity) => {
+        ls.set("activityId", activity?.id);
         this.activity = payload;
         this.isPresenceTime = true;
       });

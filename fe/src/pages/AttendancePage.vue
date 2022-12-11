@@ -133,7 +133,7 @@
 </template>
 
 <script setup>
-import { useQuasar } from "quasar";
+import { Notify, useQuasar } from "quasar";
 import { onBeforeMount, onMounted, ref, watch, computed } from "vue";
 import { onStartTyping } from "@vueuse/core";
 import { submit } from "src/services/submit-attendance-service";
@@ -165,6 +165,9 @@ const inputValue = ref("");
 const input = ref(null);
 const settingStore = useSettingStore();
 const baseUrl = settingStore.getBaseUrl();
+const error = ref({
+  connection: false,
+});
 
 // const teacherStore = useTeacherStore();
 const teacherAttendanceStore = useTeacherAttendanceStore();
@@ -232,6 +235,36 @@ onMounted(async () => {
   if (!ls.get("location")) {
     onClickSettings();
   }
+
+  socket.on("connect", () => {
+    console.log("connection established");
+    error.value.connection = false;
+  });
+  // socket.on("disconnect", () => {
+  //   Notify.create({
+  //     message: "Gagal Terhubung ke Server, Hubungi Admin!",
+  //     type: "negative",
+  //     position: "center",
+  //     classes: "q-px-xl",
+  //     timeout: 600000,
+  //   });
+  // });
+
+  socket.on("connect_error", () => {
+    // console.log("connection error");
+    console.log(error.value.connection);
+    if (error.value.connection === false) {
+      Notify.create({
+        message: "Gagal Terhubung ke Server, Hubungi Admin!",
+        type: "negative",
+        position: "center",
+        classes: "q-px-xl",
+        timeout: 1000,
+      });
+      error.value.connection = true;
+    }
+  });
+
   // await studentStore.getStudentsByClassFromDB(ls.get("location")?.id);
   // studentAttendancesStore.getAttendancesFromDB();
 

@@ -1,6 +1,4 @@
 import io from "socket.io-client";
-import { ref } from "vue";
-import axios from "axios";
 
 const url = process.env.API;
 const token = process.env.token;
