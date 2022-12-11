@@ -9,12 +9,6 @@ const studentActivitiesService = new StudentActivitiesService();
 Ws.io.on("connection", (socket) => {
   let token = socket.handshake.auth.token;
   if (token == "dedenfriatna") {
-    // socket.emit("news", { hello: "worldsdsdsd" });
-    // socket.emit("new:user", { user: "Arina Muntazah" });
-    // socket.on("tes", (data) => {
-    //   console.log(data);
-    // });
-    //
     studentActivitiesService.scheduler();
     socket.on("activity:getcurrent", async () => {
       const data = await studentActivitiesService.getCurrentActivity();

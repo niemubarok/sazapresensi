@@ -4,35 +4,40 @@ import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import { getTime, getDayName } from "App/Utils/TimeUtil";
 import schedule from "node-schedule";
 import Ws from "./Ws";
+// import { DateTime } from "luxon";
 // import Database from "@ioc:Adonis/Lucid/Database";
 
 export default class StudentActivitiesService {
   public async scheduler() {
     const day = getDayName(getTime().date);
+
+    console.log(day);
+
     const activitiesByDay = await StudentActivities.query()
       .where("day", day)
-      .orWhere("day", "daily");
+      .orWhere("day", "daily")
 
     activitiesByDay.forEach((activity) => {
-      const time = activity.start; // The time to run the job (HH:mm:ss)
-      // const time = "11:22:00"; // The time to run the job (HH:mm:ss)
-
-      // Create a rule to run the job every day at the specified time
-      const rule = new schedule.RecurrenceRule();
-      rule.hour = parseInt(time.split(":")[0]);
-      rule.minute = parseInt(time.split(":")[1]);
-      rule.second = parseInt(time.split(":")[2]);
-
-      // Schedule the job to run using the created rule
-      schedule.scheduleJob(rule, () => {
-        Ws.io.emit("time", time);
+      const start = activity?.start; // The start to run the job (HH:mm:ss)
+      const end = activity?.end; // The start to run the job (HH:mm:ss)
+      const startRule = new schedule.RecurrenceRule();
+      startRule.hour = parseInt(start.split(":")[0]);
+      startRule.minute = parseInt(start.split(":")[1]);
+      startRule.second = parseInt(start.split(":")[2]);
+      schedule.scheduleJob(startRule, () => {
         Ws.io.emit("activity:start", activity);
+      });
 
-        // Add code here to perform the job
+      const endRule = new schedule.RecurrenceRule();
+      endRule.hour = parseInt(end.split(":")[0]);
+      endRule.minute = parseInt(end.split(":")[1]);
+      endRule.second = parseInt(end.split(":")[2]);
+
+      schedule.scheduleJob(endRule, () => {
+        Ws.io.emit("activity:end");
       });
     });
 
-    // return activitiesByDay;
   }
 
   public async getActivities(ctx: HttpContextContract) {
@@ -58,8 +63,10 @@ export default class StudentActivitiesService {
   }
 
   public async getCurrentActivity() {
+    const day = getDayName(getTime().date);
+    const now = getTime().time
     const currentActivity = StudentActivities.query().withScopes((scopes) =>
-      scopes.current("daily", "16:30:00")
+      scopes.current(day, now)
     );
     return currentActivity;
   }

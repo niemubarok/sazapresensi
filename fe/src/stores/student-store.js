@@ -6,7 +6,7 @@ import ls from "localstorage-slim";
 export const useStudentStore = defineStore("student", {
   state: () => ({
     all: [],
-    student: [],
+    student: {},
   }),
   getters: {
     getStudentsByClass: (state) => {

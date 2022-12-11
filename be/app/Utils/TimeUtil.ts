@@ -5,16 +5,18 @@ export const zeroPad = (n: number) => {
 export const getDayName = (date: string | number | Date) => {
   const initDate = new Date(date);
   const day = initDate.getDay();
+  console.log(day);
+
   const dayName = [
+    "Minggu",
     "Senin",
     "Selasa",
     "Rabu",
     "Kamis",
     "Jum'at",
     "Sabtu",
-    "Minggu",
   ];
-  return dayName[day - 1];
+  return day == 0 ? dayName[0] : dayName[day];
 };
 
 export const getTime = () => {

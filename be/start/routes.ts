@@ -1,4 +1,5 @@
 import Route from "@ioc:Adonis/Core/Route";
+import HealthCheck from "@ioc:Adonis/Core/HealthCheck";
 
 Route.group(() => {
   Route.post("/", "TeachersController.show");
@@ -30,3 +31,10 @@ Route.group(() => {
 Route.get("/", () => {
   return "works";
 });
+
+Route.get('/health', async ({ response }) => {
+  const { report, healthy } = await HealthCheck.getReport()
+  return healthy
+    ? response.status(200).send(report)
+    : response.status(400).send(report)
+})

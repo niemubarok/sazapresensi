@@ -10,36 +10,44 @@ export const useStudentActivitiesStore = defineStore("StudentActivities", {
     all: [],
     today: [],
     activity: {},
-    start: false,
-    end: false,
+    isPresenceTime: false,
   }),
   getters: {
-    getStudentActivitiesByOrder: (state) => {
-      return (order) => state.all.find((val) => val.time_order == order);
-    },
-    getActivitiesTodayByTime: (state) => {
-      return (now) =>
-        state.today?.find((val) => val.start <= now && val.end >= now);
-      //  state.today?.find((val) => console.log(val.start) );
+    // getStudentActivitiesByOrder: (state) => {
+    //   return (order) => state.all.find((val) => val.time_order == order);
+    // },
+    // getActivitiesTodayByTime: (state) => {
+    //   return async (now) =>
+    //     state.today?.find((val) => val.start <= now && val.end >= now);
+    //   //  state.today?.find((val) => console.log(val.start) );
 
-      // console.log(state.today);
-    },
+    //   // console.log(state.today);
+    // },
     getCurrentActivity: (state) => {
       return () => state.activity;
     },
   },
   actions: {
-    async currentActivity() {
+    currentActivity() {
       socket.emit("activity:getcurrent");
       socket.on("activity:current", (payload) => {
-        this.activity = payload;
+        if (payload?.length) {
+          console.log(payload);
+          this.activity = payload[0];
+          this.isPresenceTime = true;
+        }
       });
     },
     async startActivity() {
       socket.on("activity:start", (payload) => {
-        console.log(payload);
-        this.today = payload;
-        this.start = true;
+        this.activity = payload;
+        this.isPresenceTime = true;
+      });
+    },
+
+    async endActivity() {
+      socket.on("activity:end", () => {
+        this.isPresenceTime = false;
       });
     },
 

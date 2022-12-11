@@ -2,7 +2,7 @@ import { useStudentAttendancesStore } from "src/stores/student-attendances-store
 import AttendanceDialog from "src/components/AttendanceDialog.vue";
 import { useStudentStore } from "src/stores/student-store";
 import { Notify, Dialog } from "quasar";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { getTime, addMinutes, compareTime } from "src/utilities/time-util.js";
 import { useStudentActivitiesStore } from "src/stores/student-activities-store";
 
@@ -22,17 +22,12 @@ export const submit = async (input) => {
   await studentStore.getStudentByNisFromDB(input);
 
   const teacher = await teacherStore.getTeacherByNip(input);
-  const student = await studentStore.getStudentByNis(input);
-  const isStudent = student?.nis == input;
+  const student = computed(() => studentStore.student);
+  const isStudent = student.value?.nis == input;
 
   const locationId = ref(ls.get("location").id);
-  // const isRightClass =
-  //   student?.class_id === locationId.value.toString() ||
-  //   locationId.value == "general";
-
-  const activity = () =>
-    studentActivitiesStore.getActivitiesTodayByTime(getTime().time);
-  const activityId = ref(ls.get("activityId"));
+  const activity = computed(() => studentActivitiesStore.activity);
+  const activityId = ref(activity.value?.id);
 
   const message = `Santri atas nama *${student?.name}* absen masuk pkl. *${
     getTime().time
@@ -42,9 +37,7 @@ export const submit = async (input) => {
     .get("settings")
     .find((setting) => setting.name == "toleransi").value;
 
-  console.log(getTolerance);
-
-  const tolerance = addMinutes(activity()?.start, getTolerance);
+  const tolerance = addMinutes(activity.value?.start, getTolerance);
 
   const status = ref("");
 
@@ -125,7 +118,7 @@ export const submit = async (input) => {
     successAudio.play();
 
     attendee.value.name = student?.name;
-    attendee.value.activity = activity()?.name;
+    attendee.value.activity = activity.value?.name;
     await studentAttendanceStore.addAttendance(attendee.value);
   } else {
     // console.log(teacher?.name);
