@@ -4,69 +4,32 @@
       <q-chip rounded :label="date" floating="bottom" />
     </div> -->
     <div class="column">
-      <q-card
-        class="bg-dark fixed-top-left text-center q-py-md q-mx-md"
-        style="width: 200px"
-      >
-        <q-img
-          width="150px"
-          class="z-top"
-          alt="saza logo"
-          src="~assets/brand/IEC.png"
-        />
+      <q-card class="bg-dark fixed-top-left text-center q-py-md q-mx-md" style="width: 200px">
+        <q-img width="150px" class="z-top" alt="saza logo" src="~assets/brand/IEC.png" />
 
         <!-- <q-separator color="grey-8" class="q-mt-md" /> -->
-        <q-linear-progress
-          dark
-          rounded
-          indeterminate
-          color="grey-8"
-          class="q-mt-sm"
-          size="xl"
-        />
+        <q-linear-progress dark rounded indeterminate color="grey-8" class="q-mt-sm" size="xl" />
 
-        <input
-          v-model="inputValue"
-          ref="input"
-          type="text"
-          v-on:keyup.enter="submitAttendance"
-          class="absolute-top bg-dark text-dark no-border no-outline"
-        />
+        <input v-model="inputValue" ref="input" type="text" v-on:keyup.enter="submitAttendance"
+          class="absolute-top bg-dark text-dark no-border no-outline" />
         <!-- class="z-top" -->
 
         <div>
           <!-- {{ teacherAvatar }} -->
           <div class="flex align-start">
-            <q-chip
-              class="bg-transparent text-grey-4"
-              style="
+            <q-chip class="bg-transparent text-grey-4" style="
                 border-top: 0px;
                 border-bottom: 1px solid grey;
                 border-right: 0px;
                 border-left: 0;
-              "
-              square
-              label="Ustadz / Ustadzah"
-              size="sm"
-            />
+              " square label="Ustadz / Ustadzah" size="sm" />
           </div>
-          <q-skeleton
-            v-if="!teacher"
-            class="q-mx-xs vertical-middle"
-            style="width: 190px; height: 75px; margin-top: 10px"
-            bordered
-            type="rect"
-          >
+          <q-skeleton v-if="!teacher" class="q-mx-xs vertical-middle"
+            style="width: 190px; height: 75px; margin-top: 10px" bordered type="rect">
             <p class="text-yellow-4 q-mt-sm">Belum ada Guru yang Absen</p>
           </q-skeleton>
 
-          <AttendeeCard
-            v-else
-            :src="teacherAvatar"
-            :name="teacher?.name"
-            :in="teacher?.in"
-            :status="teacher?.status"
-          >
+          <AttendeeCard v-else :src="teacherAvatar" :name="teacher?.name" :in="teacher?.in" :status="teacher?.status">
           </AttendeeCard>
         </div>
         <!-- <q-separator color="grey-8" class="q-mt-md" /> -->
@@ -85,23 +48,14 @@
         </div>
       </q-card>
       <div class="fixed-bottom-left text-center q-ma-md q-mb-xl">
-        <q-card
-          class="glass"
-          style="width: 200px; height: 100px; margin-top: -130px"
-        >
+        <q-card class="glass" style="width: 200px; height: 100px; margin-top: -130px">
           <q-card-section>
             <Clock />
             <div class="text-body text-white">
               <span> Absen Untuk </span>
             </div>
-            <q-chip v-if="!isPresenceTime" class="bg-red text-body text-white"
-              >Belum Waktunya Absen</q-chip
-            >
-            <q-chip
-              v-else
-              class="text-subtitle2 card-border-radius text-dark"
-              >{{ activity?.name }}</q-chip
-            >
+            <q-chip v-if="!isPresenceTime" class="bg-red text-body text-white">Belum Waktunya Absen</q-chip>
+            <q-chip v-else class="text-subtitle2 card-border-radius text-dark">{{ activity?.name }}</q-chip>
           </q-card-section>
         </q-card>
       </div>
@@ -111,24 +65,22 @@
       <AttendanceCardList />
     </div>
   </div>
-  <q-linear-progress
-    dark
-    rounded
-    indeterminate
-    color="blue-8"
-    class="fixed-bottom q-mb-sm"
-    size="xs"
-  />
+  <marquee direction="left" class="fixed-bottom q-mb-sm"><q-chip class="q-pl-md text-weight-bolder" outline size="sm"
+      color="green-9">
+      <q-avatar icon="lightbulb" color="green-9" text-color="white" />
+      Bohong
+      adalah pangkal dari
+      segala dosa
+    </q-chip>
+
+  </marquee>
+
+  <q-linear-progress dark rounded indeterminate color="blue-8" class="fixed-bottom q-mb-sm" size="xs" />
   <div class="row q-pa-md fixed-bottom" style="width: 400px">
     <q-btn to="/" flat color="grey" icon="home" />
     <q-btn flat color="grey" icon="settings" @click="onClickSettings()" />
-    <q-btn
-      flat
-      color="grey"
-      @click="$q.fullscreen.toggle()"
-      :icon="$q.fullscreen.isActive ? 'fullscreen_exit' : 'fullscreen'"
-    />
-    <!-- :label="$q.fullscreen.isActive ? 'Exit Fullscreen' : 'Go Fullscreen'" -->
+    <q-btn flat color="grey" @click="$q.fullscreen.toggle()"
+      :icon="$q.fullscreen.isActive ? 'fullscreen_exit' : 'fullscreen'" />
   </div>
 </template>
 
@@ -143,13 +95,13 @@ import Clock from "src/components/Clock.vue";
 import AttendanceCardList from "src/components/AttendanceCardList.vue";
 import AttendeeCard from "src/components/AttendeeCard.vue";
 import SettingsDialogue from "src/components/SettingsDialogue.vue";
-import AttendanceTable from "src/components/AttendanceTable.vue";
+// import AttendanceTable from "src/components/AttendanceTable.vue";
 
 //stores
 import { useStudentActivitiesStore } from "src/stores/student-activities-store";
-import { getTime, getDayName } from "src/utilities/time-util";
-import { useStudentAttendancesStore } from "src/stores/student-attendances-store";
-import { useTeacherStore } from "src/stores/teacher-store";
+// import { getTime, getDayName } from "src/utilities/time-util";
+// import { useStudentAttendancesStore } from "src/stores/student-attendances-store";
+// import { useTeacherStore } from "src/stores/teacher-store";
 
 import ls from "localstorage-slim";
 import { useSettingStore } from "src/stores/setting-store";
@@ -169,19 +121,15 @@ const error = ref({
   connection: false,
 });
 
-// const teacherStore = useTeacherStore();
 const teacherAttendanceStore = useTeacherAttendanceStore();
 const teacher = computed(() => teacherAttendanceStore.getTeacherByNip());
 const teacherAvatar = computed(() => {
   return baseUrl + teacher.value?.avatar + ".jpeg";
 });
 
-const studentStore = useStudentStore();
-
 const studentActivitiesStore = useStudentActivitiesStore();
 
 const activity = computed(() => studentActivitiesStore.activity);
-// const studentAttendancesStore = useStudentAttendancesStore();
 
 onStartTyping(() => {
   if (!input.value.active) {
@@ -190,23 +138,6 @@ onStartTyping(() => {
 });
 
 const isPresenceTime = computed(() => studentActivitiesStore.isPresenceTime);
-
-const presenceTimeStart = () => {
-  // activityName.value = activity.value?.name;
-  // ls.set("activityId", activity.value?.id);
-  // ls.set("activityName", activity.value?.name);
-  // studentAttendancesStore.filterAttendances();
-  // isPresenceTime.value = true;
-  // window.location
-};
-
-const presenceTimeEnd = () => {
-  isPresenceTime.value = false;
-  ls.remove("teacher");
-  ls.remove("activityId");
-  ls.remove("activityName");
-  teacherAttendanceStore.clearTeacherByNip();
-};
 
 const onClickSettings = () => {
   const settingsDialog = $q.dialog({
@@ -240,15 +171,6 @@ onMounted(async () => {
     console.log("connection established");
     error.value.connection = false;
   });
-  // socket.on("disconnect", () => {
-  //   Notify.create({
-  //     message: "Gagal Terhubung ke Server, Hubungi Admin!",
-  //     type: "negative",
-  //     position: "center",
-  //     classes: "q-px-xl",
-  //     timeout: 600000,
-  //   });
-  // });
 
   socket.on("connect_error", () => {
     // console.log("connection error");
@@ -264,13 +186,6 @@ onMounted(async () => {
       error.value.connection = true;
     }
   });
-
-  // await studentStore.getStudentsByClassFromDB(ls.get("location")?.id);
-  // studentAttendancesStore.getAttendancesFromDB();
-
-  // await teacherStore.getTeachersFromDB();
-
-  // console.log(studentStore.getStudentsByClass());
 });
 </script>
 
