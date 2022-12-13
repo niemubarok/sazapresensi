@@ -161,7 +161,7 @@ onMounted(() => {
 
 
   socket.on("activity:update", () => {
-    console.log("update");
+    // console.log("update");
     studentActivitiesStore.currentActivity();
     // window.location.reload()
   });

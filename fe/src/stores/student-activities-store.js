@@ -33,7 +33,7 @@ export const useStudentActivitiesStore = defineStore("StudentActivities", {
     currentActivity() {
       socket.emit("activity:getcurrent");
       socket.on("activity:current", (activity) => {
-        console.log(activity?.length);
+        console.log(activity);
         if (activity?.length) {
           ls.set("activityId", activity[0]?.id);
           this.activity = activity[0];
@@ -46,7 +46,7 @@ export const useStudentActivitiesStore = defineStore("StudentActivities", {
     async startActivity() {
       socket.on("activity:start", (activity) => {
         ls.set("activityId", activity?.id);
-        console.log(activity);
+        // console.log(activity);
         this.activity = activity;
         this.isPresenceTime = true;
       });

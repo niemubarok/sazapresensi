@@ -59,25 +59,61 @@
                 </div>
               </q-popup-edit>
             </q-td>
+
+
+
+
             <q-td key="jam" :props="props">
 
               <q-chip class="cursor-pointer" color="green-3" :label="props.row.start">
                 <q-popup-edit v-model="props.row.start" v-slot="scope" persistent
-                  @save="(value) => update(props.row.id, 'start', value)">
-                  <q-input v-model="scope.value" dense autofocus counter @keyup.enter="scope.set" />
+                  @save="(value) => update(props.row.id, 'start', value)" :validate="val => isValidTime(val)">
+
+                  <q-input dense autofocus v-model="scope.value" mask="fulltime"
+                    :rules="[val => scope.validate(val) || 'format waktu salah']" @keyup.enter="scope.set">
+                    <template v-slot:append>
+                      <q-icon name="access_time" class="cursor-pointer">
+                        <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                          <q-time v-model="scope.value" with-seconds format24h>
+                            <div class="row items-center justify-end">
+                              <q-btn v-close-popup label="Close" color="primary" flat />
+                            </div>
+                          </q-time>
+                        </q-popup-proxy>
+                      </q-icon>
+                    </template>
+                  </q-input>
+
                   <div class="float-right">
                     <q-btn size="sm" color="red-9" flat icon="close" @click="scope.cancel" />
-                    <q-btn size="sm" color="green-9" flat icon="check" @click="scope.set" />
+                    <q-btn :disable="!scope.validate(scope.value)" size="sm" color="green-9" flat icon="check"
+                      @click="scope.set" />
                   </div>
                 </q-popup-edit>
               </q-chip> s/d
               <q-chip class="cursor-pointer" color="orange-3" :label="props.row.end">
                 <q-popup-edit v-model="props.row.end" v-slot="scope" persistent
-                  @save="(value) => update(props.row.id, 'end', value)">
-                  <q-input v-model="scope.value" dense autofocus counter @keyup.enter="scope.set" />
+                  @save="(value) => update(props.row.id, 'end', value)" :validate="val => isValidTime(val)">
+
+                  <q-input dense autofocus v-model="scope.value" mask="fulltime"
+                    :rules="[val => scope.validate(val) || 'format waktu salah']" @keyup.enter="scope.set">
+                    <template v-slot:append>
+                      <q-icon name="access_time" class="cursor-pointer">
+                        <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                          <q-time v-model="scope.value" with-seconds format24h>
+                            <div class="row items-center justify-end">
+                              <q-btn v-close-popup label="Close" color="primary" flat />
+                            </div>
+                          </q-time>
+                        </q-popup-proxy>
+                      </q-icon>
+                    </template>
+                  </q-input>
+
                   <div class="float-right">
                     <q-btn size="sm" color="red-9" flat icon="close" @click="scope.cancel" />
-                    <q-btn size="sm" color="green-9" flat icon="check" @click="scope.set" />
+                    <q-btn size="sm" color="green-9" flat icon="check" @click="scope.set"
+                      :disable="!scope.validate(scope.value)" />
                   </div>
                 </q-popup-edit>
               </q-chip></q-td>
@@ -117,11 +153,36 @@
           <q-select class="q-mb-md" color="grey-3" outlined label-color="orange" v-model="formModel.day"
             :options="options" label="Hari">
           </q-select>
-          <q-input mask="##:##:##" shadow-text="contoh: 20:30:00" class="q-mb-md" outlined v-model="formModel.start"
-            type="text" label="Jam Mulai" />
 
-          <q-input mask="##:##:##" shadow-text="contoh: 20:30:00" class="q-mb-md" outlined v-model="formModel.end"
-            type="text" label="Jam Mulai" />
+          <q-input filled v-model="formModel.start" mask="fulltime" :rules="['fulltime']">
+            <template v-slot:append>
+              <q-icon name="access_time" class="cursor-pointer">
+                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                  <q-time v-model="formModel.start" with-seconds format24h>
+                    <div class="row items-center justify-end">
+                      <q-btn v-close-popup label="Close" color="primary" flat />
+                    </div>
+                  </q-time>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+
+          <q-input filled v-model="formModel.end" mask="fulltime" :rules="['fulltime']">
+            <template v-slot:append>
+              <q-icon name="access_time" class="cursor-pointer">
+                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                  <q-time v-model="formModel.end" with-seconds format24h>
+                    <div class="row items-center justify-end">
+                      <q-btn v-close-popup label="Close" color="primary" flat />
+                    </div>
+                  </q-time>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+
+          <q-input class="q-mb-md" outlined v-model="formModel.order" type="number" label="Jam Ke" />
         </q-card-section>
 
 
@@ -130,13 +191,14 @@
         </q-card-actions>
       </q-card>
     </section>
+
   </q-page>
 </template>
 
 <script setup>
 import { useStudentActivitiesStore } from "src/stores/student-activities-store";
 import { onBeforeMount, onMounted, ref, computed, nextTick } from "vue"
-import PopUpEdit from "src/components/PopUpEdit.vue";
+import { isValidTime } from "src/utilities/time-util"
 
 const nameRef = ref(null)
 const nextMorphStep = {
@@ -196,19 +258,33 @@ const update = (id, column, value) => {
   // console.log(value);
 }
 
+
 const formModel = ref({
   name: '',
   day: '',
   start: '',
-  end: ''
+  end: '',
+  order: 0
 })
+
+const isValid = ref(false)
+
+const onChange = (time) => {
+  if (isValidTime(time)) {
+    isValid.value = true
+  }
+  console.log(time);
+  // console.log(isValid.value);
+}
 
 onBeforeMount(() => {
   studentActivityStore.getAllActivitiesFromServer()
 })
 
+
 onMounted(() => {
   // tableRows.value = useAttendance.attendances;
   // useAttendance.addAttendance();
+
 });
 </script>

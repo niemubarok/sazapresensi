@@ -26,8 +26,9 @@ export default class StudentActivity extends BaseModel {
     // console.log(day);
 
     query
-      .where((query) => query.where("day", "=", day)
-        .orWhere("day", '=', 'daily'))
+      .where((query) =>
+        query.where("day", "=", day).orWhere("day", "=", "daily")
+      )
       .where("start", "<=", time)
       .where("end", ">=", time);
   });

@@ -68,6 +68,8 @@ export default class StudentActivitiesService {
   public async getCurrentActivity() {
     const day = getDayName(getTime().date);
     const now = getTime().time;
+    console.log(now);
+
     const currentActivity = StudentActivities.query().withScopes((scopes) =>
       scopes.current(day, now)
     );
@@ -99,11 +101,8 @@ export default class StudentActivitiesService {
         .where("id", req?.id)
         .update({ [req?.column]: req?.value });
 
-      // Ws.io.on("connection", () => {
-      Ws.io.emit("activity:update", () => {
-        console.log("triggered");
-      });
-      // });
+      Ws.io.emit("activity:update");
+      await this.scheduler();
 
       ctx.response.status(201).json({
         message: "berhasil update",
