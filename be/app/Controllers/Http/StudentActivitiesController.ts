@@ -1,6 +1,6 @@
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import StudentActivitiesService from "App/Services/StudentActivitiesService";
-import StudentActivity from "App/Models/StudentActivity";
+// import StudentActivity from "App/Models/StudentActivity";
 // import { getTime } from "App/Utils/TimeUtil";
 
 export default class StudentActivitiesController {
@@ -19,7 +19,9 @@ export default class StudentActivitiesController {
 
   public async edit({}: HttpContextContract) {}
 
-  public async update({}: HttpContextContract) {}
+  public async update(ctx: HttpContextContract) {
+    return new StudentActivitiesService().updateActivity(ctx);
+  }
 
   public async destroy({}: HttpContextContract) {}
 }

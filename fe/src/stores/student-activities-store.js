@@ -33,11 +33,13 @@ export const useStudentActivitiesStore = defineStore("StudentActivities", {
     currentActivity() {
       socket.emit("activity:getcurrent");
       socket.on("activity:current", (activity) => {
+        console.log(activity?.length);
         if (activity?.length) {
           ls.set("activityId", activity[0]?.id);
-          // console.log(activity);
           this.activity = activity[0];
           this.isPresenceTime = true;
+        } else {
+          this.isPresenceTime = false;
         }
       });
     },
@@ -72,6 +74,19 @@ export const useStudentActivitiesStore = defineStore("StudentActivities", {
             classes: "q-px-xl",
             timeout: 600000,
           });
+        });
+    },
+    async updateActivity(id, column, value) {
+      await axios
+        .patch(`${process.env.API}student/activities/update`, {
+          data: {
+            id,
+            column,
+            value,
+          },
+        })
+        .then((res) => {
+          // socket.on("activity:update")
         });
     },
   },

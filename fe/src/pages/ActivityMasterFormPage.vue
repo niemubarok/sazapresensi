@@ -39,31 +39,58 @@
                 <small> Klik untuk edit</small>
                 <!-- </q-chip> -->
               </q-tooltip>
-              <q-popup-edit v-model="props.row.name" v-slot="scope" buttons label-cancel="batal" label-set="simpan">
+              <q-popup-edit v-model="props.row.name" v-slot="scope" persistent
+                @save="(value) => update(props.row.id, 'name', value)">
                 <q-input v-model="scope.value" dense autofocus counter @keyup.enter="scope.set" />
+                <div class="float-right">
+                  <q-btn size="sm" color="red-9" flat icon="close" @click="scope.cancel" />
+                  <q-btn size="sm" color="green-9" flat icon="check" @click="scope.set" />
+                </div>
               </q-popup-edit>
 
             </q-td>
             <q-td key="day" class="cursor-pointer" :props="props">{{ props.row.day }}
-              <q-popup-edit v-model="props.row.day" v-slot="scope" buttons label-cancel="batal" label-set="simpan">
+              <q-popup-edit v-model="props.row.day" v-slot="scope" persistent
+                @save="(value) => update(props.row.id, 'day', value)">
                 <q-input v-model="scope.value" dense autofocus counter @keyup.enter="scope.set" />
+                <div class="float-right">
+                  <q-btn size="sm" color="red-9" flat icon="close" @click="scope.cancel" />
+                  <q-btn size="sm" color="green-9" flat icon="check" @click="scope.set" />
+                </div>
               </q-popup-edit>
             </q-td>
             <q-td key="jam" :props="props">
 
               <q-chip class="cursor-pointer" color="green-3" :label="props.row.start">
-                <q-popup-edit v-model="props.row.start" v-slot="scope">
-                  <q-input v-model="scope.value" dense autofocus counter />
+                <q-popup-edit v-model="props.row.start" v-slot="scope" persistent
+                  @save="(value) => update(props.row.id, 'start', value)">
+                  <q-input v-model="scope.value" dense autofocus counter @keyup.enter="scope.set" />
+                  <div class="float-right">
+                    <q-btn size="sm" color="red-9" flat icon="close" @click="scope.cancel" />
+                    <q-btn size="sm" color="green-9" flat icon="check" @click="scope.set" />
+                  </div>
                 </q-popup-edit>
               </q-chip> s/d
               <q-chip class="cursor-pointer" color="orange-3" :label="props.row.end">
-                <q-popup-edit v-model="props.row.end" v-slot="scope">
-                  <q-input v-model="scope.value" dense autofocus counter />
+                <q-popup-edit v-model="props.row.end" v-slot="scope" persistent
+                  @save="(value) => update(props.row.id, 'end', value)">
+                  <q-input v-model="scope.value" dense autofocus counter @keyup.enter="scope.set" />
+                  <div class="float-right">
+                    <q-btn size="sm" color="red-9" flat icon="close" @click="scope.cancel" />
+                    <q-btn size="sm" color="green-9" flat icon="check" @click="scope.set" />
+                  </div>
                 </q-popup-edit>
               </q-chip></q-td>
-            <!-- <q-td key="in" :props="props">{{ props.row.in }}</q-td> -->
-            <!-- <q-td key="out" :props="props">{{ props.row.out }}</q-td> -->
-            <q-td key="status" :props="props">{{ props.row.status }}</q-td>
+            <q-td key="order" class="cursor-pointer" :props="props">{{ props.row.order }}
+              <q-popup-edit v-model="props.row.order" v-slot="scope" persistent
+                @save="(value) => update(props.row.id, 'order', value)">
+                <q-input v-model="scope.value" dense autofocus counter @keyup.enter="scope.set" />
+                <div class="float-right">
+                  <q-btn size="sm" color="red-9" flat icon="close" @click="scope.cancel" />
+                  <q-btn size="sm" color="green-9" flat icon="check" @click="scope.set" />
+                </div>
+              </q-popup-edit>
+            </q-td>
           </q-tr>
         </template>
       </q-table>
@@ -71,50 +98,50 @@
 
 
     <!-- //morph -->
-
-    <q-btn v-morph:btn:mygroup:300.resize="morphGroupModel" class="fixed-bottom-right" style="margin-bottom:70px;" fab
-      color="teal-9" size="xs" icon="add" @click="nextMorph">
-    </q-btn>
-
-
-    <q-card v-morph:card1:mygroup:500.resize="morphGroupModel" class="fixed-bottom-right q-ma-md bg-grey-1"
-      style="width: 800px; height:600px ;border-bottom-left-radius: 2em;">
-      <q-banner class="text-grey-1 bg-teal-9 text-weight-bolder">
-        <q-avatar size="20px" font-size="15px" color="teal" text-color="grey-2" icon="close"
-          class="float-right cursor-pointer" @click="nextMorph" />
-        Form Tambah Aktivitas
-      </q-banner>
-
-      <q-card-section class="text-h6 ">
-        <q-input ref="nameRef" class="q-mb-md" outlined v-model="formModel.name" type="text" label="Nama Aktivitas" />
-        <q-select class="q-mb-md" color="grey-3" outlined label-color="orange" v-model="formModel.day"
-          :options="options" label="Hari">
-        </q-select>
-        <q-input mask="##:##:##" shadow-text="contoh: 20:30:00" class="q-mb-md" outlined v-model="formModel.start"
-          type="text" label="Jam Mulai" />
-
-        <q-input mask="##:##:##" shadow-text="contoh: 20:30:00" class="q-mb-md" outlined v-model="formModel.end"
-          type="text" label="Jam Mulai" />
-      </q-card-section>
+    <section>
+      <q-btn v-morph:btn:mygroup:300.resize="morphGroupModel" class="fixed-bottom-right" style="margin-bottom:70px;" fab
+        color="teal-9" size="xs" icon="add" @click="nextMorph">
+      </q-btn>
 
 
-      <q-card-actions align="right">
-        <q-btn class="absolute-bottom-right text-white q-ma-md" color="teal-9" label="Simpan" @click="nextMorph" />
-      </q-card-actions>
-    </q-card>
+      <q-card v-morph:card1:mygroup:500.resize="morphGroupModel" class="fixed-bottom-right q-ma-md bg-grey-1"
+        style="width: 800px; height:600px ;border-bottom-left-radius: 2em;">
+        <q-banner class="text-grey-1 bg-teal-9 text-weight-bolder">
+          <q-avatar size="20px" font-size="15px" color="teal" text-color="grey-2" icon="close"
+            class="float-right cursor-pointer" @click="nextMorph" />
+          Form Tambah Aktivitas
+        </q-banner>
+
+        <q-card-section class="text-h6 ">
+          <q-input ref="nameRef" class="q-mb-md" outlined v-model="formModel.name" type="text" label="Nama Aktivitas" />
+          <q-select class="q-mb-md" color="grey-3" outlined label-color="orange" v-model="formModel.day"
+            :options="options" label="Hari">
+          </q-select>
+          <q-input mask="##:##:##" shadow-text="contoh: 20:30:00" class="q-mb-md" outlined v-model="formModel.start"
+            type="text" label="Jam Mulai" />
+
+          <q-input mask="##:##:##" shadow-text="contoh: 20:30:00" class="q-mb-md" outlined v-model="formModel.end"
+            type="text" label="Jam Mulai" />
+        </q-card-section>
+
+
+        <q-card-actions align="right">
+          <q-btn class="absolute-bottom-right text-white q-ma-md" color="teal-9" label="Simpan" @click="nextMorph" />
+        </q-card-actions>
+      </q-card>
+    </section>
   </q-page>
 </template>
 
 <script setup>
 import { useStudentActivitiesStore } from "src/stores/student-activities-store";
 import { onBeforeMount, onMounted, ref, computed, nextTick } from "vue"
-import { morph } from 'quasar'
+import PopUpEdit from "src/components/PopUpEdit.vue";
 
 const nameRef = ref(null)
 const nextMorphStep = {
   btn: 'card1',
   card1: 'btn',
-  // card2: 'btn'
 }
 const morphGroupModel = ref('btn')
 const nextMorph = () => {
@@ -122,10 +149,6 @@ const nextMorph = () => {
     nameRef.value.focus();
   });
   morphGroupModel.value = nextMorphStep[morphGroupModel.value]
-}
-
-const prevMorph = () => {
-  morphGroupModel.value = 'btn'
 }
 
 const day = ref('')
@@ -154,11 +177,11 @@ const columns = [
     label: "JAM",
     align: "center",
   },
-  // {
-  //   name: "end",
-  //   label: "Jam Datang",
-  //   align: "center",
-  // },
+  {
+    name: "order",
+    label: "JAM KE",
+    align: "center",
+  },
   // {
   //   name: "status",
   //   label: "Status",
@@ -168,8 +191,9 @@ const columns = [
 
 const tableRows = computed(() => studentActivityStore.all)
 
-const update = (value) => {
-  console.log(value);
+const update = (id, column, value) => {
+  studentActivityStore.updateActivity(id, column, value)
+  // console.log(value);
 }
 
 const formModel = ref({

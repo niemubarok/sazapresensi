@@ -15,6 +15,7 @@ Route.group(() => {
   Route.post("/nis", "StudentsController.getByNis");
   Route.post("/class", "StudentsController.getByClass");
   Route.post("/activities/day", "StudentActivitiesController.index");
+  Route.patch("/activities/update", "StudentActivitiesController.update");
   Route.post("/attendances", "StudentAttendancesController.index");
   Route.post("/attendances/create", "StudentAttendancesController.create");
 }).prefix("/student");
@@ -32,9 +33,9 @@ Route.get("/", () => {
   return "works";
 });
 
-Route.get('/health', async ({ response }) => {
-  const { report, healthy } = await HealthCheck.getReport()
+Route.get("/health", async ({ response }) => {
+  const { report, healthy } = await HealthCheck.getReport();
   return healthy
     ? response.status(200).send(report)
-    : response.status(400).send(report)
-})
+    : response.status(400).send(report);
+});

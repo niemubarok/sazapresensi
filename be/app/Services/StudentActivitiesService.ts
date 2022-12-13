@@ -2,8 +2,9 @@ import StudentActivities from "App/Models/StudentActivity";
 
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import { getTime, getDayName } from "App/Utils/TimeUtil";
-import schedule, { scheduleJob } from "node-schedule";
+import schedule from "node-schedule";
 import Ws from "./Ws";
+import Database from "@ioc:Adonis/Lucid/Database";
 // import { DateTime } from "luxon";
 // import Database from "@ioc:Adonis/Lucid/Database";
 
@@ -30,7 +31,6 @@ export default class StudentActivitiesService {
       startRule.second = parseInt(start.split(":")[2]);
       schedule.scheduleJob(startRule, () => {
         Ws.io.emit("activity:start", activity);
-        console.log(day);
         console.log(getTime().time);
         console.log(activity?.name);
       });
@@ -47,25 +47,22 @@ export default class StudentActivitiesService {
   }
 
   public async getAllActivities(ctx: HttpContextContract) {
-    // const req = ctx.request.body();
+    try {
+      const activities = await Database.from("student_activities")
+        .select("*")
+        .orderBy("order", "asc");
 
-    // if (req?.day) {
-    //   const activityByDay = await StudentActivities.query()
-    //     .where("day", req?.day)
-    //     .orWhere("day", "daily");
-    //   ctx.response.status(200).json({
-    //     status: 200,
-    //     message: "success",
-    //     data: activityByDay,
-    //   });
-    // } else {
-    const activities = await StudentActivities.all();
-    ctx.response.status(200).json({
-      status: 200,
-      message: "success",
-      data: activities,
-    });
-    // }
+      ctx.response.status(200).json({
+        status: 200,
+        message: "success",
+        data: activities,
+      });
+    } catch (error) {
+      ctx.response.status(500).json({
+        message: "success",
+        data: error,
+      });
+    }
   }
 
   public async getCurrentActivity() {
@@ -92,19 +89,34 @@ export default class StudentActivitiesService {
   //   return activity;
   // }
 
-  // public async updateActivity(ctx: HttpContextContract) {
-  //   // Retrieve the activity ID and updated data from the request body
-  //   const activityId = ctx.params.id;
-  //   const data = ctx.request.only(["title", "description"]);
+  public async updateActivity(ctx: HttpContextContract) {
+    // Retrieve the activity ID and updated data from the request body
+    const req = ctx.request.body().data;
 
-  //   // Update the activity in the database
-  //   const activity = await Database.table("activities")
-  //     .where("id", activityId)
-  //     .update(data);
+    // // Update the activity in the database
+    try {
+      await StudentActivities.query()
+        .where("id", req?.id)
+        .update({ [req?.column]: req?.value });
 
-  //   // Return the updated activity
-  //   return activity;
-  // }
+      // Ws.io.on("connection", () => {
+      Ws.io.emit("activity:update", () => {
+        console.log("triggered");
+      });
+      // });
+
+      ctx.response.status(201).json({
+        message: "berhasil update",
+      });
+    } catch (err) {
+      ctx.response.status(304).json({
+        message: "not modified",
+      });
+    }
+
+    // // Return the updated activity
+    // return activity;
+  }
 
   // public async deleteActivity(ctx: HttpContextContract) {
   //   // Retrieve the activity ID from the request parameters

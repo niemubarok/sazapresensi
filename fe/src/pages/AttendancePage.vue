@@ -160,12 +160,11 @@ onMounted(() => {
   studentActivitiesStore.endActivity();
 
 
-  // socket.on("activity:start", (activity) => {
-  //   ls.set("activityId", activity?.id);
-  //   console.log(activity);
-  // this.activity = payload;
-  // this.isPresenceTime = true;
-  // });
+  socket.on("activity:update", () => {
+    console.log("update");
+    studentActivitiesStore.currentActivity();
+    // window.location.reload()
+  });
   if (!ls.get("location")) {
     onClickSettings();
   }
@@ -173,8 +172,6 @@ onMounted(() => {
 
 
   socket.on("connect_error", () => {
-    // console.log("connection error");
-    console.log(error.value.connection);
     if (error.value.connection === false) {
       Notify.create({
         message: "Gagal Terhubung ke Server, Hubungi Admin!",
