@@ -14,5 +14,10 @@ Ws.io.on("connection", (socket) => {
       const data = await studentActivitiesService.getCurrentActivity();
       socket.emit("activity:current", data);
     });
+    socket.on("ping", (message) => {
+      console.log(message);
+
+      socket.emit("pong", "yoo");
+    });
   }
 });

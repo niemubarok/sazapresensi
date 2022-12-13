@@ -1,7 +1,7 @@
-// import axios from "axios";
+import axios from "axios";
 import { defineStore } from "pinia";
 // import { ref } from "vue";
-// import { Notify } from "quasar";
+import { Notify } from "quasar";
 // import { io } from "socket.io-client";
 import { socket } from "src/services/socketio-service";
 import ls from "localstorage-slim";
@@ -44,7 +44,8 @@ export const useStudentActivitiesStore = defineStore("StudentActivities", {
     async startActivity() {
       socket.on("activity:start", (activity) => {
         ls.set("activityId", activity?.id);
-        this.activity = payload;
+        console.log(activity);
+        this.activity = activity;
         this.isPresenceTime = true;
       });
     },
@@ -52,27 +53,26 @@ export const useStudentActivitiesStore = defineStore("StudentActivities", {
     async endActivity() {
       socket.on("activity:end", () => {
         this.isPresenceTime = false;
+        this.activity = {};
       });
     },
 
-    //   async getActivitiesByDayFromDB(day) {
-    //     await axios
-    //       .post(`${process.env.API}student/activities/day`, {
-    //         day,
-    //       })
-    //       .then((res) => {
-    //         // console.log(res.data.data);
-    //         this.today = res.data.data;
-    //       })
-    //       .catch((err) => {
-    //         Notify.create({
-    //           message: "Gagal Terhubung ke Server, Hubungi Admin!",
-    //           type: "negative",
-    //           position: "center",
-    //           classes: "q-px-xl",
-    //           timeout: 600000,
-    //         });
-    //       });
-    //   },
+    async getAllActivitiesFromServer() {
+      await axios
+        .get(`${process.env.API}student/activities/all`)
+        .then((res) => {
+          // console.log(res.data.data);
+          this.all = res.data.data;
+        })
+        .catch((err) => {
+          Notify.create({
+            message: "Gagal Terhubung ke Server, Hubungi Admin!",
+            type: "negative",
+            position: "center",
+            classes: "q-px-xl",
+            timeout: 600000,
+          });
+        });
+    },
   },
 });

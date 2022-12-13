@@ -11,11 +11,19 @@ const routes = [
         meta: { isSidebar: true },
       },
       {
-        path: "/anjungan",
+        path: "anjungan",
         name: "anjungan",
         component: () => import("src/pages/AttendancePage.vue"),
         meta: {
           isSidebar: false,
+        },
+      },
+      {
+        path: "/master/activity",
+        name: "activityMaster",
+        component: () => import("src/pages/ActivityMasterFormPage.vue"),
+        meta: {
+          isSidebar: true,
         },
       },
       {

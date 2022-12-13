@@ -1,21 +1,16 @@
 <template>
   <div class="row text-center container">
-    <!-- <div class="fixed-top z-top">
-      <q-chip rounded :label="date" floating="bottom" />
-    </div> -->
     <div class="column">
       <q-card class="bg-dark fixed-top-left text-center q-py-md q-mx-md" style="width: 200px">
         <q-img width="150px" class="z-top" alt="saza logo" src="~assets/brand/IEC.png" />
 
-        <!-- <q-separator color="grey-8" class="q-mt-md" /> -->
         <q-linear-progress dark rounded indeterminate color="grey-8" class="q-mt-sm" size="xl" />
 
         <input v-model="inputValue" ref="input" type="text" v-on:keyup.enter="submitAttendance"
           class="absolute-top bg-dark text-dark no-border no-outline" />
-        <!-- class="z-top" -->
+
 
         <div>
-          <!-- {{ teacherAvatar }} -->
           <div class="flex align-start">
             <q-chip class="bg-transparent text-grey-4" style="
                 border-top: 0px;
@@ -51,7 +46,7 @@
         <q-card class="glass" style="width: 200px; height: 100px; margin-top: -130px">
           <q-card-section>
             <Clock />
-            <div class="text-body text-white">
+            <div v-if="isPresenceTime" class="text-body text-white">
               <span> Absen Untuk </span>
             </div>
             <q-chip v-if="!isPresenceTime" class="bg-red text-body text-white">Belum Waktunya Absen</q-chip>
@@ -158,19 +153,24 @@ onBeforeMount(() => {
   studentActivitiesStore.currentActivity();
 });
 
-onMounted(async () => {
+onMounted(() => {
   useSettingStore().getSettingsFromDB();
 
   studentActivitiesStore.startActivity();
   studentActivitiesStore.endActivity();
+
+
+  // socket.on("activity:start", (activity) => {
+  //   ls.set("activityId", activity?.id);
+  //   console.log(activity);
+  // this.activity = payload;
+  // this.isPresenceTime = true;
+  // });
   if (!ls.get("location")) {
     onClickSettings();
   }
 
-  socket.on("connect", () => {
-    console.log("connection established");
-    error.value.connection = false;
-  });
+
 
   socket.on("connect_error", () => {
     // console.log("connection error");
@@ -186,7 +186,14 @@ onMounted(async () => {
       error.value.connection = true;
     }
   });
+
+  setInterval(() => {
+    socket.emit("ping", "woy")
+  }, 1800000)
 });
+
+
+
 </script>
 
 <style scoped>

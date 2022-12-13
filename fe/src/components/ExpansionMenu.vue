@@ -16,7 +16,7 @@
         :hide-expand-icon="!navItem.child">
         <q-list class="q-pl-lg" v-if="navItem.child">
           <template v-for="child in navItem.child" :key="child.text">
-            <q-item :to="child.to" active-class="q-item-no-link-highlighting">
+            <q-item :to="child.to" exact active-class="q-item-no-link-highlighting">
               <q-item-section avatar>
                 <q-icon :name="child.icon" />
               </q-item-section>
@@ -66,14 +66,19 @@ const navItems = [
     to: { name: '' },
     child: [{
       icon: fasPersonChalkboard, text: "Guru", to: { name: '' },
-      icon: fasPersonChalkboard, text: "Guru", to: { name: '' },
-      icon: fasPersonChalkboard, text: "Guru", to: { name: '' }
+    },
+    {
+
+      icon: fasUserGroup, text: "Santri", to: { name: '' },
+    },
+    {
+      icon: fasPersonChalkboard, text: "Activitas", to: { name: 'activityMaster' }
     }]
   },
   {
-    icon: "folder",
+    icon: "dvr",
     text: "Anjungan",
-    to: 'anjungan',
+    to: { name: 'anjungan' },
   },
   // { icon: fasUserGroup, text: "Santri", to: {name:''} },
   // { icon: fasSitemap, text: "Jabatan", to: {name:''} },

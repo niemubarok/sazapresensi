@@ -2,30 +2,37 @@ import StudentActivities from "App/Models/StudentActivity";
 
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import { getTime, getDayName } from "App/Utils/TimeUtil";
-import schedule from "node-schedule";
+import schedule, { scheduleJob } from "node-schedule";
 import Ws from "./Ws";
 // import { DateTime } from "luxon";
 // import Database from "@ioc:Adonis/Lucid/Database";
 
 export default class StudentActivitiesService {
   public async scheduler() {
-    const day = getDayName(getTime().date);
+    let day = getDayName(getTime().date);
 
-    console.log(day);
+    schedule.scheduleJob("0 5 0 * * *", async () => {
+      day = getDayName(getTime().date);
+      console.log("new day");
+    });
 
     const activitiesByDay = await StudentActivities.query()
       .where("day", day)
-      .orWhere("day", "daily")
+      .orWhere("day", "daily");
 
     activitiesByDay.forEach((activity) => {
       const start = activity?.start; // The start to run the job (HH:mm:ss)
       const end = activity?.end; // The start to run the job (HH:mm:ss)
+
       const startRule = new schedule.RecurrenceRule();
       startRule.hour = parseInt(start.split(":")[0]);
       startRule.minute = parseInt(start.split(":")[1]);
       startRule.second = parseInt(start.split(":")[2]);
       schedule.scheduleJob(startRule, () => {
         Ws.io.emit("activity:start", activity);
+        console.log(day);
+        console.log(getTime().time);
+        console.log(activity?.name);
       });
 
       const endRule = new schedule.RecurrenceRule();
@@ -37,34 +44,33 @@ export default class StudentActivitiesService {
         Ws.io.emit("activity:end");
       });
     });
-
   }
 
-  public async getActivities(ctx: HttpContextContract) {
-    const req = ctx.request.body();
+  public async getAllActivities(ctx: HttpContextContract) {
+    // const req = ctx.request.body();
 
-    if (req?.day) {
-      const activityByDay = await StudentActivities.query()
-        .where("day", req?.day)
-        .orWhere("day", "daily");
-      ctx.response.status(200).json({
-        status: 200,
-        message: "success",
-        data: activityByDay,
-      });
-    } else {
-      const activities = await StudentActivities.all();
-      ctx.response.status(200).json({
-        status: 200,
-        message: "success",
-        data: activities,
-      });
-    }
+    // if (req?.day) {
+    //   const activityByDay = await StudentActivities.query()
+    //     .where("day", req?.day)
+    //     .orWhere("day", "daily");
+    //   ctx.response.status(200).json({
+    //     status: 200,
+    //     message: "success",
+    //     data: activityByDay,
+    //   });
+    // } else {
+    const activities = await StudentActivities.all();
+    ctx.response.status(200).json({
+      status: 200,
+      message: "success",
+      data: activities,
+    });
+    // }
   }
 
   public async getCurrentActivity() {
     const day = getDayName(getTime().date);
-    const now = getTime().time
+    const now = getTime().time;
     const currentActivity = StudentActivities.query().withScopes((scopes) =>
       scopes.current(day, now)
     );

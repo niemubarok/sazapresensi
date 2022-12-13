@@ -6,14 +6,16 @@ import StudentActivity from "App/Models/StudentActivity";
 export default class StudentActivitiesController {
   public async index(ctx: HttpContextContract) {
     // return new StudentActivitiesService().getActivities(ctx);
-    return new StudentActivitiesService().scheduler();
+    return new StudentActivitiesService().getAllActivities(ctx);
   }
 
   public async create({}: HttpContextContract) {}
 
   public async store({}: HttpContextContract) {}
 
-  public async show({}: HttpContextContract) {}
+  public async show({}: HttpContextContract) {
+    return new StudentActivitiesService().getCurrentActivity();
+  }
 
   public async edit({}: HttpContextContract) {}
 

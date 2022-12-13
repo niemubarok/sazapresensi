@@ -1,28 +1,24 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="bg-grey-1">
-    <q-header v-if="$route.meta.isSidebar" class="bg-white text-grey-8 q-py-xs" elevated>
+    <q-header v-if="$route.meta.isSidebar" class="text-grey-8 q-py-xs"
+      style="background-color: rgb(229, 229, 229, 0.9)">
       <q-toolbar>
         <q-btn flat dense round @click="leftDrawerOpen = !leftDrawerOpen" icon="menu" aria-label="Menu" />
         <q-btn flat no-caps no-wrap class="q-ml-xs" v-if="$q.screen.gt.xs">
-          <!-- <q-icon :name="fabYoutube" color="red" size="28px" /> -->
           <q-toolbar-title shrink class="text-weight-bold">
-            Salsabiila Zainia
+            <q-img width="50px" alt="saza logo" src="~assets/brand/pondok.png" />
+            <span class="text-primary">
+              Salsabiila Zainia
+            </span>
 
             <small>Presensi</small>
-            <!-- {{ exampleStore.counter }} -->
           </q-toolbar-title>
         </q-btn>
         <q-space />
-        <div class="q-gutter-sm row items-center no-wrap">
+        <!-- <div class="q-gutter-sm row items-center no-wrap">
           <q-btn round dense flat color="white" :icon="$q.fullscreen.isActive ? 'fullscreen_exit' : 'fullscreen'"
             @click="$q.fullscreen.toggle()" v-if="$q.screen.gt.sm">
           </q-btn>
-          <!-- <q-btn round dense flat color="white" icon="fab fa-github" type="a"
-            href="https://github.com/pratik227/quasar-admin" target="_blank">
-          </q-btn>
-          <q-btn round dense flat icon="fas fa-heart" style="color:#9d4182 !important;" type="a"
-            href="https://github.com/sponsors/pratik227" target="_blank">
-          </q-btn> -->
           <q-btn round dense flat color="white" icon="notifications">
             <q-badge color="red" text-color="white" floating>
               5
@@ -41,7 +37,7 @@
               <img src="https://cdn.quasar.dev/img/boy-avatar.png">
             </q-avatar>
           </q-btn>
-        </div>
+        </div> -->
       </q-toolbar>
     </q-header>
 
