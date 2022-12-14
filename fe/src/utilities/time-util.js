@@ -2,18 +2,20 @@ export const zeroPad = (n) => {
   return (n < 10 ? "0" : "") + n;
 };
 
+export const dayName = [
+  "Minggu",
+  "Senin",
+  "Selasa",
+  "Rabu",
+  "Kamis",
+  "Jum'at",
+  "Sabtu",
+];
+
 export const getDayName = (date) => {
   const initDate = new Date(date);
   const day = initDate.getDay();
-  const dayName = [
-    "Minggu",
-    "Senin",
-    "Selasa",
-    "Rabu",
-    "Kamis",
-    "Jum'at",
-    "Sabtu",
-  ];
+
   return day == 0 ? dayName[0] : dayName[day];
 };
 
