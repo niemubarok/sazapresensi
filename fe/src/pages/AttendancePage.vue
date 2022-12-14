@@ -19,7 +19,7 @@
                 border-left: 0;
               " square label="Ustadz / Ustadzah" size="sm" />
           </div>
-          <q-skeleton v-if="!teacher" class="q-mx-xs vertical-middle"
+          <q-skeleton v-if="!teacher" class="q-mx-xs  vertical-middle"
             style="width: 190px; height: 75px; margin-top: 10px" bordered type="rect">
             <p class="text-yellow-4 q-mt-sm">Belum ada Guru yang Absen</p>
           </q-skeleton>
@@ -43,14 +43,20 @@
         </div>
       </q-card>
       <div class="fixed-bottom-left text-center q-ma-md q-mb-xl">
-        <q-card class="glass" style="width: 200px; height: 100px; margin-top: -130px">
+        <q-card class="glass" style="width: 200px; margin-top: -130px">
           <q-card-section>
             <Clock />
             <div v-if="isPresenceTime" class="text-body text-white">
               <span> Absen Untuk </span>
             </div>
             <q-chip v-if="!isPresenceTime" class="bg-red text-body text-white">Belum Waktunya Absen</q-chip>
-            <q-chip v-else class="text-subtitle2 card-border-radius text-dark">{{ activity?.name }}</q-chip>
+            <div v-else>
+              <q-chip class="text-subtitle2 card-border-radius text-dark">{{ activity?.name }}</q-chip>
+              <q-chip size="xs" class="text-subtitle2 card-border-radius text-dark">{{ activity?.start }} s/d {{
+                  activity?.end
+              }}</q-chip>
+              <!-- <q-chip size="xs" class="text-subtitle2 card-border-radius text-dark"></q-chip> -->
+            </div>
           </q-card-section>
         </q-card>
       </div>
@@ -60,12 +66,11 @@
       <AttendanceCardList />
     </div>
   </div>
-  <marquee direction="left" class="fixed-bottom q-mb-sm"><q-chip class="q-pl-md text-weight-bolder" outline size="sm"
-      color="green-9">
-      <q-avatar icon="lightbulb" color="green-9" text-color="white" />
-      Bohong
-      adalah pangkal dari
-      segala dosa
+  <marquee direction="right" class="fixed-bottom q-mb-sm z-top"><q-chip
+      class="q-pl-md text-weight-bolder bg-blue-grey-1" outline size="sm" color="green-9">
+      <q-avatar class="q-ml-md" icon="lightbulb" color="orange-6" text-color="white" />
+      العلم بلاعمل كالشجر بلا ثمر
+
     </q-chip>
 
   </marquee>

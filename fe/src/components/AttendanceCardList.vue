@@ -65,7 +65,7 @@
 
       <template v-slot:no-data>
         <div class="full-width row flex-center text-grey q-gutter-sm">
-          <q-card class="my-card">
+          <q-card class="my-card q-mt-md">
             <img src="https://cdn.quasar.dev/img/mountains.jpg" style="height: 300px" />
             <q-card-section>
               <div class="text-h6">Belum ada Santri absen</div>
@@ -82,7 +82,7 @@
 
       <template v-slot:pagination="scope">
         <div class="row fixed-bottom-right q-mb-md z-top" style="margin-right: 100px">
-          <div class="column q-pr-xl">
+          <!-- <div class="column q-pr-xl">
             <div class="row">
               <q-chip text-color="dark" size="sm" color="grey-1">
                 filter :</q-chip>
@@ -96,7 +96,7 @@
                 Telat
               </q-chip>
             </div>
-          </div>
+          </div> -->
           <!-- </div> -->
           <div class="column q-px-md">
             <q-btn unelevated class="no-shadow card-border-radius" :icon="fasChevronLeft" size="xs" color="blue-grey-8"
