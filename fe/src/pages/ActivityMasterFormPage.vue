@@ -73,21 +73,8 @@
               <q-chip class="cursor-pointer" color="green-3" :label="props.row.start">
                 <q-popup-edit v-model="props.row.start" v-slot="scope" persistent
                   @save="(value) => update(props.row.id, 'start', value)" :validate="(val) => isValidTime(val)">
-                  <q-input dense autofocus v-model="scope.value" mask="fulltime" :rules="[
-                    (val) => scope.validate(val) || 'format waktu salah',
-                  ]" @keyup.enter="scope.set">
-                    <template v-slot:append>
-                      <q-icon name="access_time" class="cursor-pointer">
-                        <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                          <q-time v-model="scope.value" with-seconds format24h>
-                            <div class="row items-center justify-end">
-                              <q-btn v-close-popup label="Close" color="primary" flat />
-                            </div>
-                          </q-time>
-                        </q-popup-proxy>
-                      </q-icon>
-                    </template>
-                  </q-input>
+
+                  <time-picker v-model="scope.value" :rules="['fulltime']" error="Format Waktu Salah" />
 
                   <div class="float-right">
                     <q-btn size="sm" color="red-9" flat icon="close" @click="scope.cancel" />
@@ -100,21 +87,8 @@
               <q-chip class="cursor-pointer" color="orange-3" :label="props.row.end">
                 <q-popup-edit v-model="props.row.end" v-slot="scope" persistent
                   @save="(value) => update(props.row.id, 'end', value)" :validate="(val) => isValidTime(val)">
-                  <q-input dense autofocus v-model="scope.value" mask="fulltime" :rules="[
-                    (val) => scope.validate(val) || 'format waktu salah',
-                  ]" @keyup.enter="scope.set">
-                    <template v-slot:append>
-                      <q-icon name="access_time" class="cursor-pointer">
-                        <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                          <q-time v-model="scope.value" with-seconds format24h>
-                            <div class="row items-center justify-end">
-                              <q-btn v-close-popup label="Close" color="primary" flat />
-                            </div>
-                          </q-time>
-                        </q-popup-proxy>
-                      </q-icon>
-                    </template>
-                  </q-input>
+
+                  <time-picker v-model="scope.value" :rules="['fulltime']" error="Format Waktu Salah" />
 
                   <div class="float-right">
                     <q-btn size="sm" color="red-9" flat icon="close" @click="scope.cancel" />
@@ -138,63 +112,36 @@
     </q-card>
 
     <!-- //morph -->
-    <section>
-      <q-btn v-morph:btn:mygroup:300.resize="morphGroupModel" class="fixed-bottom-right q-mr-sm"
-        style="margin-bottom: 70px" fab color="teal-9" size="xs" icon="add" @click="nextMorph">
-      </q-btn>
+    <add-button>
+      <template #form>
+        <q-input ref="nameRef" class="q-mb-md" outlined v-model="formModel.name" type="text"
+          :rules="[(val) => val.length > 3 || 'Nama minimal 3 huruf']" label="Nama Aktivitas" />
 
-      <q-card v-morph:card1:mygroup:500.resize="morphGroupModel" class="fixed-bottom-right q-ma-md bg-grey-1"
-        style="width: 70%; height: 80%; border-bottom-left-radius: 2em">
-        <q-banner class="text-grey-1 bg-teal-9 text-weight-bolder">
-          <q-avatar size="20px" font-size="15px" color="teal" text-color="grey-2" icon="close"
-            class="float-right cursor-pointer" @click="nextMorph" />
-          Form Tambah Aktivitas
-        </q-banner>
+        <q-select class="q-mb-md" color="grey-3" outlined label-color="orange" v-model="formModel.day"
+          :options="dayOptions" label="Hari">
+        </q-select>
 
-        <q-card-section class="text-h6">
-          <q-input ref="nameRef" class="q-mb-md" outlined v-model="formModel.name" type="text"
-            :rules="[(val) => val.length > 3 || 'Nama minimal 3 huruf']" label="Nama Aktivitas" />
+        <time-picker :model-value="formModel.start" rules="fulltime" error="Format Waktu Salah" />
+        <time-picker :model-value="formModel.end" rules="fulltime" error="Format Waktu Salah" />
 
-          <q-select class="q-mb-md" color="grey-3" outlined label-color="orange" v-model="formModel.day"
-            :options="dayOptions" label="Hari">
-          </q-select>
+        <!-- <q-input filled v-model="formModel.end" mask="fulltime" :rules="['fulltime']">
+          <template v-slot:append>
+            <q-icon name="access_time" class="cursor-pointer">
+              <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                <q-time v-model="formModel.end" with-seconds format24h>
+                  <div class="row items-center justify-end">
+                    <q-btn v-close-popup label="Close" color="primary" flat />
+                  </div>
+                </q-time>
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input> -->
 
-          <q-input filled v-model="formModel.start" mask="fulltime" :rules="['fulltime']">
-            <template v-slot:append>
-              <q-icon name="access_time" class="cursor-pointer">
-                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                  <q-time v-model="formModel.start" with-seconds format24h>
-                    <div class="row items-center justify-end">
-                      <q-btn v-close-popup label="Close" color="primary" flat />
-                    </div>
-                  </q-time>
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
+        <q-input class="q-mb-md" outlined v-model="formModel.order" type="number" label="Jam Ke" />
+      </template>
+    </add-button>
 
-          <q-input filled v-model="formModel.end" mask="fulltime" :rules="['fulltime']">
-            <template v-slot:append>
-              <q-icon name="access_time" class="cursor-pointer">
-                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                  <q-time v-model="formModel.end" with-seconds format24h>
-                    <div class="row items-center justify-end">
-                      <q-btn v-close-popup label="Close" color="primary" flat />
-                    </div>
-                  </q-time>
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
-
-          <q-input class="q-mb-md" outlined v-model="formModel.order" type="number" label="Jam Ke" />
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn class="absolute-bottom-right text-white q-ma-md" color="teal-9" label="Simpan" @click="nextMorph" />
-        </q-card-actions>
-      </q-card>
-    </section>
   </q-page>
 </template>
 
@@ -202,20 +149,13 @@
 import { useStudentActivitiesStore } from "src/stores/student-activities-store";
 import { onBeforeMount, onMounted, ref, computed, nextTick } from "vue";
 import { isValidTime, dayName } from "src/utilities/time-util";
+import AddButton from "src/components/AddButton.vue"
+import TimePicker from "src/components/TimePicker.vue"
+
 import SelectDay from "src/components/SelectDay.vue";
 
 const nameRef = ref(null);
-const nextMorphStep = {
-  btn: "card1",
-  card1: "btn",
-};
-const morphGroupModel = ref("btn");
-const nextMorph = () => {
-  nextTick(() => {
-    nameRef.value.focus();
-  });
-  morphGroupModel.value = nextMorphStep[morphGroupModel.value];
-};
+
 
 const day = ref("");
 const dayOptions = ["Daily", ...dayName];
