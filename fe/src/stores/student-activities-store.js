@@ -33,7 +33,6 @@ export const useStudentActivitiesStore = defineStore("StudentActivities", {
     currentActivity() {
       socket.emit("activity:getcurrent");
       socket.on("activity:current", (activity) => {
-        console.log(activity);
         if (activity?.length) {
           ls.set("activityId", activity[0]?.id);
           this.activity = activity[0];
@@ -78,7 +77,7 @@ export const useStudentActivitiesStore = defineStore("StudentActivities", {
     },
     async updateActivity(id, column, value) {
       await axios
-        .patch(`${process.env.API}student/activities/update`, {
+        .patch(`${process.env.API}master/activities/update`, {
           data: {
             id,
             column,
@@ -87,6 +86,17 @@ export const useStudentActivitiesStore = defineStore("StudentActivities", {
         })
         .then((res) => {
           // socket.on("activity:update")
+        });
+    },
+    async createActivity(activity) {
+      await axios
+        .post(`${process.env.API}master/activities/create`, {
+          data: {
+            activity,
+          },
+        })
+        .then((res) => {
+          console.log(res);
         });
     },
   },

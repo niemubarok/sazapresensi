@@ -33,10 +33,8 @@
             </q-td>
             <q-td key="name" class="cursor-pointer" :props="props">{{ props.row.name }}
               <q-tooltip anchor="center middle" self="center middle" class="bg-transparent text-grey-7">
-                <!-- <q-chip outline class="bg-grey-1" size="sm" color="green-9"> -->
                 <q-icon name="edit" size="xs" />
                 <small> Klik untuk edit</small>
-                <!-- </q-chip> -->
               </q-tooltip>
               <q-popup-edit v-model="props.row.name" v-slot="scope" persistent
                 @save="(value) => update(props.row.id, 'name', value)">
@@ -50,14 +48,6 @@
             <q-td key="day" class="cursor-pointer" :props="props">{{ props.row.day }}
               <q-popup-edit v-model="props.row.day" v-slot="scope" persistent
                 @save="(value) => update(props.row.id, 'day', value)">
-                <!-- <q-input
-                  v-model="scope.value"
-                  dense
-                  autofocus
-                  counter
-                  @keyup.enter="scope.set"
-                /> -->
-
                 <q-select class="q-mb-md" color="grey-3" label-color="orange" v-model="scope.value"
                   :options="dayOptions" label="Hari">
                 </q-select>
@@ -71,31 +61,28 @@
 
             <q-td key="jam" :props="props">
               <q-chip class="cursor-pointer" color="green-3" :label="props.row.start">
-                <q-popup-edit v-model="props.row.start" v-slot="scope" persistent
-                  @save="(value) => update(props.row.id, 'start', value)" :validate="(val) => isValidTime(val)">
 
-                  <time-picker v-model="scope.value" :rules="['fulltime']" error="Format Waktu Salah" />
-
-                  <div class="float-right">
-                    <q-btn size="sm" color="red-9" flat icon="close" @click="scope.cancel" />
-                    <q-btn :disable="!scope.validate(scope.value)" size="sm" color="green-9" flat icon="check"
-                      @click="scope.set" />
-                  </div>
-                </q-popup-edit>
+                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                  <q-time v-model="props.row.start" format24h with-seconds>
+                    <div class="row items-center justify-end q-gutter-sm">
+                      <q-btn size="sm" color="red-9" flat icon="close" v-close-popup />
+                      <q-btn size="sm" color="green-9" flat icon="check"
+                        @click="update(props.row.id, 'start', props.row.start)" v-close-popup />
+                    </div>
+                  </q-time>
+                </q-popup-proxy>
               </q-chip>
               s/d
               <q-chip class="cursor-pointer" color="orange-3" :label="props.row.end">
-                <q-popup-edit v-model="props.row.end" v-slot="scope" persistent
-                  @save="(value) => update(props.row.id, 'end', value)" :validate="(val) => isValidTime(val)">
-
-                  <time-picker v-model="scope.value" :rules="['fulltime']" error="Format Waktu Salah" />
-
-                  <div class="float-right">
-                    <q-btn size="sm" color="red-9" flat icon="close" @click="scope.cancel" />
-                    <q-btn size="sm" color="green-9" flat icon="check" @click="scope.set"
-                      :disable="!scope.validate(scope.value)" />
-                  </div>
-                </q-popup-edit> </q-chip></q-td>
+                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                  <q-time v-model="props.row.end" format24h with-seconds>
+                    <div class="row items-center justify-end q-gutter-sm">
+                      <q-btn size="sm" color="red-9" flat icon="close" v-close-popup />
+                      <q-btn size="sm" color="green-9" flat icon="check"
+                        @click="update(props.row.id, 'end', props.row.end)" v-close-popup />
+                    </div>
+                  </q-time>
+                </q-popup-proxy> </q-chip></q-td>
             <q-td key="order" class="cursor-pointer" :props="props">{{ props.row.order }}
               <q-popup-edit v-model="props.row.order" v-slot="scope" persistent
                 @save="(value) => update(props.row.id, 'order', value)">
@@ -112,36 +99,27 @@
     </q-card>
 
     <!-- //morph -->
-    <add-button>
+    <add-button ref="addBtnRef" title="Form Tambah Aktivitas">
       <template #form>
-        <q-input ref="nameRef" class="q-mb-md" outlined v-model="formModel.name" type="text"
-          :rules="[(val) => val.length > 3 || 'Nama minimal 3 huruf']" label="Nama Aktivitas" />
+        <q-input class="q-mb-md" v-model="formModel.name" type="text"
+          :rules="[(val) => val.length >= 3 || 'Nama minimal 3 huruf']" label="Nama Aktivitas" />
 
-        <q-select class="q-mb-md" color="grey-3" outlined label-color="orange" v-model="formModel.day"
-          :options="dayOptions" label="Hari">
+        <q-select class="q-mb-md" color="grey-3" label-color="orange" v-model="formModel.day" :options="dayOptions"
+          label="Hari">
         </q-select>
 
-        <time-picker :model-value="formModel.start" rules="fulltime" error="Format Waktu Salah" />
-        <time-picker :model-value="formModel.end" rules="fulltime" error="Format Waktu Salah" />
-
-        <!-- <q-input filled v-model="formModel.end" mask="fulltime" :rules="['fulltime']">
-          <template v-slot:append>
-            <q-icon name="access_time" class="cursor-pointer">
-              <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                <q-time v-model="formModel.end" with-seconds format24h>
-                  <div class="row items-center justify-end">
-                    <q-btn v-close-popup label="Close" color="primary" flat />
-                  </div>
-                </q-time>
-              </q-popup-proxy>
-            </q-icon>
-          </template>
-        </q-input> -->
+        <time-picker label="Jam Mulai" :model-value="formModel.start" :rules="['fulltime']"
+          error="Format Waktu Salah" />
+        <time-picker label="Jam Selesai" :model-value="formModel.end" :rules="['fulltime']"
+          error="Format Waktu Salah" />
 
         <q-input class="q-mb-md" outlined v-model="formModel.order" type="number" label="Jam Ke" />
       </template>
-    </add-button>
 
+      <template #button>
+        <q-btn class="absolute-bottom-right text-white q-ma-md" color="teal-9" label="Simpan" @click="onSaveForm" />
+      </template>
+    </add-button>
   </q-page>
 </template>
 
@@ -149,15 +127,12 @@
 import { useStudentActivitiesStore } from "src/stores/student-activities-store";
 import { onBeforeMount, onMounted, ref, computed, nextTick } from "vue";
 import { isValidTime, dayName } from "src/utilities/time-util";
-import AddButton from "src/components/AddButton.vue"
-import TimePicker from "src/components/TimePicker.vue"
-
-import SelectDay from "src/components/SelectDay.vue";
+import AddButton from "src/components/AddButton.vue";
+import TimePicker from "src/components/TimePicker.vue";
+import { useFocus } from "@vueuse/core";
 
 const nameRef = ref(null);
 
-
-const day = ref("");
 const dayOptions = ["Daily", ...dayName];
 
 const studentActivityStore = useStudentActivitiesStore();
@@ -187,44 +162,36 @@ const columns = [
     label: "JAM KE",
     align: "center",
   },
-  // {
-  //   name: "status",
-  //   label: "Status",
-  //   align: "center",
-  // },
 ];
 
 const tableRows = computed(() => studentActivityStore.all);
 
 const update = (id, column, value) => {
   studentActivityStore.updateActivity(id, column, value);
-  // console.log(value);
 };
+
+const addBtnRef = ref(null);
 
 const formModel = ref({
   name: "",
   day: "",
-  start: "",
-  end: "",
+  start: "00:00:00",
+  end: "00:00:00",
   order: 0,
 });
 
-const isValid = ref(false);
 
-const onChange = (time) => {
-  if (isValidTime(time)) {
-    isValid.value = true;
-  }
-  console.log(time);
-  // console.log(isValid.value);
-};
+const onSaveForm = () => [
+  addBtnRef.value.nextMorph(),
+  studentActivityStore.createActivity(formModel.value)
+
+];
+
 
 onBeforeMount(() => {
   studentActivityStore.getAllActivitiesFromServer();
 });
 
 onMounted(() => {
-  // tableRows.value = useAttendance.attendances;
-  // useAttendance.addAttendance();
 });
 </script>

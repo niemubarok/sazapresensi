@@ -14,11 +14,15 @@ Route.group(() => {
 
   Route.post("/nis", "StudentsController.getByNis");
   Route.post("/class", "StudentsController.getByClass");
-  Route.post("/activities/day", "StudentActivitiesController.index");
-  Route.patch("/activities/update", "StudentActivitiesController.update");
   Route.post("/attendances", "StudentAttendancesController.index");
   Route.post("/attendances/create", "StudentAttendancesController.create");
 }).prefix("/student");
+
+Route.group(() => {
+  Route.post("/activities/day", "StudentActivitiesController.index");
+  Route.post("/activities/create", "StudentActivitiesController.create");
+  Route.patch("/activities/update", "StudentActivitiesController.update");
+}).prefix("/master");
 
 Route.group(() => {
   Route.get("/all", "SettingsController.index");

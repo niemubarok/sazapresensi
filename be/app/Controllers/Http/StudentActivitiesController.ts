@@ -9,7 +9,9 @@ export default class StudentActivitiesController {
     return new StudentActivitiesService().getAllActivities(ctx);
   }
 
-  public async create({}: HttpContextContract) {}
+  public async create(ctx: HttpContextContract) {
+    return new StudentActivitiesService().createActivity(ctx);
+  }
 
   public async store({}: HttpContextContract) {}
 

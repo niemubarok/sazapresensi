@@ -76,20 +76,23 @@ export default class StudentActivitiesService {
     return currentActivity;
   }
 
-  // public async createActivity(ctx: HttpContextContract) {
-  //   // Retrieve the student ID and activity data from the request body
-  //   const studentId = ctx.params.id;
-  //   const data = ctx.request.only(["title", "description"]);
+  public async createActivity(ctx: HttpContextContract) {
+    // Retrieve the student ID and activity data from the request body
+    const data = ctx.request.body().data;
 
-  //   // Insert the new activity into the database
-  //   const activity = await Database.table("activities").insert({
-  //     studentId,
-  //     ...data,
-  //   });
+    // Insert the new activity into the database
+    const activity = await StudentActivities.create({
+      ...data.activity,
+    });
 
-  // Return the created activity
-  //   return activity;
-  // }
+    Ws.io.emit("activity:update");
+    await this.scheduler();
+
+    ctx.response.status(201).json({
+      message: "berhasil update",
+      data: activity,
+    });
+  }
 
   public async updateActivity(ctx: HttpContextContract) {
     // Retrieve the activity ID and updated data from the request body

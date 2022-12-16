@@ -17,7 +17,7 @@ export const useTeacherAttendanceStore = defineStore("teacherAttendance", {
   actions: {
     async addAttendance(attendee) {
       await axios
-        .post(process.env.API + "teacher/attendance/create", {
+        .post(process.env.API + "/teacher/attendance/create", {
           data: attendee,
         })
         .then((res) => {

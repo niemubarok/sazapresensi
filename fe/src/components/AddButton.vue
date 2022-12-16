@@ -1,7 +1,7 @@
 <template>
   <section>
     <q-btn v-morph:btn:mygroup:300.resize="morphGroupModel" class="fixed-bottom-right q-mr-sm"
-      style="margin-bottom: 70px" fab color="teal-9" size="xs" icon="add" @click="nextMorph">
+      style="margin-bottom: 70px" fab color="primary" size="xs" icon="add" @click="nextMorph">
     </q-btn>
 
     <q-card v-morph:card1:mygroup:500.resize="morphGroupModel" class="fixed-bottom-right q-ma-md bg-grey-1"
@@ -17,7 +17,8 @@
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn class="absolute-bottom-right text-white q-ma-md" color="teal-9" label="Simpan" @click="nextMorph" />
+        <slot name="button"></slot>
+
       </q-card-actions>
     </q-card>
   </section>
@@ -31,7 +32,6 @@ const props = defineProps({
   title: String,
 })
 
-
 const nextMorphStep = {
   btn: "card1",
   card1: "btn",
@@ -39,5 +39,10 @@ const nextMorphStep = {
 const morphGroupModel = ref("btn");
 const nextMorph = () => {
   morphGroupModel.value = nextMorphStep[morphGroupModel.value];
+  console.log(morphGroupModel.value);
 };
+
+defineExpose({
+  nextMorph
+})
 </script>

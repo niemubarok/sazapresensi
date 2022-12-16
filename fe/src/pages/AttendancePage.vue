@@ -66,7 +66,7 @@
       <AttendanceCardList />
     </div>
   </div>
-  <marquee direction="right" class="fixed-bottom q-mb-sm z-top"><q-chip
+  <marquee direction="right" behavior="loop" class="fixed-bottom-right q-mb-sm" style="width:500px;"><q-chip
       class="q-pl-md text-weight-bolder bg-blue-grey-1" outline size="sm" color="green-9">
       <q-avatar class="q-ml-md" icon="lightbulb" color="orange-6" text-color="white" />
       العلم بلاعمل كالشجر بلا ثمر
