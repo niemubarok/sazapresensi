@@ -124,13 +124,31 @@ export default class StudentActivitiesService {
 
   public async deleteActivity(ctx: HttpContextContract) {
     // Retrieve the activity ID from the request parameters
-    const activityId = ctx.request.body().data;
-    return activityId;
-    // Delete the activity from the database
-    // await StudentActivities.query().where("id", activityId).delete();
+    const activityId = ctx.request.body().id;
+    // console.log(activityId);
 
-    // ctx.response.status(201).json({
-    //   message: "berhasil dihapus",
-    // });
+    // return activityId;
+    // Delete the activity from the database
+    try {
+      const deleteActivity = await StudentActivities.query()
+        .where("id", "activityId")
+        .delete();
+
+      console.log(deleteActivity);
+
+      if (deleteActivity) {
+        ctx.response.status(204).json({
+          message: "berhasil dihapus",
+        });
+      } else {
+        ctx.response.status(301).json({
+          message: "Gagal dihapus",
+        });
+      }
+    } catch (error) {
+      ctx.response.status(301).json({
+        message: "Gagal dihapus",
+      });
+    }
   }
 }

@@ -96,20 +96,45 @@ export const useStudentActivitiesStore = defineStore("StudentActivities", {
           },
         })
         .then((res) => {
-          console.log(res.data);
           this.all.push(res.data.data);
         });
     },
     async deleteActivity(id) {
-      await axios
-        .post(`${process.env.API}master/activities/delete`, {
-          data: {
-            id,
-          },
-        })
-        .then((res) => {
-          console.log(res);
+      // delete this.all[index];
+      try {
+        await axios
+          .delete(`${process.env.API}master/activities/delete`, {
+            data: {
+              id,
+            },
+          })
+          .then((res) => {
+            if (res.status != 204) {
+              Notify.create({
+                message: "Data Gagal Dihapus",
+                color: "red",
+                icon: "error",
+                position: "top",
+              });
+            }
+            const value = this.all.find((activity) => activity?.id == id);
+            const index = this.all.indexOf(value);
+            delete this.all[index];
+            Notify.create({
+              message: "Data Berhasil Dihapus",
+              color: "green",
+              icon: "check",
+              position: "top",
+            });
+          });
+      } catch (error) {
+        Notify.create({
+          message: "Gagal Terhubung ke server",
+          color: "red",
+          icon: "error",
+          position: "top",
         });
+      }
     },
   },
 });

@@ -36,7 +36,7 @@
         <template v-slot:body="props">
           <q-tr :props="props" :class="props.pageIndex % 2 == 0 ? 'bg-green-1' : 'bg-grey-1'">
 
-            <q-menu touch-position context-menu anchor="center end" self="center start">
+            <q-menu touch-position auto-close context-menu anchor="center end" self="center start">
 
               <q-btn size="xs" icon="delete" color="red" label="delete" @click="onDelete(props.row.id)" />
             </q-menu>
@@ -229,7 +229,7 @@ const onSaveForm = () => {
 }
 
 const onDelete = (id) => {
-  console.log(id);
+  studentActivityStore.deleteActivity(id)
 }
 
 onBeforeMount(() => {
