@@ -60,7 +60,7 @@ export const useStudentActivitiesStore = defineStore("StudentActivities", {
 
     async getAllActivitiesFromServer() {
       await axios
-        .get(`${process.env.API}student/activities/all`)
+        .get(`${process.env.API}master/activities/all`)
         .then((res) => {
           // console.log(res.data.data);
           this.all = res.data.data;
@@ -93,6 +93,18 @@ export const useStudentActivitiesStore = defineStore("StudentActivities", {
         .post(`${process.env.API}master/activities/create`, {
           data: {
             activity,
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          this.all.push(res.data.data);
+        });
+    },
+    async deleteActivity(id) {
+      await axios
+        .post(`${process.env.API}master/activities/delete`, {
+          data: {
+            id,
           },
         })
         .then((res) => {

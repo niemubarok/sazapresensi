@@ -1,24 +1,31 @@
 <template>
   <q-page padding>
     <q-card class="q-mt-md" style="border-top: 2px solid #00a1e8">
-      <q-table table-class="q-mt-md full-width" :rows-per-page-options="[10, 20]" :columns="columns" sort-method="desc"
-        :rows="tableRows" row-key="name" separator="cell">
-        <template #top-left>
-          <div>
+      <q-table table-class="q-mt-md full-width" :rows-per-page-options="[10, 20]" :columns="columns" :rows="rows"
+        row-key="name" separator="cell">
+        <template #top>
+          <div class="row">
             <q-chip square size="md" class="bg-transparent text-weight-bolder text-grey-9">
               <q-icon size="md" name="event" />
               Master Aktivitas Santri
             </q-chip>
           </div>
-        </template>
+          <q-space />
+          <q-input clearable outlined rounded dense debounce="300" v-model="searchModel" placeholder="Cari Aktivitas..."
+            input-class="q-pr-xl" @clear="onClearSearch">
+            <template v-slot:append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+          <q-space />
+          <q-select dense v-model="filterModel" :options="dayOptions" label="Filter Hari" label-color="grey-7" flat
+            clearable style="width:150px" @clear="onClearFilter">
+            <template #prepend>
+              <q-icon name="filter_alt" size="xs" class="text-orange-9" />
+            </template>
+          </q-select>
 
-        <template #top-right>
-          <q-chip outline style="border: 1px solid orange" size="sm" color="green-9">
-            <q-icon name="lightbulb" size="xs" class="text-orange-9" />
-            Klik pada kolom untuk edit
-          </q-chip>
         </template>
-
         <template v-slot:header="props">
           <q-tr :props="props">
             <q-th v-for="col in props.cols" :key="col.name" :props="props"><q-chip class="bg-transparent">
@@ -28,6 +35,11 @@
 
         <template v-slot:body="props">
           <q-tr :props="props" :class="props.pageIndex % 2 == 0 ? 'bg-green-1' : 'bg-grey-1'">
+
+            <q-menu touch-position context-menu anchor="center end" self="center start">
+
+              <q-btn size="xs" icon="delete" color="red" label="delete" @click="onDelete(props.row.id)" />
+            </q-menu>
             <q-td key="name" :props="props" style="width: 20px">
               <p class="text-center">{{ props.pageIndex + 1 }}</p>
             </q-td>
@@ -61,7 +73,6 @@
 
             <q-td key="jam" :props="props">
               <q-chip class="cursor-pointer" color="green-3" :label="props.row.start">
-
                 <q-popup-proxy cover transition-show="scale" transition-hide="scale">
                   <q-time v-model="props.row.start" format24h with-seconds>
                     <div class="row items-center justify-end q-gutter-sm">
@@ -136,6 +147,8 @@ const nameRef = ref(null);
 const dayOptions = ["Daily", ...dayName];
 
 const studentActivityStore = useStudentActivitiesStore();
+const filterModel = ref('')
+const searchModel = ref('')
 const columns = [
   {
     name: "no",
@@ -146,11 +159,13 @@ const columns = [
     name: "name",
     label: "NAMA AKTIVITAS",
     align: "left",
+    // sortable: true
   },
   {
     name: "day",
     label: "HARI",
     align: "center",
+    // sortable: true
   },
   {
     name: "jam",
@@ -161,15 +176,41 @@ const columns = [
     name: "order",
     label: "JAM KE",
     align: "center",
+    // sortable: true
   },
 ];
 
-const tableRows = computed(() => studentActivityStore.all);
+// const tableRows = computed(() => filterModel.value ? studentActivityStore.all.filter(row => row[filterBy.value.val]?.toLowerCase().includes(filterModel.value.toLowerCase())) : studentActivityStore.all);
+
+const tableRows = computed(() => {
+  return studentActivityStore.all.filter(activities => activities?.day?.toLowerCase().includes(filterModel.value?.toLowerCase())).filter(rows => rows.name?.toLowerCase().includes(searchModel.value?.toLowerCase()))
+})
+const rows = computed(() => tableRows.value)
+//  ?
+//   : studentActivityStore.all.filter((row) => {
+//     return (row.day?.toLowerCase().includes(filterModel.value.toLowerCase()).includes(()=>
+//     row.name?.toLowerCase().includes(searchModel.value.toLowerCase()))
+//     )
+//   }
+//   ))
+
+const filter = () => {
+  console.log();
+}
+
+const onClearSearch = () => {
+  searchModel.value = ''
+}
 
 const update = (id, column, value) => {
   studentActivityStore.updateActivity(id, column, value);
 };
 
+const onClearFilter = () => {
+  // tableRows.value = studentActivityStore.all
+  filterModel.value = ''
+
+}
 const addBtnRef = ref(null);
 
 const formModel = ref({
@@ -180,18 +221,20 @@ const formModel = ref({
   order: 0,
 });
 
-
-const onSaveForm = () => [
-  addBtnRef.value.nextMorph(),
+const onSaveForm = () => {
   studentActivityStore.createActivity(formModel.value)
+  addBtnRef.value.nextMorph()
+  // console.log("create")
 
-];
+}
 
+const onDelete = (id) => {
+  console.log(id);
+}
 
 onBeforeMount(() => {
   studentActivityStore.getAllActivitiesFromServer();
 });
 
-onMounted(() => {
-});
+onMounted(() => { });
 </script>

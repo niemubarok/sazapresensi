@@ -9,7 +9,6 @@ Route.group(() => {
 
 Route.group(() => {
   Route.get("/all", "StudentsController.index");
-  Route.get("/activities/all", "StudentActivitiesController.index");
   Route.get("/classes", "ClassesController.index");
 
   Route.post("/nis", "StudentsController.getByNis");
@@ -19,9 +18,13 @@ Route.group(() => {
 }).prefix("/student");
 
 Route.group(() => {
-  Route.post("/activities/day", "StudentActivitiesController.index");
-  Route.post("/activities/create", "StudentActivitiesController.create");
-  Route.patch("/activities/update", "StudentActivitiesController.update");
+  Route.group(() => {
+    Route.get("/all", "StudentActivitiesController.index");
+    Route.post("/day", "StudentActivitiesController.index");
+    Route.post("/create", "StudentActivitiesController.create");
+    Route.patch("/update", "StudentActivitiesController.update");
+    Route.delete("/delete", "StudentActivitiesController.delete");
+  }).prefix("/activities");
 }).prefix("/master");
 
 Route.group(() => {

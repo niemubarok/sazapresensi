@@ -25,5 +25,7 @@ export default class StudentActivitiesController {
     return new StudentActivitiesService().updateActivity(ctx);
   }
 
-  public async destroy({}: HttpContextContract) {}
+  public async delete(ctx: HttpContextContract) {
+    return new StudentActivitiesService().deleteActivity(ctx);
+  }
 }

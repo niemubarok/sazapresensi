@@ -80,18 +80,20 @@ export default class StudentActivitiesService {
     // Retrieve the student ID and activity data from the request body
     const data = ctx.request.body().data;
 
-    // Insert the new activity into the database
-    const activity = await StudentActivities.create({
-      ...data.activity,
-    });
+    try {
+      // Insert the new activity into the database
+      const activity = await StudentActivities.create(data.activity);
 
-    Ws.io.emit("activity:update");
-    await this.scheduler();
+      Ws.io.emit("activity:update");
+      await this.scheduler();
 
-    ctx.response.status(201).json({
-      message: "berhasil update",
-      data: activity,
-    });
+      ctx.response.status(201).json({
+        message: "berhasil tambah aktivitas",
+        data: activity,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   public async updateActivity(ctx: HttpContextContract) {
@@ -120,16 +122,15 @@ export default class StudentActivitiesService {
     // return activity;
   }
 
-  // public async deleteActivity(ctx: HttpContextContract) {
-  //   // Retrieve the activity ID from the request parameters
-  //   const activityId = ctx.params.id;
+  public async deleteActivity(ctx: HttpContextContract) {
+    // Retrieve the activity ID from the request parameters
+    const activityId = ctx.request.body().data;
+    return activityId;
+    // Delete the activity from the database
+    // await StudentActivities.query().where("id", activityId).delete();
 
-  //   // Delete the activity from the database
-  //   const activity = await Database.table("activities")
-  //     .where("id", activityId)
-  //     .delete();
-
-  //   // Return the deleted activity
-  //   return activity;
-  // }
+    // ctx.response.status(201).json({
+    //   message: "berhasil dihapus",
+    // });
+  }
 }
