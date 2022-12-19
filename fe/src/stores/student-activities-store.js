@@ -1,8 +1,6 @@
 import axios from "axios";
 import { defineStore } from "pinia";
-// import { ref } from "vue";
 import { Notify } from "quasar";
-// import { io } from "socket.io-client";
 import { socket } from "src/services/socketio-service";
 import ls from "localstorage-slim";
 ls.config.encrypt = true;
@@ -85,7 +83,15 @@ export const useStudentActivitiesStore = defineStore("StudentActivities", {
           },
         })
         .then((res) => {
-          // socket.on("activity:update")
+          if (res.status === 201) {
+            Notify.create({
+              message: "Data Berhasil Diupdate",
+              color: "green",
+              icon: "check",
+              position: "top",
+              timeout: 1000,
+            });
+          }
         });
     },
     async createActivity(activity) {
@@ -96,7 +102,18 @@ export const useStudentActivitiesStore = defineStore("StudentActivities", {
           },
         })
         .then((res) => {
-          this.all.push(res.data.data);
+          if (res.status === 201) {
+            this.all.unshift(res.data.data);
+            if (res.status === 201) {
+              Notify.create({
+                message: "Berhasil Tambah Data",
+                color: "green-4",
+                icon: "check",
+                position: "top",
+                timeout: 1000,
+              });
+            }
+          }
         });
     },
     async deleteActivity(id) {

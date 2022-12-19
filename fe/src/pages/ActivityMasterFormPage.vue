@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
     <q-card class="q-mt-md" style="border-top: 2px solid #00a1e8">
-      <q-table table-class="q-mt-md full-width" :rows-per-page-options="[10, 20]" :columns="columns" :rows="rows"
+      <q-table table-class="q-mt-md full-width" :rows-per-page-options="[10, 20]" :columns="columns" :rows="tableRows"
         row-key="name" separator="cell">
         <template #top>
           <div class="row">
@@ -38,7 +38,8 @@
 
             <q-menu touch-position auto-close context-menu anchor="center end" self="center start">
 
-              <q-btn size="xs" icon="delete" color="red" label="delete" @click="onDelete(props.row.id)" />
+              <q-btn size="xs" icon="delete" color="red" label="delete"
+                @click="onDeleteConfirm(props.row.name, props.row.id)" />
             </q-menu>
             <q-td key="name" :props="props" style="width: 20px">
               <p class="text-center">{{ props.pageIndex + 1 }}</p>
@@ -136,15 +137,13 @@
 
 <script setup>
 import { useStudentActivitiesStore } from "src/stores/student-activities-store";
-import { onBeforeMount, onMounted, ref, computed, nextTick } from "vue";
-import { isValidTime, dayName } from "src/utilities/time-util";
+import { onBeforeMount, onMounted, ref, computed } from "vue";
+import { dayName } from "src/utilities/time-util";
 import AddButton from "src/components/AddButton.vue";
 import TimePicker from "src/components/TimePicker.vue";
-import { useFocus } from "@vueuse/core";
+import { Notify } from "quasar";
 
-const nameRef = ref(null);
-
-const dayOptions = ["Daily", ...dayName];
+const dayOptions = ["Daily", "Weekday", ...dayName];
 
 const studentActivityStore = useStudentActivitiesStore();
 const filterModel = ref('')
@@ -180,34 +179,18 @@ const columns = [
   },
 ];
 
-// const tableRows = computed(() => filterModel.value ? studentActivityStore.all.filter(row => row[filterBy.value.val]?.toLowerCase().includes(filterModel.value.toLowerCase())) : studentActivityStore.all);
-
 const tableRows = computed(() => {
   return studentActivityStore.all.filter(activities => activities?.day?.toLowerCase().includes(filterModel.value?.toLowerCase())).filter(rows => rows.name?.toLowerCase().includes(searchModel.value?.toLowerCase()))
 })
-const rows = computed(() => tableRows.value)
-//  ?
-//   : studentActivityStore.all.filter((row) => {
-//     return (row.day?.toLowerCase().includes(filterModel.value.toLowerCase()).includes(()=>
-//     row.name?.toLowerCase().includes(searchModel.value.toLowerCase()))
-//     )
-//   }
-//   ))
 
-const filter = () => {
-  console.log();
-}
 
 const onClearSearch = () => {
   searchModel.value = ''
 }
 
-const update = (id, column, value) => {
-  studentActivityStore.updateActivity(id, column, value);
-};
+
 
 const onClearFilter = () => {
-  // tableRows.value = studentActivityStore.all
   filterModel.value = ''
 
 }
@@ -224,8 +207,23 @@ const formModel = ref({
 const onSaveForm = () => {
   studentActivityStore.createActivity(formModel.value)
   addBtnRef.value.nextMorph()
-  // console.log("create")
+}
 
+const update = (id, column, value) => {
+  studentActivityStore.updateActivity(id, column, value);
+};
+
+const onDeleteConfirm = (name, id) => {
+  Notify.create({
+    message: `Yakin ingin delete ${name} ?`,
+    color: 'red',
+    position: "center",
+    persistent: true,
+    actions: [
+      { label: 'Ya ', color: 'grey-5', handler: () => onDelete(id) },
+      { label: 'Tidak', color: 'white', handler: () => { } }
+    ]
+  })
 }
 
 const onDelete = (id) => {
@@ -236,5 +234,4 @@ onBeforeMount(() => {
   studentActivityStore.getAllActivitiesFromServer();
 });
 
-onMounted(() => { });
 </script>

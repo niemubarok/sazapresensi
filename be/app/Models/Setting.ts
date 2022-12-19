@@ -8,5 +8,5 @@ export default class Setting extends BaseModel {
   public name: String;
 
   @column()
-  public value: Number;
+  public value: String;
 }

@@ -19,7 +19,8 @@ export default class StudentActivitiesService {
 
     const activitiesByDay = await StudentActivities.query()
       .where("day", day)
-      .orWhere("day", "daily");
+      .orWhere("day", "daily")
+      .orWhere("day", "weekday");
 
     activitiesByDay.forEach((activity) => {
       const start = activity?.start; // The start to run the job (HH:mm:ss)
@@ -68,8 +69,6 @@ export default class StudentActivitiesService {
   public async getCurrentActivity() {
     const day = getDayName(getTime().date);
     const now = getTime().time;
-    console.log(now);
-
     const currentActivity = StudentActivities.query().withScopes((scopes) =>
       scopes.current(day, now)
     );
@@ -123,20 +122,13 @@ export default class StudentActivitiesService {
   }
 
   public async deleteActivity(ctx: HttpContextContract) {
-    // Retrieve the activity ID from the request parameters
     const activityId = ctx.request.body().id;
-    // console.log(activityId);
+    const isExist = await StudentActivities.findBy("id", activityId);
 
-    // return activityId;
-    // Delete the activity from the database
     try {
-      const deleteActivity = await StudentActivities.query()
-        .where("id", "activityId")
-        .delete();
+      if (isExist) {
+        await StudentActivities.query().where("id", activityId).delete();
 
-      console.log(deleteActivity);
-
-      if (deleteActivity) {
         ctx.response.status(204).json({
           message: "berhasil dihapus",
         });

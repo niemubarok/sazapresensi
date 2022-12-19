@@ -7,7 +7,12 @@ export default class extends BaseSeeder {
       {
         id: 1,
         name: "toleransi",
-        value: 15,
+        value: "15",
+      },
+      {
+        id: 2,
+        name: "baseUrl",
+        value: "http://localhost:3333",
       },
     ]);
   }
