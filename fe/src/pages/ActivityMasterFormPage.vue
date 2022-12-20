@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <q-card class="q-mt-md" style="border-top: 2px solid #00a1e8">
+    <q-card bordered flat class="q-mt-md" style="border-top: 2px solid #00a1e8">
       <q-table table-class="q-mt-md full-width" :rows-per-page-options="[10, 20]" :columns="columns" :rows="tableRows"
         row-key="name" separator="cell">
         <template #top>
@@ -11,12 +11,14 @@
             </q-chip>
           </div>
           <q-space />
-          <q-input clearable outlined rounded dense debounce="300" v-model="searchModel" placeholder="Cari Aktivitas..."
-            input-class="q-pr-xl" @clear="onClearSearch">
+          <!-- <q-input clearable outlined rounded dense debounce="300" v-model="componentStore.searchModel"
+            placeholder="Cari Aktivitas..." input-class="q-pr-xl" input-style="width:30vw" @clear="onClearSearch">
             <template v-slot:append>
               <q-icon name="search" />
             </template>
-          </q-input>
+          </q-input> -->
+          <q-space />
+          <q-space />
           <q-space />
           <q-select dense v-model="filterModel" :options="dayOptions" label="Filter Hari" label-color="grey-7" flat
             clearable style="width:150px" @clear="onClearFilter">
@@ -24,6 +26,8 @@
               <q-icon name="filter_alt" size="xs" class="text-orange-9" />
             </template>
           </q-select>
+          <q-space />
+          <q-toggle label="Edit Mode" v-model="isEditMode" checked-icon="edit" color="green" unchecked-icon="clear" />
 
         </template>
         <template v-slot:header="props">
@@ -44,12 +48,12 @@
             <q-td key="name" :props="props" style="width: 20px">
               <p class="text-center">{{ props.pageIndex + 1 }}</p>
             </q-td>
-            <q-td key="name" class="cursor-pointer" :props="props">{{ props.row.name }}
-              <q-tooltip anchor="center middle" self="center middle" class="bg-transparent text-grey-7">
+            <q-td key="name" :class="{ 'cursor-pointer': isEditMode }" :props="props">{{ props.row.name }}
+              <!-- <q-tooltip anchor="center middle" self="center middle" class="bg-transparent text-grey-7">
                 <q-icon name="edit" size="xs" />
                 <small> Klik untuk edit</small>
-              </q-tooltip>
-              <q-popup-edit v-model="props.row.name" v-slot="scope" persistent
+              </q-tooltip> -->
+              <q-popup-edit v-if="isEditMode" v-model="props.row.name" v-slot="scope" persistent
                 @save="(value) => update(props.row.id, 'name', value)">
                 <q-input v-model="scope.value" dense autofocus counter @keyup.enter="scope.set" />
                 <div class="float-right">
@@ -57,9 +61,10 @@
                   <q-btn size="sm" color="green-9" flat icon="check" @click="scope.set" />
                 </div>
               </q-popup-edit>
+              <q-icon v-if="isEditMode" name="edit" size="xs" />
             </q-td>
-            <q-td key="day" class="cursor-pointer" :props="props">{{ props.row.day }}
-              <q-popup-edit v-model="props.row.day" v-slot="scope" persistent
+            <q-td key="day" :class="{ 'cursor-pointer': isEditMode }" :props="props">{{ props.row.day }}
+              <q-popup-edit v-if="isEditMode" v-model="props.row.day" v-slot="scope" persistent
                 @save="(value) => update(props.row.id, 'day', value)">
                 <q-select class="q-mb-md" color="grey-3" label-color="orange" v-model="scope.value"
                   :options="dayOptions" label="Hari">
@@ -70,11 +75,12 @@
                   <q-btn size="sm" color="green-9" flat icon="check" @click="scope.set" />
                 </div>
               </q-popup-edit>
+              <q-icon v-if="isEditMode" name="edit" size="xs" />
             </q-td>
 
             <q-td key="jam" :props="props">
-              <q-chip class="cursor-pointer" color="green-3" :label="props.row.start">
-                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+              <q-chip :class="{ 'cursor-pointer': isEditMode }" color="green-3" :label="props.row.start">
+                <q-popup-proxy v-if="isEditMode" cover transition-show="scale" transition-hide="scale">
                   <q-time v-model="props.row.start" format24h with-seconds>
                     <div class="row items-center justify-end q-gutter-sm">
                       <q-btn size="sm" color="red-9" flat icon="close" v-close-popup />
@@ -83,10 +89,11 @@
                     </div>
                   </q-time>
                 </q-popup-proxy>
+                <q-icon v-if="isEditMode" name="edit" size="xs" />
               </q-chip>
               s/d
-              <q-chip class="cursor-pointer" color="orange-3" :label="props.row.end">
-                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+              <q-chip :class="{ 'cursor-pointer': isEditMode }" color="orange-3" :label="props.row.end">
+                <q-popup-proxy v-if="isEditMode" cover transition-show="scale" transition-hide="scale">
                   <q-time v-model="props.row.end" format24h with-seconds>
                     <div class="row items-center justify-end q-gutter-sm">
                       <q-btn size="sm" color="red-9" flat icon="close" v-close-popup />
@@ -94,9 +101,9 @@
                         @click="update(props.row.id, 'end', props.row.end)" v-close-popup />
                     </div>
                   </q-time>
-                </q-popup-proxy> </q-chip></q-td>
-            <q-td key="order" class="cursor-pointer" :props="props">{{ props.row.order }}
-              <q-popup-edit v-model="props.row.order" v-slot="scope" persistent
+                </q-popup-proxy><q-icon v-if="isEditMode" name="edit" size="xs" /> </q-chip></q-td>
+            <q-td key="order" :class="{ 'cursor-pointer': isEditMode }" :props="props">{{ props.row.order }}
+              <q-popup-edit v-if="isEditMode" v-model="props.row.order" v-slot="scope" persistent
                 @save="(value) => update(props.row.id, 'order', value)">
                 <q-input v-model="scope.value" type="number" dense autofocus counter @keyup.enter="scope.set" />
                 <div class="float-right">
@@ -104,10 +111,13 @@
                   <q-btn size="sm" color="green-9" flat icon="check" @click="scope.set" />
                 </div>
               </q-popup-edit>
+              <q-icon v-if="isEditMode" name="edit" size="xs" />
             </q-td>
           </q-tr>
         </template>
       </q-table>
+
+
     </q-card>
 
     <!-- //morph -->
@@ -142,12 +152,15 @@ import { dayName } from "src/utilities/time-util";
 import AddButton from "src/components/AddButton.vue";
 import TimePicker from "src/components/TimePicker.vue";
 import { Notify } from "quasar";
+import { useComponentStore } from "src/stores/component-store";
 
+
+
+const componentStore = useComponentStore()
 const dayOptions = ["Daily", "Weekday", ...dayName];
 
 const studentActivityStore = useStudentActivitiesStore();
 const filterModel = ref('')
-const searchModel = ref('')
 const columns = [
   {
     name: "no",
@@ -180,13 +193,11 @@ const columns = [
 ];
 
 const tableRows = computed(() => {
-  return studentActivityStore.all.filter(activities => activities?.day?.toLowerCase().includes(filterModel.value?.toLowerCase())).filter(rows => rows.name?.toLowerCase().includes(searchModel.value?.toLowerCase()))
+  return studentActivityStore.all.filter(activities => activities?.day?.toLowerCase().includes(filterModel.value?.toLowerCase())).filter(rows => rows.name?.toLowerCase().includes(componentStore.searchModel.toLowerCase()))
 })
 
 
-const onClearSearch = () => {
-  searchModel.value = ''
-}
+const isEditMode = ref(false)
 
 
 
@@ -232,6 +243,7 @@ const onDelete = (id) => {
 
 onBeforeMount(() => {
   studentActivityStore.getAllActivitiesFromServer();
+  useComponentStore.onClearSearch
 });
 
 </script>

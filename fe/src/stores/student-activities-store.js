@@ -86,7 +86,7 @@ export const useStudentActivitiesStore = defineStore("StudentActivities", {
           if (res.status === 201) {
             Notify.create({
               message: "Data Berhasil Diupdate",
-              color: "green",
+              color: "green-4",
               icon: "check",
               position: "top",
               timeout: 1000,

@@ -55,8 +55,6 @@ export const compareTime = (time1, time2, comparison) => {
   const date1 = new Date(2022, 0, 1, +hour1, +minute1, +second1).getTime();
   const date2 = new Date(2022, 0, 1, +hour2, +minute2, +second2).getTime();
 
-  // console.log(time1, time2);
-  // console.log(date1 > date2);
   if (comparison == "equal") {
     return date1 == date2;
   } else if (comparison == "lt") {
@@ -64,15 +62,9 @@ export const compareTime = (time1, time2, comparison) => {
   } else if (comparison == "gt") {
     return date1 > date2;
   }
-  // return getTime().hours > setTime(now).hours;
-  // return getTime().hours ;
-  // return setTime(7, 40, 0).hours;
 };
 
 export const timeToMillisecond = (t) => {
-  // return (
-  //   Number(t.split(":")[0]) * 60 * 60 + Number(t.split(":")[1]) * 60 * 1000
-  // );
   if (t) {
     return (
       Number(t.split(":")[0]) * 3600000 +

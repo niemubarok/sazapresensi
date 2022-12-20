@@ -24,6 +24,8 @@ const routes = [
         component: () => import("src/pages/ActivityMasterFormPage.vue"),
         meta: {
           isSidebar: true,
+          isSearch: true,
+          searchLabel: "Aktivitas",
         },
       },
       {
