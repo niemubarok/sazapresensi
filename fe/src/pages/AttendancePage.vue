@@ -1,5 +1,13 @@
 <template>
-  <div class="row text-center container">
+  <div class="row text-center bg-grey-2">
+    <div class="fixed-top-right q-mr-md">
+      <q-chip outline icon="today" size="md" :label="date" class="card-border-radius text-weight-bolder" />
+      <q-chip icon="place" outline size="md" class="card-border-radius text-dark text-weight-bolder" :label="location">
+        <!-- <span> Lokasi: </span> -->
+        <!-- <span class="q-ml-xs q-px-md card-border-radius bg-transparent text-dark text-weight-bold">
+              {{ location }}</span> -->
+      </q-chip>
+    </div>
     <div class="column">
       <q-card class="bg-dark fixed-top-left text-center q-py-md q-mx-md" style="width: 200px">
         <q-img width="150px" class="z-top" alt="saza logo" src="~assets/brand/IEC.png" />
@@ -62,18 +70,20 @@
       </div>
     </div>
     <div v-if="isPresenceTime" class="column">
-      <!-- <AttendanceTable v-if="listMode == 'table'" /> -->
       <AttendanceCardList />
     </div>
+    <div v-else style="width:100vw;padding-left:250px" class="float-right bg-grey-2">
+      <TypingAnimation class="q-pa-xl bg-grey-2" />
+    </div>
   </div>
-  <marquee direction="right" behavior="loop" class="fixed-bottom-right q-mb-sm" style="width:500px;"><q-chip
+  <!-- <marquee direction="right" behavior="loop" class="fixed-bottom-right q-mb-sm" style="width:500px;"><q-chip
       class="q-pl-md text-weight-bolder bg-blue-grey-1" outline size="sm" color="green-9">
       <q-avatar class="q-ml-md" icon="lightbulb" color="orange-6" text-color="white" />
       العلم بلاعمل كالشجر بلا ثمر
 
     </q-chip>
 
-  </marquee>
+  </marquee> -->
 
   <q-linear-progress dark rounded indeterminate color="blue-8" class="fixed-bottom q-mb-sm" size="xs" />
   <div class="row q-pa-md fixed-bottom" style="width: 400px">
@@ -95,6 +105,7 @@ import Clock from "src/components/Clock.vue";
 import AttendanceCardList from "src/components/AttendanceCardList.vue";
 import AttendeeCard from "src/components/AttendeeCard.vue";
 import SettingsDialogue from "src/components/SettingsDialogue.vue";
+import TypingAnimation from "src/components/TypingAnimation.vue";
 // import AttendanceTable from "src/components/AttendanceTable.vue";
 
 //stores
@@ -108,10 +119,14 @@ import { useSettingStore } from "src/stores/setting-store";
 import { useStudentStore } from "src/stores/student-store";
 import { useTeacherAttendanceStore } from "src/stores/teacher-attendances-store";
 import { socket } from "src/services/socketio-service";
+import { getTime } from "src/utilities/time-util";
 
 ls.config.encrypt = false;
 
 const $q = useQuasar();
+
+const location = ref(ls.get("location")?.label);
+const date = `${getTime().day}, ${getTime().date.toLocaleDateString()}`;
 
 const inputValue = ref("");
 const input = ref(null);

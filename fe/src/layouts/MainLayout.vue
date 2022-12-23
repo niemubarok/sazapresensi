@@ -1,6 +1,6 @@
 <template>
-  <q-layout view="lHh Lpr lFf" class="bg-grey-1">
-    <q-header v-if="$route.meta.isSidebar" class="bg-grey-1 text-grey-8 q-py-xs">
+  <q-layout view="lHh Lpr lFf" class="bg-grey-2">
+    <q-header v-if="$route.meta.isSidebar" class="bg-grey-2 text-grey-8 q-py-xs">
       <!-- style="background-color: rgb(229, 229, 229, 0.9)" -->
       <q-toolbar>
         <q-btn flat dense round @click="leftDrawerOpen = !leftDrawerOpen" icon="menu" aria-label="Menu" />

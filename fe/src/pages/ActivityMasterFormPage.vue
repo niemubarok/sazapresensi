@@ -27,7 +27,8 @@
             </template>
           </q-select>
           <q-space />
-          <q-toggle label="Edit Mode" v-model="isEditMode" checked-icon="edit" color="green" unchecked-icon="clear" />
+          <q-toggle label="Edit Mode" @update:model-value="disableEditMode" v-model="isEditMode" checked-icon="edit"
+            color="green" unchecked-icon="clear" />
 
         </template>
         <template v-slot:header="props">
@@ -198,7 +199,14 @@ const tableRows = computed(() => {
 
 
 const isEditMode = ref(false)
+const disableEditMode = () => {
+  setTimeout(() => {
+    if (isEditMode.value == true) {
 
+      isEditMode.value = false
+    }
+  }, 20000)
+}
 
 
 const onClearFilter = () => {

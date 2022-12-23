@@ -1,5 +1,5 @@
 <template>
-  <div class="window-height">
+  <div>
     <q-table binary-sort title="DAFTAR HADIR SANTRI" :rows="tableRows" :columns="columns" row-key="name"
       :filter="filter" rows-per-page-label="Per halaman " :rows-per-page-options="[40]" grid style="padding-left: 250px"
       title-class="text-weight-bold q-px-xl bg-grey-3  rounded-borders" dense binary-state-sort>
@@ -52,24 +52,22 @@
           </div> -->
         <!-- </div> -->
 
-        <div class="row q-px-md flex align-end fixed-top-right">
+        <!-- <div class="row q-px-md flex align-end fixed-top-right">
           <q-chip outline icon="today" size="md" :label="date" class="card-border-radius text-weight-bolder" />
           <q-chip icon="place" outline size="md" class="card-border-radius text-dark text-weight-bolder"
-            :label="location">
-            <!-- <span> Lokasi: </span> -->
-            <!-- <span class="q-ml-xs q-px-md card-border-radius bg-transparent text-dark text-weight-bold">
+            :label="location"> -->
+        <!-- <span> Lokasi: </span> -->
+        <!-- <span class="q-ml-xs q-px-md card-border-radius bg-transparent text-dark text-weight-bold">
               {{ location }}</span> -->
-          </q-chip>
-        </div>
+        <!-- </q-chip>
+        </div> -->
       </template>
 
       <template v-slot:no-data>
-        <div class="full-width row flex-center text-grey q-gutter-sm">
-          <q-card class="my-card q-mt-md">
-            <img src="https://cdn.quasar.dev/img/mountains.jpg" style="height: 300px" />
-            <q-card-section>
-              <div class="text-h6">Belum ada Santri absen</div>
-            </q-card-section>
+        <div class="bg-grey-2 q-mt-md text-grey">
+          <q-card flat class=" bg-grey-2" style="width: 70vw;">
+            <!-- <img src="https://cdn.quasar.dev/img/mountains.jpg" style="height: 300px" /> -->
+            <TypingAnimation />
           </q-card>
         </div>
       </template>
@@ -130,6 +128,7 @@ import AttendeeCard from "./AttendeeCard.vue";
 import { getTime } from "src/utilities/time-util";
 import ls from "localstorage-slim";
 import { useSettingStore } from "src/stores/setting-store";
+import TypingAnimation from "./TypingAnimation.vue";
 
 // import { fab } from "@quasar/extras/fontawesome-v6";
 const attendanceStore = useStudentAttendancesStore();
